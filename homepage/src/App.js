@@ -9,10 +9,8 @@ const games = [
     tagline: 'A run-based solo adventure built around momentum and adaptation.',
     description:
       'A focused singleplayer project where each run builds toward stronger choices, harder encounters, and deeper mastery.',
-    imageSrc:
-      'https://placehold.co/1600x2000/1a2036/a9b8ff?text=Singleplayer%0ARoguelite',
-    imagePosition: '50% 50%',
-    imageScale: 1.18,
+    imageSrc: 'https://placehold.co/2400x1200/1a2036/a9b8ff?text=Image',
+    imageScale: 1.04,
   },
   {
     slug: 'multiplayer-arena',
@@ -20,9 +18,8 @@ const games = [
     tagline: 'A competitive battleground for fast matches and clutch team moments.',
     description:
       'A multiplayer project centered on arena combat, repeatable match flow, and the kind of rivalries players remember.',
-    imageSrc: 'https://placehold.co/1600x2000/241326/ff9ed1?text=Multiplayer%0AArena',
-    imagePosition: '50% 48%',
-    imageScale: 1.2,
+    imageSrc: 'https://placehold.co/2400x1200/241326/ff9ed1?text=Image',
+    imageScale: 1.04,
   },
 ];
 
@@ -111,7 +108,7 @@ function GameCard({ game }) {
       const distanceFromCenter = rect.top + rect.height / 2 - viewportHeight / 2;
       const normalizedDistance = Math.min(1, Math.abs(distanceFromCenter) / Math.max(viewportHeight * 0.75, 1));
       const nextOffset = Math.max(-80, Math.min(80, distanceFromCenter * -0.08));
-      const nextScale = game.imageScale + normalizedDistance * 0.14;
+      const nextScale = game.imageScale + normalizedDistance * 0.04;
 
       setImageMotion({ offset: nextOffset, scale: nextScale });
     };
@@ -135,18 +132,18 @@ function GameCard({ game }) {
             src={game.imageSrc}
             alt=""
             style={{
-              objectPosition: game.imagePosition,
               '--parallax-offset': `${imageMotion.offset}px`,
               '--image-scale': imageMotion.scale,
             }}
           />
           <div className="game-image-overlay" />
-          <div className="game-card-copy">
-            <p className="game-tag">Game</p>
-            <h3>{game.name}</h3>
-            <p>{game.tagline}</p>
-            <span className="game-link">View game page</span>
-          </div>
+        </Link>
+      </div>
+      <div className="game-card-copy">
+        <h3>{game.name}</h3>
+        <p>{game.tagline}</p>
+        <Link className="game-link" to={`/games/${game.slug}`}>
+          View game page
         </Link>
       </div>
     </li>
