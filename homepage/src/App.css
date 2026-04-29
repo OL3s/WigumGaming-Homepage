@@ -137,8 +137,8 @@ main {
 
 .game-image-frame {
   position: relative;
-  aspect-ratio: 1 / 1;
-  min-height: 42rem;
+  aspect-ratio: 2 / 1;
+  min-height: 28rem;
   background: #111423;
   overflow: hidden;
 }
@@ -250,7 +250,7 @@ main {
   }
 
   .game-image-frame {
-    min-height: 22rem;
+    min-height: 16rem;
   }
 
   .game-panel {
