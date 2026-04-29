@@ -1,7 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import './App.css';
-import { Link, NavLink, Route, Routes, useParams } from 'react-router-dom';
+import { Link, NavLink, Route, Routes, useParams, useLocation } from 'react-router-dom';
 import GitHubProject from './components/GitHubProject';
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 const games = [
   {
@@ -37,6 +47,7 @@ function App() {
 
   return (
     <div className="App">
+      <ScrollToTop />
       <header className="site-header">
         <div className="site-header-brand-container">
           <Link className="brand" to="/" onClick={() => setIsMenuOpen(false)}>
