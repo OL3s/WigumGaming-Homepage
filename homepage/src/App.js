@@ -1,27 +1,34 @@
 import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import { Link, NavLink, Route, Routes, useParams } from 'react-router-dom';
+import GitHubProject from './components/GitHubProject';
 
 const games = [
   {
     slug: 'singleplayer-roguelite',
     name: 'SingleplayerRoguelite',
-    tagline: 'A run-based solo adventure built around momentum and adaptation.',
+    tagline: 'A run-based roguelite about choosing your path, growing stronger, and hunting three lost gems.',
+    teaser: 'Choose a path, survive the run, defeat bosses, and collect the three lost gems.',
     description:
-      'A focused singleplayer project where each run builds toward stronger choices, harder encounters, and deeper mastery.',
+      'Each run is a new attempt to push deeper, make better choices, and prepare for the next boss. Between fights, the player builds momentum through upgrades, items, and outpost stops before taking another step toward collecting all three gems.',
     imageWideSrc: 'https://placehold.co/2400x1200/1a2036/a9b8ff?text=Wide+Image',
     imagePortraitSrc: 'https://placehold.co/1600x1600/1a2036/a9b8ff?text=Portrait+Image',
     imageScale: 1.04,
+    githubRepo: 'OL3s/SinglePlayerRogueliteV2',
+    githubUrl: 'https://github.com/OL3s/SinglePlayerRogueliteV2.git',
   },
   {
     slug: 'multiplayer-arena',
     name: 'MultiplayerArena',
-    tagline: 'A competitive battleground for fast matches and clutch team moments.',
+    tagline: 'A fast 2D arena fighter where movement, aim, and destructible maps shape every round.',
+    teaser: 'Fast 2D PvP arena fights where bullets, movement, and destruction decide the round.',
     description:
-      'A multiplayer project centered on arena combat, repeatable match flow, and the kind of rivalries players remember.',
+      'MultiplayerArena is built around short, tense PvP matches where players fight for position while the arena breaks apart around them. The goal is quick rounds with clear skill expression: dodge, aim, use the map, and turn destruction into an advantage.',
     imageWideSrc: 'https://placehold.co/2400x1200/241326/ff9ed1?text=Wide+Image',
     imagePortraitSrc: 'https://placehold.co/1600x1600/241326/ff9ed1?text=Portrait+Image',
     imageScale: 1.04,
+    githubRepo: 'OL3s/Multiplayer-Game-Project-Multiplatform-Godot',
+    githubUrl: 'https://github.com/OL3s/Multiplayer-Game-Project-Multiplatform-Godot.git',
   },
 ];
 
@@ -29,18 +36,34 @@ function App() {
   return (
     <div className="App">
       <header className="site-header">
-        <Link className="brand" to="/">
-          Wigum Gaming
-        </Link>
-        <nav className="site-nav" aria-label="Main navigation">
-          <NavLink to="/">Home</NavLink>
-          {games.map((game) => (
-            <NavLink key={game.slug} to={`/games/${game.slug}`}>
-              {game.name}
-            </NavLink>
-          ))}
-          <NavLink to="/about">About Us</NavLink>
-        </nav>
+        <div className="site-nav-group site-nav-group-primary">
+          <Link className="brand" to="/">
+            Wigum Gaming
+          </Link>
+          <nav className="site-nav" aria-label="Site pages">
+            <NavLink to="/">Home</NavLink>
+            <NavLink to="/about">About Us</NavLink>
+          </nav>
+        </div>
+        <div className="games-nav-container">
+          <div className="games-nav-label" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect>
+              <path d="M6 12h4"></path>
+              <path d="M8 10v4"></path>
+              <path d="M15 13h.01"></path>
+              <path d="M18 11h.01"></path>
+            </svg>
+            <span>Games</span>
+          </div>
+          <nav className="site-nav site-nav-games" aria-label="Games navigation">
+            {games.map((game) => (
+              <NavLink key={game.slug} to={`/games/${game.slug}`}>
+                {game.name}
+              </NavLink>
+            ))}
+          </nav>
+        </div>
       </header>
 
       <main>
@@ -144,13 +167,31 @@ function GameCard({ game }) {
           <div className="game-image-overlay" />
           <div className="game-card-copy">
             <h3>{game.name}</h3>
-            <p>{game.description}</p>
+            <p>{game.teaser}</p>
           </div>
         </Link>
       </div>
-      <Link className="game-link" to={`/games/${game.slug}`}>
-        View game page
-      </Link>
+      <div className="game-card-actions">
+        <Link className="game-link" to={`/games/${game.slug}`}>
+          View game page
+        </Link>
+        {game.githubRepo && (
+          <a
+            className="game-github-link"
+            href={game.githubUrl || `https://github.com/${game.githubRepo}`}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`${game.name} GitHub repository`}
+          >
+            <img
+              className="game-github-logo"
+              src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+              alt=""
+            />
+            GitHub
+          </a>
+        )}
+      </div>
     </li>
   );
 }
@@ -172,10 +213,13 @@ function GamePage() {
   }
 
   return (
-    <section className="section page-shell">
-      <h1>{game.name}</h1>
-      <p className="page-lead">{game.tagline}</p>
-      <p>{game.description}</p>
+    <section className="section game-detail-page">
+      <div className="game-detail-hero">
+        <h1>{game.name}</h1>
+        <p className="page-lead">{game.tagline}</p>
+        <p>{game.description}</p>
+      </div>
+      <GitHubProject game={game} />
       <Link className="text-link" to="/">
         Back to homepage
       </Link>
@@ -185,17 +229,96 @@ function GamePage() {
 
 function AboutPage() {
   return (
-    <section className="section page-shell">
-      <h1>Built to highlight the games first.</h1>
-      <p className="page-lead">
-        Wigum Gaming is shaping a simple studio presence with room for each project to
-        grow into its own destination.
+    <section className="section about-page">
+      <div className="about-hero">
+        <h1>About Us.</h1>
+        <p className="page-lead">
+          Wigum Gaming is a small independent game development project focused on
+          clear systems, transparent progress, and practical workflows that can scale
+          from experiments into polished releases.
+        </p>
+      </div>
+
+      <section className="about-workflow-section" aria-labelledby="workflow-title">
+        <h2 id="workflow-title" className="about-section-title">Workflow</h2>
+        <div className="about-feature-grid" aria-label="Workflow">
+          <article className="about-feature-card">
+            <div>
+              <div className="about-feature-heading">
+                <img
+                  className="about-feature-logo"
+                  src="https://godotengine.org/assets/press/icon_color.svg"
+                  alt="Godot logo"
+                />
+                <h2>Godot Engine</h2>
+              </div>
+              <p>
+                Focused on cross-platform 2D and 3D game development using C#.
+                Godot is now our main engine, chosen for its open-source flexibility,
+                lightweight performance, modular workflow, and strong Linux support.
+              </p>
+              <a className="about-feature-link" href="https://godotengine.org/" target="_blank" rel="noreferrer">
+                Visit Godot
+              </a>
+            </div>
+          </article>
+
+          <article className="about-feature-card">
+            <div>
+              <div className="about-feature-heading">
+                <img
+                  className="about-feature-logo"
+                  src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+                  alt="GitHub logo"
+                />
+                <h2>GitHub</h2>
+              </div>
+              <p>
+                All development is version-controlled and publicly documented through
+                GitHub. You can follow updates, source code, and progress logs across
+                multiple projects, from experimental systems to playable demos.
+              </p>
+              <a className="about-feature-link" href="https://github.com/OL3s" target="_blank" rel="noreferrer">
+                Visit GitHub
+              </a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <p className="about-release-note">
+        While this is currently a hobby project, we are gearing up to release polished,
+        finished products starting in 2027.
       </p>
-      <p>
-        The goal is straightforward: give players a clean front door, clear navigation,
-        and individual game pages that can expand with updates, screenshots, details,
-        and release information later.
-      </p>
+
+      <h2 className="about-section-title">Team</h2>
+      <article className="about-founder-card">
+        <img
+          className="about-founder-image"
+          src="https://placehold.co/900x900/333333/cccccc?text=Ole+Kristian+Wigum"
+          alt="Ole Kristian Wigum"
+        />
+        <div>
+          <p className="eyebrow">Founder and coder</p>
+          <h2>Ole Kristian Wigum</h2>
+          <p>
+            My name is Ole Kristian Wigum, and I am a Computer Engineering student at
+            NTNU. Over the years, I have developed projects across GameMaker, Roblox,
+            and Godot, refining skills in object-oriented programming and system
+            architecture.
+          </p>
+          <p>
+            Today, my main focus is transitioning all projects to Godot Engine, using C#
+            for scalable and modular design. All code and dev logs are maintained
+            through GitHub, ensuring transparency and structure in every build.
+          </p>
+          <p>
+            Thank you for following Wigum Gaming. Stay tuned for our first polished
+            releases coming from 2027 onward.
+          </p>
+        </div>
+      </article>
+
       <Link className="text-link" to="/">
         Back to homepage
       </Link>

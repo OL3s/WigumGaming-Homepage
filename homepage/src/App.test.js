@@ -24,7 +24,7 @@ test('renders a game page from its route', () => {
   );
 
   expect(screen.getByRole('heading', { name: 'MultiplayerArena' })).toBeInTheDocument();
-  expect(screen.getByText(/competitive battleground/i)).toBeInTheDocument();
+  expect(screen.getByText(/destructible maps shape every round/i)).toBeInTheDocument();
 });
 
 test('renders games overview route', () => {
