@@ -136,7 +136,8 @@ main {
 
 .game-panel {
   position: relative;
-  display: block;
+  display: flex;
+  align-items: flex-end;
   height: 100%;
   min-height: 100%;
   color: inherit;
@@ -149,6 +150,11 @@ main {
   min-height: 0;
   background: #111423;
   overflow: hidden;
+}
+
+.game-panel picture {
+  position: absolute;
+  inset: 0;
 }
 
 .game-image {
@@ -168,8 +174,8 @@ main {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, #090b12 0%, rgba(9, 11, 18, 0) 18%, rgba(9, 11, 18, 0) 82%, #090b12 100%),
-    linear-gradient(180deg, rgba(9, 11, 18, 0.08) 0%, rgba(9, 11, 18, 0.18) 100%),
+    linear-gradient(180deg, #090b12 0%, rgba(9, 11, 18, 0) 18%, rgba(9, 11, 18, 0) 66%, #090b12 100%),
+    linear-gradient(180deg, rgba(9, 11, 18, 0.08) 0%, rgba(9, 11, 18, 0.24) 54%, rgba(9, 11, 18, 0.88) 100%),
     linear-gradient(135deg, rgba(111, 128, 255, 0.22), transparent 45%);
 }
 
@@ -179,9 +185,10 @@ main {
 }
 
 .game-card-copy {
-  position: static;
+  position: relative;
+  z-index: 1;
   width: calc(100% - 4rem);
-  margin: 1.25rem 2rem 0;
+  margin: 0 2rem 2.5rem;
   padding: 0;
 }
 
@@ -189,7 +196,12 @@ main {
   margin: 0;
   font-size: clamp(2.3rem, 5vw, 4.4rem);
   line-height: 0.95;
+  text-shadow: 0 10px 32px rgba(0, 0, 0, 0.45);
   overflow-wrap: anywhere;
+}
+
+.game-card-copy p {
+  text-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .game-link,
@@ -202,6 +214,7 @@ main {
 }
 
 .game-link {
+  margin-left: 2rem;
   padding: 0.85rem 1.1rem;
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 999px;
@@ -228,5 +241,11 @@ main {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.75rem;
+  }
+}
+
+@media (orientation: portrait) {
+  .game-image-frame {
+    aspect-ratio: 1 / 1;
   }
 }

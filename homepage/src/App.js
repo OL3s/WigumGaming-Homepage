@@ -9,7 +9,8 @@ const games = [
     tagline: 'A run-based solo adventure built around momentum and adaptation.',
     description:
       'A focused singleplayer project where each run builds toward stronger choices, harder encounters, and deeper mastery.',
-    imageSrc: 'https://placehold.co/2400x1200/1a2036/a9b8ff?text=Image',
+    imageWideSrc: 'https://placehold.co/2400x1200/1a2036/a9b8ff?text=Wide+Image',
+    imagePortraitSrc: 'https://placehold.co/1600x1600/1a2036/a9b8ff?text=Portrait+Image',
     imageScale: 1.04,
   },
   {
@@ -18,7 +19,8 @@ const games = [
     tagline: 'A competitive battleground for fast matches and clutch team moments.',
     description:
       'A multiplayer project centered on arena combat, repeatable match flow, and the kind of rivalries players remember.',
-    imageSrc: 'https://placehold.co/2400x1200/241326/ff9ed1?text=Image',
+    imageWideSrc: 'https://placehold.co/2400x1200/241326/ff9ed1?text=Wide+Image',
+    imagePortraitSrc: 'https://placehold.co/1600x1600/241326/ff9ed1?text=Portrait+Image',
     imageScale: 1.04,
   },
 ];
@@ -127,25 +129,28 @@ function GameCard({ game }) {
     <li ref={cardRef} className="game-card">
       <div className="game-image-frame">
         <Link className="game-panel" to={`/games/${game.slug}`}>
-          <img
-            className="game-image"
-            src={game.imageSrc}
-            alt=""
-            style={{
-              '--parallax-offset': `${imageMotion.offset}px`,
-              '--image-scale': imageMotion.scale,
-            }}
-          />
+          <picture>
+            <source media="(orientation: portrait)" srcSet={game.imagePortraitSrc} />
+            <img
+              className="game-image"
+              src={game.imageWideSrc}
+              alt=""
+              style={{
+                '--parallax-offset': `${imageMotion.offset}px`,
+                '--image-scale': imageMotion.scale,
+              }}
+            />
+          </picture>
           <div className="game-image-overlay" />
+          <div className="game-card-copy">
+            <h3>{game.name}</h3>
+            <p>{game.description}</p>
+          </div>
         </Link>
       </div>
-      <div className="game-card-copy">
-        <h3>{game.name}</h3>
-        <p>{game.tagline}</p>
-        <Link className="game-link" to={`/games/${game.slug}`}>
-          View game page
-        </Link>
-      </div>
+      <Link className="game-link" to={`/games/${game.slug}`}>
+        View game page
+      </Link>
     </li>
   );
 }
