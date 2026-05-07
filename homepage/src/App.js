@@ -17,12 +17,12 @@ const games = [
   {
     slug: 'singleplayer-roguelite',
     name: 'SingleplayerRoguelite',
-    tagline: 'A run-based roguelite about choosing your path, growing stronger, and hunting three lost gems.',
+    mainDescription: 'A run-based roguelite about choosing your path, growing stronger, and hunting three lost gems.',
     teaser: 'Choose a path, survive the run, defeat bosses, and collect the three lost gems.',
-    description:
+    secondaryDescription:
       'Each run is a new attempt to push deeper, make better choices, and prepare for the next boss. Between fights, the player builds momentum through upgrades, items, and outpost stops before taking another step toward collecting all three gems.',
-    imageWideSrc: 'https://placehold.co/2400x1200/1a2036/a9b8ff?text=Wide+Image',
-    imagePortraitSrc: 'https://placehold.co/1600x1600/1a2036/a9b8ff?text=Portrait+Image',
+    imageWideSrc: '/singleplayer-roguelite-wide-placeholder.svg',
+    imagePortraitSrc: '/singleplayer-roguelite-portrait-placeholder.svg',
     imageScale: 1.04,
     githubRepo: 'OL3s/SinglePlayerRogueliteV2',
     githubUrl: 'https://github.com/OL3s/SinglePlayerRogueliteV2.git',
@@ -30,12 +30,12 @@ const games = [
   {
     slug: 'multiplayer-arena',
     name: 'MultiplayerArena',
-    tagline: 'A fast 2D arena fighter where movement, aim, and destructible maps shape every round.',
+    mainDescription: 'A fast 2D arena fighter where movement, aim, and destructible maps shape every round.',
     teaser: 'Fast 2D PvP arena fights where bullets, movement, and destruction decide the round.',
-    description:
+    secondaryDescription:
       'MultiplayerArena is built around short, tense PvP matches where players fight for position while the arena breaks apart around them. The goal is quick rounds with clear skill expression: dodge, aim, use the map, and turn destruction into an advantage.',
-    imageWideSrc: 'https://placehold.co/2400x1200/241326/ff9ed1?text=Wide+Image',
-    imagePortraitSrc: 'https://placehold.co/1600x1600/241326/ff9ed1?text=Portrait+Image',
+    imageWideSrc: '/multiplayer-arena-wide-placeholder.svg',
+    imagePortraitSrc: '/multiplayer-arena-portrait-placeholder.svg',
     imageScale: 1.04,
     githubRepo: 'OL3s/MultiplayerArenaV2',
     githubUrl: 'https://github.com/OL3s/MultiplayerArenaV2.git',
@@ -238,6 +238,23 @@ function GameCard({ game }) {
   );
 }
 
+function GameDetailContainer({ game }) {
+  return (
+    <div className="game-detail-hero">
+      <picture className="game-detail-hero-media" aria-hidden="true">
+        <source media="(orientation: portrait)" srcSet={game.imagePortraitSrc} />
+        <img className="game-detail-hero-image" src={game.imageWideSrc} alt="" />
+      </picture>
+      <div className="game-detail-hero-overlay" />
+      <div className="game-detail-hero-copy">
+        <h1>{game.name}</h1>
+        <p className="page-lead">{game.mainDescription}</p>
+        <p>{game.secondaryDescription}</p>
+      </div>
+    </div>
+  );
+}
+
 function GamePage() {
   const { slug } = useParams();
   const game = games.find((entry) => entry.slug === slug);
@@ -256,11 +273,7 @@ function GamePage() {
 
   return (
     <section className="section game-detail-page">
-      <div className="game-detail-hero">
-        <h1>{game.name}</h1>
-        <p className="page-lead">{game.tagline}</p>
-        <p>{game.description}</p>
-      </div>
+      <GameDetailContainer game={game} />
       <GitHubProject game={game} />
       <Link className="text-link" to="/">
         Back to homepage

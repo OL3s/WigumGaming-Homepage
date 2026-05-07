@@ -192,7 +192,47 @@ main {
   margin-right: 2rem;
 }
 
-.game-detail-hero h1 {
+.game-detail-hero {
+  position: relative;
+  min-height: clamp(24rem, 48vw, 38rem);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+  background: #0d140f;
+  overflow: hidden;
+}
+
+.game-detail-hero-media,
+.game-detail-hero-overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.game-detail-hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  transform: scale(1.04);
+  filter: saturate(1.05) contrast(1.04);
+}
+
+.game-detail-hero-overlay {
+  background:
+    linear-gradient(180deg, rgba(8, 12, 9, 0.4) 0%, rgba(8, 12, 9, 0.2) 24%, rgba(8, 12, 9, 0.7) 70%, #080c09 100%),
+    linear-gradient(90deg, rgba(8, 12, 9, 0.9) 0%, rgba(8, 12, 9, 0.52) 42%, rgba(8, 12, 9, 0.18) 100%);
+}
+
+.game-detail-hero-copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: inherit;
+  padding: clamp(2rem, 5vw, 4rem);
+}
+
+.game-detail-hero-copy h1 {
   max-width: 70rem;
   margin: 0;
   font-size: clamp(2.8rem, 8vw, 6.5rem);
@@ -201,11 +241,11 @@ main {
   overflow-wrap: anywhere;
 }
 
-.game-detail-hero .page-lead {
+.game-detail-hero-copy .page-lead {
   max-width: 56rem;
 }
 
-.game-detail-hero p:not(.page-lead) {
+.game-detail-hero-copy p:not(.page-lead) {
   max-width: 62rem;
 }
 
@@ -865,6 +905,16 @@ main {
 @media (orientation: portrait) {
   .game-image-frame {
     aspect-ratio: 1 / 1;
+  }
+
+  .game-detail-hero {
+    min-height: clamp(28rem, 100vw, 46rem);
+  }
+
+  .game-detail-hero-overlay {
+    background:
+      linear-gradient(180deg, rgba(8, 12, 9, 0.42) 0%, rgba(8, 12, 9, 0.12) 22%, rgba(8, 12, 9, 0.62) 58%, #080c09 100%),
+      linear-gradient(180deg, rgba(8, 12, 9, 0.78) 0%, rgba(8, 12, 9, 0.18) 38%, rgba(8, 12, 9, 0.78) 100%);
   }
 }
 
