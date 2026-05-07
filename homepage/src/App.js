@@ -37,8 +37,8 @@ const games = [
     imageWideSrc: 'https://placehold.co/2400x1200/241326/ff9ed1?text=Wide+Image',
     imagePortraitSrc: 'https://placehold.co/1600x1600/241326/ff9ed1?text=Portrait+Image',
     imageScale: 1.04,
-    githubRepo: 'OL3s/Multiplayer-Game-Project-Multiplatform-Godot',
-    githubUrl: 'https://github.com/OL3s/Multiplayer-Game-Project-Multiplatform-Godot.git',
+    githubRepo: 'OL3s/MultiplayerArenaV2',
+    githubUrl: 'https://github.com/OL3s/MultiplayerArenaV2.git',
   },
 ];
 
