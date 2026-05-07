@@ -247,9 +247,11 @@ function GameDetailContainer({ game }) {
       </picture>
       <div className="game-detail-hero-overlay" />
       <div className="game-detail-hero-copy">
-        <h1>{game.name}</h1>
-        <p className="page-lead">{game.mainDescription}</p>
-        <p>{game.secondaryDescription}</p>
+        <div className="game-detail-copy-panel">
+          <h1>{game.name}</h1>
+          <p className="page-lead">{game.mainDescription}</p>
+          <p>{game.secondaryDescription}</p>
+        </div>
       </div>
     </div>
   );

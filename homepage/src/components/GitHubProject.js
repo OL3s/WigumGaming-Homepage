@@ -16,26 +16,28 @@ function GitHubProject({ game, compact = false }) {
   return (
     <section className={`github-panel${compact ? ' github-panel-compact' : ''}`} aria-label={`${game.name} GitHub project`}>
       <div className="github-panel-header">
-        <button
-          className="github-panel-toggle"
-          type="button"
-          aria-expanded={isExpanded}
-          aria-controls={panelContentId}
-          onClick={() => setIsExpanded((current) => !current)}
-        >
-          <span>
-            <span className="eyebrow">GitHub Repo</span>
-            <span className="github-panel-title">{game.githubRepo}</span>
-          </span>
-          <span className="github-panel-toggle-label">{isExpanded ? 'Hide GitHub details' : 'Show GitHub details'}</span>
-        </button>
-        <a className="github-status-link" href={repoUrl} target="_blank" rel="noreferrer" aria-label={`${game.name} GitHub repository`}>
-          <img
-            className="github-status-logo"
-            src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-            alt=""
-          />
-        </a>
+        <div className="github-panel-heading">
+          <span className="eyebrow">GitHub Repo</span>
+          <span className="github-panel-title">{game.githubRepo}</span>
+        </div>
+        <div className="github-panel-actions">
+          <button
+            className="github-panel-toggle"
+            type="button"
+            aria-expanded={isExpanded}
+            aria-controls={panelContentId}
+            onClick={() => setIsExpanded((current) => !current)}
+          >
+            <span className="github-panel-toggle-label">{isExpanded ? 'Hide GitHub details' : 'Show GitHub details'}</span>
+          </button>
+          <a className="github-status-link" href={repoUrl} target="_blank" rel="noreferrer" aria-label={`${game.name} GitHub repository`}>
+            <img
+              className="github-status-logo"
+              src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+              alt=""
+            />
+          </a>
+        </div>
       </div>
 
       {isExpanded && (
