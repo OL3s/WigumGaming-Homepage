@@ -194,11 +194,9 @@ main {
 
 .game-detail-hero {
   position: relative;
-  min-height: clamp(24rem, 48vw, 38rem);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 22px;
-  background: #0d140f;
-  overflow: hidden;
+  min-height: clamp(30rem, 56vw, 46rem);
+  background: transparent;
+  overflow: clip;
 }
 
 .game-detail-hero-media,
@@ -218,8 +216,10 @@ main {
 
 .game-detail-hero-overlay {
   background:
-    linear-gradient(180deg, rgba(8, 12, 9, 0.4) 0%, rgba(8, 12, 9, 0.2) 24%, rgba(8, 12, 9, 0.7) 70%, #080c09 100%),
-    linear-gradient(90deg, rgba(8, 12, 9, 0.9) 0%, rgba(8, 12, 9, 0.52) 42%, rgba(8, 12, 9, 0.18) 100%);
+    linear-gradient(180deg, #080c09 0%, rgba(9, 11, 18, 0) 18%, rgba(9, 11, 18, 0) 66%, #080c09 100%),
+    linear-gradient(90deg, #080c09 0%, rgba(9, 11, 18, 0) 18%, rgba(9, 11, 18, 0) 72%, #080c09 100%),
+    linear-gradient(180deg, rgba(9, 11, 18, 0.08) 0%, rgba(9, 11, 18, 0.24) 54%, rgba(9, 11, 18, 0.88) 100%),
+    linear-gradient(135deg, rgba(86, 194, 113, 0.22), transparent 45%);
 }
 
 .game-detail-hero-copy {
@@ -908,13 +908,15 @@ main {
   }
 
   .game-detail-hero {
-    min-height: clamp(28rem, 100vw, 46rem);
+    min-height: clamp(34rem, 118vw, 56rem);
   }
 
   .game-detail-hero-overlay {
     background:
-      linear-gradient(180deg, rgba(8, 12, 9, 0.42) 0%, rgba(8, 12, 9, 0.12) 22%, rgba(8, 12, 9, 0.62) 58%, #080c09 100%),
-      linear-gradient(180deg, rgba(8, 12, 9, 0.78) 0%, rgba(8, 12, 9, 0.18) 38%, rgba(8, 12, 9, 0.78) 100%);
+      linear-gradient(180deg, #080c09 0%, rgba(9, 11, 18, 0) 18%, rgba(9, 11, 18, 0) 66%, #080c09 100%),
+      linear-gradient(90deg, #080c09 0%, rgba(9, 11, 18, 0) 14%, rgba(9, 11, 18, 0) 86%, #080c09 100%),
+      linear-gradient(180deg, rgba(9, 11, 18, 0.08) 0%, rgba(9, 11, 18, 0.24) 54%, rgba(9, 11, 18, 0.88) 100%),
+      linear-gradient(135deg, rgba(86, 194, 113, 0.22), transparent 45%);
   }
 }
 
