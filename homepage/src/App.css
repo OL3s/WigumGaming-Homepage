@@ -342,8 +342,88 @@ main {
   font-weight: 700;
 }
 
-.github-panel + .text-link {
+.github-panel + .text-link,
+.game-blog + .github-panel {
   margin-top: 2.5rem;
+}
+
+.game-blog {
+  width: min(72rem, calc(100% - 4rem));
+  margin: 2rem 2rem 0 2rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 36px;
+  background:
+    radial-gradient(circle at top left, rgba(86, 194, 113, 0.16), transparent 30%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.025));
+}
+
+.game-blog-heading h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1;
+}
+
+.game-blog-empty,
+.blog-post-excerpt,
+.blog-post-content {
+  color: #c6e3cd;
+}
+
+.game-blog-empty {
+  margin: 1.25rem 0 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.blog-posts {
+  margin-top: 1.75rem;
+}
+
+.blog-post h3 {
+  margin: 0.35rem 0 0;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  line-height: 1.1;
+}
+
+.blog-post time {
+  color: #56c271;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.blog-post-excerpt {
+  max-width: 52rem;
+  margin: 0.75rem 0 0;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.blog-post-content {
+  max-width: 58rem;
+  margin-top: 1.25rem;
+  line-height: 1.75;
+}
+
+.blog-post-content > :first-child {
+  margin-top: 0;
+}
+
+.blog-post-content > :last-child {
+  margin-bottom: 0;
+}
+
+.blog-post-content a {
+  color: #56c271;
+  font-weight: 700;
+}
+
+.blog-post-separator {
+  margin: 2rem 0;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 .game-link {
@@ -898,6 +978,7 @@ main {
     flex-direction: column;
   }
 
+  .game-blog,
   .github-panel,
   .github-panel-compact {
     width: calc(100% - 2rem);

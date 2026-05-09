@@ -1,70 +1,113 @@
-# Getting Started with Create React App
+# Wigum Gaming Homepage
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React homepage for Wigum Gaming projects.
 
 ## Available Scripts
 
-In the project directory, you can run:
+Run these from the `homepage` folder.
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Generates the blog index, then starts the development server at [http://localhost:3000](http://localhost:3000).
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Generates the blog index, then builds the production site into the `build` folder.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### `npm run generate:blog`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Scans the Markdown blog files and updates `src/generated/blogPosts.js`.
 
-### `npm run eject`
+Run this manually after adding or editing blog posts if the dev server is already running.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Game Blog Structure
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Each game can have its own blog folder under `src/content/games`.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```text
+src/
+  content/
+    games/
+      singleplayer-roguelite/
+        blog/
+          2026-05-09-first-devlog.md
+          2026-05-12-combat-update.md
+      multiplayer-arena/
+        blog/
+          2026-05-10-networking-test.md
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The folder name must match the game `slug` in `src/App.js`.
 
-## Learn More
+Examples:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```js
+slug: 'singleplayer-roguelite'
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Needs this folder:
 
-### Code Splitting
+```text
+src/content/games/singleplayer-roguelite/blog/
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+If the folder is missing, or if there are no `.md` files inside it, the game page displays:
 
-### Analyzing the Bundle Size
+```text
+Blog: No blog found
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Blog Post Naming
 
-### Making a Progressive Web App
+Name files with this format:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```text
+YYYY-MM-DD-short-title.md
+```
 
-### Advanced Configuration
+Examples:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```text
+2026-05-09-first-devlog.md
+2026-05-12-combat-update.md
+2026-06-01-new-map-test.md
+```
 
-### Deployment
+Use the date first so files are easy to read in the folder. The site sorts posts newest first using the `date` field in the Markdown front matter. If `date` is missing, it falls back to the date at the start of the file name.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Blog Post Format
 
-### `npm run build` fails to minify
+Each blog post is a Markdown file with front matter at the top.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```md
+---
+title: First Devlog
+date: 2026-05-09
+excerpt: Short summary shown above the post.
+---
+
+Write the blog post content here.
+
+Markdown works here, including headings, lists, links, images, and code blocks.
+```
+
+Required fields:
+
+- `title`
+- `date`
+
+Optional fields:
+
+- `excerpt`
+
+If `title` is missing, the title is generated from the file name. If `date` is missing, the date is generated from the file name if it starts with `YYYY-MM-DD`.
+
+## Adding A Blog Post
+
+1. Go to the game blog folder, for example `src/content/games/singleplayer-roguelite/blog/`.
+2. Create a new Markdown file named like `2026-05-09-first-devlog.md`.
+3. Add `title`, `date`, and optional `excerpt` front matter.
+4. Write the post content below the front matter.
+5. Run `npm run generate:blog` if the dev server is already running.
+
+`npm start` and `npm run build` run `npm run generate:blog` automatically before starting/building.

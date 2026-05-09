@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import { Link, NavLink, Route, Routes, useParams, useLocation } from 'react-router-dom';
 import GitHubProject from './components/GitHubProject';
+import GameBlog from './components/GameBlog';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -241,7 +242,7 @@ function GameCard({ game }) {
 function GameDetailContainer({ game }) {
   return (
     <div className="game-detail-hero">
-      <picture className="game-detail-hero-media" aria-hidden="true">
+      <picture className="game-detail-hero-media">
         <source media="(orientation: portrait)" srcSet={game.imagePortraitSrc} />
         <img className="game-detail-hero-image" src={game.imageWideSrc} alt="" />
       </picture>
@@ -276,6 +277,7 @@ function GamePage() {
   return (
     <section className="section game-detail-page">
       <GameDetailContainer game={game} />
+      <GameBlog game={game} />
       <GitHubProject game={game} />
       <Link className="text-link" to="/">
         Back to homepage
