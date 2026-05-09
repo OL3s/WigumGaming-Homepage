@@ -348,14 +348,16 @@ main {
 }
 
 .game-blog {
-  width: min(72rem, calc(100% - 4rem));
-  margin: 2rem 2rem 0 2rem;
-  padding: clamp(1.25rem, 3vw, 2rem);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 36px;
-  background:
-    radial-gradient(circle at top left, rgba(86, 194, 113, 0.16), transparent 30%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.025));
+  width: min(62rem, calc(100% - 4rem));
+  margin: 3rem auto 0;
+  padding: 0;
+}
+
+.game-blog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
 }
 
 .game-blog-heading h2 {
@@ -367,7 +369,7 @@ main {
 .game-blog-empty,
 .blog-post-excerpt,
 .blog-post-content {
-  color: #c6e3cd;
+  color: #e4e6df;
 }
 
 .game-blog-empty {
@@ -380,14 +382,46 @@ main {
   margin-top: 1.75rem;
 }
 
-.blog-post h3 {
+.blog-post-toggle {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.blog-post-toggle:hover .blog-post-title,
+.blog-post-toggle:focus-visible .blog-post-title {
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+.blog-post-header {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.blog-post-title {
+  display: block;
   margin: 0.35rem 0 0;
+  color: #f7f4ea;
   font-size: clamp(1.45rem, 3vw, 2.1rem);
+  font-weight: 700;
   line-height: 1.1;
 }
 
 .blog-post time {
-  color: #56c271;
+  display: block;
+  color: #b8b8b0;
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -395,15 +429,30 @@ main {
 }
 
 .blog-post-excerpt {
+  display: block;
   max-width: 52rem;
-  margin: 0.75rem 0 0;
+  margin: 1rem 0 0;
+  padding: 1rem 1.15rem;
+  border-left: 4px solid rgba(243, 211, 139, 0.72);
+  border-radius: 0 14px 14px 0;
+  background: rgba(255, 255, 255, 0.06);
+  color: #f1eee5;
   font-size: 1.05rem;
   line-height: 1.7;
 }
 
+.blog-post-toggle-action {
+  flex: 0 0 auto;
+  margin-top: 1.5rem;
+  color: #d8d6cd;
+  font-size: 0.95rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
 .blog-post-content {
-  max-width: 58rem;
-  margin-top: 1.25rem;
+  max-width: 52rem;
+  margin-top: 1.5rem;
   line-height: 1.75;
 }
 
@@ -416,7 +465,7 @@ main {
 }
 
 .blog-post-content a {
-  color: #56c271;
+  color: #f3d38b;
   font-weight: 700;
 }
 
@@ -456,8 +505,8 @@ main {
 }
 
 .github-panel {
-  width: min(72rem, calc(100% - 4rem));
-  margin: 2rem 2rem 0 2rem;
+  width: min(62rem, calc(100% - 4rem));
+  margin: 2rem auto 0;
   padding: clamp(1.25rem, 3vw, 2rem);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 36px;
@@ -465,11 +514,23 @@ main {
     radial-gradient(circle at top right, rgba(86, 194, 113, 0.18), transparent 34%),
     linear-gradient(135deg, #162118 0%, #0d140f 58%, #0d1117 100%);
   color: #c9d1d9;
+  cursor: pointer;
+  transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.github-panel:hover,
+.github-panel:focus-visible {
+  border-color: rgba(86, 194, 113, 0.54);
+}
+
+.github-panel:focus-visible {
+  outline: 3px solid rgba(86, 194, 113, 0.36);
+  outline-offset: 4px;
 }
 
 .github-panel-compact {
-  margin-left: 2rem;
-  margin-right: 2rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .github-panel-header {
@@ -488,23 +549,9 @@ main {
 
 .github-panel-actions {
   display: flex;
-  align-items: stretch;
+  align-items: center;
   gap: 1rem;
   flex: 0 0 auto;
-}
-
-.github-panel-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: 1px solid rgba(139, 148, 158, 0.42);
-  border-radius: 24px;
-  background: rgba(22, 27, 34, 0.72);
-  color: #56c271;
-  cursor: pointer;
-  font: inherit;
-  text-align: left;
 }
 
 .github-panel-title {
@@ -518,16 +565,17 @@ main {
 }
 
 .github-panel-toggle-label {
-  flex: 0 0 auto;
-  padding: 0.85rem 1rem;
-  color: inherit;
+  display: block;
+  margin-top: 0.85rem;
+  color: #56c271;
   font-size: 0.9rem;
   font-weight: 700;
+  white-space: nowrap;
 }
 
-.github-panel-toggle:hover {
+.github-panel:hover .github-panel-toggle-label,
+.github-panel:focus-visible .github-panel-toggle-label {
   color: #ffffff;
-  border-color: rgba(86, 194, 113, 0.72);
 }
 
 .github-panel h4 {
@@ -978,6 +1026,20 @@ main {
     flex-direction: column;
   }
 
+  .game-blog-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .blog-post-toggle {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .blog-post-toggle-action {
+    margin-top: 0;
+  }
+
   .game-blog,
   .github-panel,
   .github-panel-compact {
@@ -988,11 +1050,6 @@ main {
 
   .github-panel-actions {
     width: 100%;
-  }
-
-  .github-panel-toggle {
-    flex: 1 1 0;
-    min-width: 0;
   }
 
   .github-status-link {

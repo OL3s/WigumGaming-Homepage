@@ -1,18 +1,33 @@
+import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import blogPostsByGame from '../generated/blogPosts';
 
 function BlogPost({ post }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const postContentId = `${post.slug}-content`;
+
   return (
     <article className="blog-post">
-      <div className="blog-post-header">
-        {post.date && <time dateTime={post.date}>{post.date}</time>}
-        <h3>{post.title}</h3>
-        {post.excerpt && <p className="blog-post-excerpt">{post.excerpt}</p>}
-      </div>
-      <div className="blog-post-content">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.body}</ReactMarkdown>
-      </div>
+      <button
+        className="blog-post-toggle"
+        type="button"
+        aria-expanded={isExpanded}
+        aria-controls={postContentId}
+        onClick={() => setIsExpanded((current) => !current)}
+      >
+        <span className="blog-post-header">
+          {post.date && <time dateTime={post.date}>{post.date}</time>}
+          <span className="blog-post-title">{post.title}</span>
+          {post.excerpt && <span className="blog-post-excerpt">{post.excerpt}</span>}
+        </span>
+        <span className="blog-post-toggle-action">{isExpanded ? 'Collapse' : 'Read post'}</span>
+      </button>
+      {isExpanded && (
+        <div id={postContentId} className="blog-post-content">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.body}</ReactMarkdown>
+        </div>
+      )}
     </article>
   );
 }
@@ -21,10 +36,11 @@ function GameBlog({ game }) {
   const posts = blogPostsByGame[game.slug] || [];
 
   return (
-    <section className="game-blog" aria-labelledby={`${game.slug}-blog-title`}>
-      <div className="game-blog-heading">
-        <p className="eyebrow">Development log</p>
-        <h2 id={`${game.slug}-blog-title`}>Blog</h2>
+    <section className="game-blog" aria-label="Development blog">
+      <div className="game-blog-header">
+        <div className="game-blog-heading">
+          <p className="eyebrow">Development blog</p>
+        </div>
       </div>
 
       {posts.length === 0 ? (

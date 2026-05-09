@@ -12,24 +12,39 @@ function GitHubProject({ game, compact = false }) {
 
   const repoUrl = game.githubUrl || `https://github.com/${game.githubRepo}`;
   const panelContentId = `${game.slug || game.githubRepo.replace(/[^a-z0-9]/gi, '-')}-github-details`;
+  const toggleDetails = () => setIsExpanded((current) => !current);
+  const shouldIgnoreToggle = (target) => target.closest('a, button');
+  const handlePanelClick = (event) => {
+    if (!shouldIgnoreToggle(event.target)) {
+      toggleDetails();
+    }
+  };
+  const handlePanelKeyDown = (event) => {
+    if (event.target !== event.currentTarget || (event.key !== 'Enter' && event.key !== ' ')) {
+      return;
+    }
+
+    event.preventDefault();
+    toggleDetails();
+  };
 
   return (
-    <section className={`github-panel${compact ? ' github-panel-compact' : ''}`} aria-label={`${game.name} GitHub project`}>
+    <section
+      className={`github-panel${compact ? ' github-panel-compact' : ''}`}
+      aria-label={`${game.name} GitHub project`}
+      aria-expanded={isExpanded}
+      aria-controls={panelContentId}
+      tabIndex={0}
+      onClick={handlePanelClick}
+      onKeyDown={handlePanelKeyDown}
+    >
       <div className="github-panel-header">
         <div className="github-panel-heading">
           <span className="eyebrow">GitHub Repo</span>
           <span className="github-panel-title">{game.githubRepo}</span>
+          <span className="github-panel-toggle-label">{isExpanded ? 'Hide details' : 'Show details'}</span>
         </div>
         <div className="github-panel-actions">
-          <button
-            className="github-panel-toggle"
-            type="button"
-            aria-expanded={isExpanded}
-            aria-controls={panelContentId}
-            onClick={() => setIsExpanded((current) => !current)}
-          >
-            <span className="github-panel-toggle-label">{isExpanded ? 'Hide GitHub details' : 'Show GitHub details'}</span>
-          </button>
           <a className="github-status-link" href={repoUrl} target="_blank" rel="noreferrer" aria-label={`${game.name} GitHub repository`}>
             <img
               className="github-status-logo"
