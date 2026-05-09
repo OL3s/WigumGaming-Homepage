@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import { Link, NavLink, Route, Routes, useParams, useLocation } from 'react-router-dom';
 import GitHubProject from './components/GitHubProject';
-import GameBlog from './components/GameBlog';
+import GameBlog, { BlogPost } from './components/GameBlog';
+import blogPostsByGame from './generated/blogPosts';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -81,6 +82,7 @@ function App() {
           <div className="site-nav-group site-nav-group-primary">
             <nav className="site-nav" aria-label="Site pages">
               <NavLink to="/" onClick={() => setIsMenuOpen(false)}>Home</NavLink>
+              <NavLink to="/updates" onClick={() => setIsMenuOpen(false)}>Updates</NavLink>
               <NavLink to="/about" onClick={() => setIsMenuOpen(false)}>About Us</NavLink>
             </nav>
           </div>
@@ -110,6 +112,7 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/updates" element={<UpdatesPage />} />
           <Route path="/games" element={<GamesPage />} />
           <Route path="/games/:slug" element={<GamePage />} />
           <Route path="/about" element={<AboutPage />} />
@@ -145,6 +148,39 @@ function GamesPage() {
         room to grow.
       </p>
       <GamesGrid />
+    </section>
+  );
+}
+
+function UpdatesPage() {
+  const posts = games
+    .flatMap((game) => (blogPostsByGame[game.slug] || []).map((post) => ({ post, game })))
+    .sort((first, second) => (second.post.date || '').localeCompare(first.post.date || ''));
+
+  return (
+    <section className="section updates-page">
+      <div className="updates-hero">
+        <p className="eyebrow">Development blog</p>
+        <p className="page-lead">
+          All project posts in one place, sorted by newest update first.
+        </p>
+        <hr className="updates-divider" />
+      </div>
+
+      <section className="game-blog updates-blog" aria-label="All development updates">
+        {posts.length === 0 ? (
+          <p className="game-blog-empty">No updates found.</p>
+        ) : (
+          <div className="blog-posts">
+            {posts.map(({ post, game }, index) => (
+              <div key={`${game.slug}-${post.slug}`}>
+                {index > 0 && <hr className="blog-post-separator" />}
+                <BlogPost post={post} game={game} />
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
     </section>
   );
 }

@@ -179,6 +179,21 @@ main {
   overflow: hidden;
 }
 
+.updates-page {
+  padding-top: 3rem;
+}
+
+.updates-hero {
+  width: min(62rem, calc(100% - 4rem));
+  margin: 0 auto;
+}
+
+.updates-divider {
+  margin: 2rem 0 0;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
 .game-detail-page {
   display: flex;
   flex-direction: column;
@@ -380,6 +395,25 @@ main {
 
 .blog-posts {
   margin-top: 1.75rem;
+}
+
+.updates-blog .blog-posts {
+  margin-top: 0;
+}
+
+.blog-post-game-link {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  color: #56c271;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.blog-post-game-link:hover {
+  color: #ffffff;
 }
 
 .blog-post-toggle {

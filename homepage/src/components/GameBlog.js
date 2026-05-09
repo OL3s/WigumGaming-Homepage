@@ -1,14 +1,20 @@
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { Link } from 'react-router-dom';
 import blogPostsByGame from '../generated/blogPosts';
 
-function BlogPost({ post }) {
+export function BlogPost({ post, game }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const postContentId = `${post.slug}-content`;
 
   return (
     <article className="blog-post">
+      {game && (
+        <Link className="blog-post-game-link" to={`/games/${game.slug}`}>
+          {game.name}
+        </Link>
+      )}
       <button
         className="blog-post-toggle"
         type="button"
