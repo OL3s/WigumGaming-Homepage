@@ -185,7 +185,6 @@ main {
   gap: 2rem;
 }
 
-.game-detail-hero,
 .game-detail-page > .text-link {
   margin-left: 2rem;
   margin-right: 2rem;
@@ -214,7 +213,8 @@ main {
 }
 
 .game-detail-hero-overlay {
-  background: none;
+  background:
+    linear-gradient(180deg, #080c09 0%, rgba(8, 12, 9, 0) 14%, rgba(8, 12, 9, 0) 76%, #080c09 100%);
 }
 
 .game-detail-hero-copy {
@@ -514,18 +514,12 @@ main {
     radial-gradient(circle at top right, rgba(86, 194, 113, 0.18), transparent 34%),
     linear-gradient(135deg, #162118 0%, #0d140f 58%, #0d1117 100%);
   color: #c9d1d9;
-  cursor: pointer;
   transition: border-color 160ms ease, transform 160ms ease;
 }
 
-.github-panel:hover,
-.github-panel:focus-visible {
+.github-panel:has(.github-panel-header:hover),
+.github-panel:has(.github-panel-header:focus-visible) {
   border-color: rgba(86, 194, 113, 0.54);
-}
-
-.github-panel:focus-visible {
-  outline: 3px solid rgba(86, 194, 113, 0.36);
-  outline-offset: 4px;
 }
 
 .github-panel-compact {
@@ -540,6 +534,13 @@ main {
   gap: 1.5rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid rgba(139, 148, 158, 0.32);
+  cursor: pointer;
+}
+
+.github-panel-header:focus-visible {
+  outline: 3px solid rgba(86, 194, 113, 0.36);
+  outline-offset: 4px;
+  border-radius: 18px;
 }
 
 .github-panel-heading {
@@ -573,8 +574,8 @@ main {
   white-space: nowrap;
 }
 
-.github-panel:hover .github-panel-toggle-label,
-.github-panel:focus-visible .github-panel-toggle-label {
+.github-panel-header:hover .github-panel-toggle-label,
+.github-panel-header:focus-visible .github-panel-toggle-label {
   color: #ffffff;
 }
 

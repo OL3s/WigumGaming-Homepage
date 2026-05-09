@@ -14,12 +14,12 @@ function GitHubProject({ game, compact = false }) {
   const panelContentId = `${game.slug || game.githubRepo.replace(/[^a-z0-9]/gi, '-')}-github-details`;
   const toggleDetails = () => setIsExpanded((current) => !current);
   const shouldIgnoreToggle = (target) => target.closest('a, button');
-  const handlePanelClick = (event) => {
+  const handleHeaderClick = (event) => {
     if (!shouldIgnoreToggle(event.target)) {
       toggleDetails();
     }
   };
-  const handlePanelKeyDown = (event) => {
+  const handleHeaderKeyDown = (event) => {
     if (event.target !== event.currentTarget || (event.key !== 'Enter' && event.key !== ' ')) {
       return;
     }
@@ -32,13 +32,16 @@ function GitHubProject({ game, compact = false }) {
     <section
       className={`github-panel${compact ? ' github-panel-compact' : ''}`}
       aria-label={`${game.name} GitHub project`}
-      aria-expanded={isExpanded}
-      aria-controls={panelContentId}
-      tabIndex={0}
-      onClick={handlePanelClick}
-      onKeyDown={handlePanelKeyDown}
     >
-      <div className="github-panel-header">
+      <div
+        className="github-panel-header"
+        role="button"
+        aria-expanded={isExpanded}
+        aria-controls={panelContentId}
+        tabIndex={0}
+        onClick={handleHeaderClick}
+        onKeyDown={handleHeaderKeyDown}
+      >
         <div className="github-panel-heading">
           <span className="eyebrow">GitHub Repo</span>
           <span className="github-panel-title">{game.githubRepo}</span>
