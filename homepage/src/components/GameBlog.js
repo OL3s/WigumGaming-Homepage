@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Link } from 'react-router-dom';
-import blogPostsByGame from '../generated/blogPosts';
+import { fetchGameBlogPosts } from '../services/blogPosts';
 
 export function BlogPost({ post, game }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -39,7 +39,32 @@ export function BlogPost({ post, game }) {
 }
 
 function GameBlog({ game }) {
-  const posts = blogPostsByGame[game.slug] || [];
+  const [posts, setPosts] = useState([]);
+  const [status, setStatus] = useState('loading');
+
+  useEffect(() => {
+    let isMounted = true;
+
+    setStatus('loading');
+    fetchGameBlogPosts(game.slug)
+      .then((nextPosts) => {
+        if (isMounted) {
+          setPosts(nextPosts);
+          setStatus('ready');
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to load blog posts', error);
+        if (isMounted) {
+          setPosts([]);
+          setStatus('error');
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [game.slug]);
 
   return (
     <section className="game-blog" aria-label="Development blog">
@@ -49,7 +74,11 @@ function GameBlog({ game }) {
         </div>
       </div>
 
-      {posts.length === 0 ? (
+      {status === 'loading' ? (
+        <p className="game-blog-empty">Loading blog posts...</p>
+      ) : status === 'error' ? (
+        <p className="game-blog-empty">Blog: Could not load posts</p>
+      ) : posts.length === 0 ? (
         <p className="game-blog-empty">Blog: No blog found</p>
       ) : (
         <div className="blog-posts">

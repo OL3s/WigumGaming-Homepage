@@ -3,7 +3,7 @@ import './App.css';
 import { Link, NavLink, Route, Routes, useParams, useLocation } from 'react-router-dom';
 import GitHubProject from './components/GitHubProject';
 import GameBlog, { BlogPost } from './components/GameBlog';
-import blogPostsByGame from './generated/blogPosts';
+import { fetchBlogPostsByGame } from './services/blogPosts';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -153,6 +153,33 @@ function GamesPage() {
 }
 
 function UpdatesPage() {
+  const [blogPostsByGame, setBlogPostsByGame] = useState({});
+  const [status, setStatus] = useState('loading');
+
+  useEffect(() => {
+    let isMounted = true;
+
+    setStatus('loading');
+    fetchBlogPostsByGame(games.map((game) => game.slug))
+      .then((nextBlogPostsByGame) => {
+        if (isMounted) {
+          setBlogPostsByGame(nextBlogPostsByGame);
+          setStatus('ready');
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to load blog posts', error);
+        if (isMounted) {
+          setBlogPostsByGame({});
+          setStatus('error');
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const posts = games
     .flatMap((game) => (blogPostsByGame[game.slug] || []).map((post) => ({ post, game })))
     .sort((first, second) => (second.post.date || '').localeCompare(first.post.date || ''));
@@ -168,7 +195,11 @@ function UpdatesPage() {
       </div>
 
       <section className="game-blog updates-blog" aria-label="All development updates">
-        {posts.length === 0 ? (
+        {status === 'loading' ? (
+          <p className="game-blog-empty">Loading updates...</p>
+        ) : status === 'error' ? (
+          <p className="game-blog-empty">Could not load updates.</p>
+        ) : posts.length === 0 ? (
           <p className="game-blog-empty">No updates found.</p>
         ) : (
           <div className="blog-posts">
