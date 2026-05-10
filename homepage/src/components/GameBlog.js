@@ -75,7 +75,7 @@ function GameBlog({ game }) {
       </div>
 
       {status === 'loading' ? (
-        <p className="game-blog-empty">Loading blog posts...</p>
+        <p className="game-blog-empty">Fetching content from blog git repo...</p>
       ) : status === 'error' ? (
         <p className="game-blog-empty">Blog: Could not load posts</p>
       ) : posts.length === 0 ? (

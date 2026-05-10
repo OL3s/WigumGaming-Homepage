@@ -196,7 +196,7 @@ function UpdatesPage() {
 
       <section className="game-blog updates-blog" aria-label="All development updates">
         {status === 'loading' ? (
-          <p className="game-blog-empty">Loading updates...</p>
+          <p className="game-blog-empty">Fetching content from blog git repo...</p>
         ) : status === 'error' ? (
           <p className="game-blog-empty">Could not load updates.</p>
         ) : posts.length === 0 ? (
