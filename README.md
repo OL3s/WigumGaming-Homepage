@@ -4,7 +4,7 @@ React homepage for Wigum Gaming projects.
 
 This project is deployed with Netlify.
 
-Live site: `https://wigumgaming.netlify.app/`
+Live site: [https://wigumgaming.netlify.app/](https://wigumgaming.netlify.app/)
 
 ## Available Scripts
 
