@@ -1,6 +1,7 @@
-import { BLOG_STORAGE_ROOT, fetchRawJson, fetchSiteIndex, rawContentUrl } from './storageApi';
+import { BLOG_STORAGE_ROOT, fetchRawJson, listStorageDirectory, rawContentUrl } from './storageApi';
 
 const IMAGE_FOLDER = 'image';
+const IMAGE_EXTENSIONS = ['.avif', '.webp', '.jpg', '.jpeg', '.png', '.svg'];
 const gamesCache = new Map();
 
 function titleFromSlug(slug) {
@@ -11,10 +12,27 @@ function titleFromSlug(slug) {
     .join(' ');
 }
 
-function getGameImages(slug, images = {}) {
+function isImageFile(entry) {
+  const name = entry.name.toLowerCase();
+  return entry.type === 'file' && IMAGE_EXTENSIONS.some((extension) => name.endsWith(extension));
+}
+
+function findPreviewImage(entries, orientation) {
+  const preferredNames = [`index-${orientation}`, `main-${orientation}`];
+
+  return preferredNames
+    .map((prefix) => entries.find((entry) => isImageFile(entry) && entry.name.toLowerCase().startsWith(`${prefix}.`)))
+    .find(Boolean);
+}
+
+async function getGameImages(slug) {
+  const entries = await listStorageDirectory(`${BLOG_STORAGE_ROOT}/${slug}/${IMAGE_FOLDER}`);
+  const landscape = findPreviewImage(entries, 'landscape');
+  const portrait = findPreviewImage(entries, 'portrait');
+
   return {
-    imageWideSrc: images.landscape ? rawContentUrl(`${BLOG_STORAGE_ROOT}/${slug}/${IMAGE_FOLDER}/${images.landscape}`) : '',
-    imagePortraitSrc: images.portrait ? rawContentUrl(`${BLOG_STORAGE_ROOT}/${slug}/${IMAGE_FOLDER}/${images.portrait}`) : '',
+    imageWideSrc: landscape ? rawContentUrl(`${BLOG_STORAGE_ROOT}/${slug}/${IMAGE_FOLDER}/${landscape.name}`) : '',
+    imagePortraitSrc: portrait ? rawContentUrl(`${BLOG_STORAGE_ROOT}/${slug}/${IMAGE_FOLDER}/${portrait.name}`) : '',
   };
 }
 
@@ -23,9 +41,9 @@ async function fetchGameMetadata(slug) {
 }
 
 async function fetchGame(entry) {
-  const slug = entry.slug;
+  const slug = entry.name;
   const metadata = await fetchGameMetadata(slug);
-  const images = getGameImages(slug, entry.images);
+  const images = await getGameImages(slug);
   const name = metadata?.name || titleFromSlug(slug);
 
   return {
@@ -49,16 +67,12 @@ export async function fetchGames() {
   }
 
   const gamesPromise = (async () => {
-    const siteIndex = await fetchSiteIndex();
-
-    if (!Array.isArray(siteIndex.games)) {
-      return [];
-    }
+    const entries = await listStorageDirectory(BLOG_STORAGE_ROOT);
 
     const games = await Promise.all(
-      siteIndex.games
-        .filter((entry) => entry.slug)
-        .sort((first, second) => first.slug.localeCompare(second.slug))
+      entries
+        .filter((entry) => entry.type === 'directory')
+        .sort((first, second) => first.name.localeCompare(second.name))
         .map(fetchGame)
     );
 

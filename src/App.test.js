@@ -9,6 +9,104 @@ const gameFolders = [
 
 function mockGitHubContentsApi() {
   global.fetch = jest.fn((url) => {
+    if (url === 'https://data.jsdelivr.com/v1/package/gh/OL3s/Blogg-Storage@main') {
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({
+          files: [
+            {
+              type: 'directory',
+              name: 'games',
+              files: [
+                {
+                  type: 'directory',
+                  name: 'singleplayer-roguelite',
+                  files: [
+                    { type: 'file', name: 'index.json' },
+                    {
+                      type: 'directory',
+                      name: 'image',
+                      files: [
+                        { type: 'file', name: 'index-landscape.svg' },
+                        { type: 'file', name: 'index-portrait.svg' },
+                      ],
+                    },
+                    { type: 'directory', name: 'blog', files: [] },
+                  ],
+                },
+                {
+                  type: 'directory',
+                  name: 'multiplayer-arena',
+                  files: [
+                    { type: 'file', name: 'index.json' },
+                    {
+                      type: 'directory',
+                      name: 'image',
+                      files: [
+                        { type: 'file', name: 'index-landscape.svg' },
+                        { type: 'file', name: 'index-portrait.svg' },
+                      ],
+                    },
+                    { type: 'directory', name: 'blog', files: [] },
+                  ],
+                },
+              ],
+            },
+            {
+              type: 'directory',
+              name: 'about-us',
+              files: [
+                { type: 'file', name: 'index.json' },
+                { type: 'directory', name: 'image', files: [{ type: 'file', name: 'placeholder-member.svg' }] },
+                { type: 'directory', name: 'members', files: [{ type: 'file', name: 'ole-kristian-wigum.json' }] },
+              ],
+            },
+          ],
+        }),
+      });
+    }
+
+    if (url === 'https://cdn.jsdelivr.net/gh/OL3s/Blogg-Storage@main/games/singleplayer-roguelite/index.json') {
+      return Promise.resolve({
+        ok: true,
+        text: () => Promise.resolve(JSON.stringify({ name: 'SingleplayerRoguelite' })),
+      });
+    }
+
+    if (url === 'https://cdn.jsdelivr.net/gh/OL3s/Blogg-Storage@main/games/multiplayer-arena/index.json') {
+      return Promise.resolve({
+        ok: true,
+        text: () => Promise.resolve(JSON.stringify({
+          name: 'MultiplayerArena',
+          mainDescription: 'A fast 2D arena fighter where movement, aim, and destructible maps shape every round.',
+          secondaryDescription: 'MultiplayerArena is built around short, tense PvP matches.',
+        })),
+      });
+    }
+
+    if (url === 'https://cdn.jsdelivr.net/gh/OL3s/Blogg-Storage@main/about-us/index.json') {
+      return Promise.resolve({
+        ok: true,
+        text: () => Promise.resolve(JSON.stringify({
+          title: 'About Us.',
+          lead: 'Wigum Gaming is loaded from storage.',
+          releaseNote: 'Release note loaded from storage.',
+        })),
+      });
+    }
+
+    if (url === 'https://cdn.jsdelivr.net/gh/OL3s/Blogg-Storage@main/about-us/members/ole-kristian-wigum.json') {
+      return Promise.resolve({
+        ok: true,
+        text: () => Promise.resolve(JSON.stringify({
+          name: 'Ole Kristian Wigum',
+          role: 'Founder and coder',
+          image: 'placeholder-member.svg',
+          paragraphs: ['Member text loaded from storage.'],
+        })),
+      });
+    }
+
     if (url === 'https://raw.githubusercontent.com/OL3s/Blogg-Storage/main/site-index.json') {
       return Promise.resolve({
         ok: true,

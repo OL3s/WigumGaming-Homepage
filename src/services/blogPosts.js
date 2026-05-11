@@ -1,4 +1,4 @@
-import { BLOG_STORAGE_ROOT, fetchRawText, fetchSiteIndex } from './storageApi';
+import { BLOG_STORAGE_ROOT, fetchRawText, listStorageDirectory } from './storageApi';
 
 const postsCache = new Map();
 
@@ -66,14 +66,12 @@ export async function fetchGameBlogPosts(gameSlug) {
   }
 
   const postsPromise = (async () => {
-    const siteIndex = await fetchSiteIndex();
-    const game = (siteIndex.games || []).find((entry) => entry.slug === gameSlug);
-    const blogFiles = game?.blogFiles || [];
+    const entries = await listStorageDirectory(`${BLOG_STORAGE_ROOT}/${gameSlug}/blog`);
 
     const posts = await Promise.all(
-      blogFiles
-        .filter((fileName) => fileName.toLowerCase().endsWith('.md'))
-        .map((fileName) => fetchMarkdownPost(gameSlug, fileName))
+      entries
+        .filter((entry) => entry.type === 'file' && entry.name.toLowerCase().endsWith('.md'))
+        .map((entry) => fetchMarkdownPost(gameSlug, entry.name))
     );
 
     return posts.sort((a, b) => {

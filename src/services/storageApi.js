@@ -4,7 +4,7 @@ export const BLOG_STORAGE_BRANCH = process.env.REACT_APP_BLOG_STORAGE_BRANCH || 
 const blogStorageRoot = process.env.REACT_APP_BLOG_STORAGE_ROOT;
 export const BLOG_STORAGE_ROOT = (blogStorageRoot === undefined ? 'games' : blogStorageRoot).replace(/^\/+|\/+$/g, '');
 
-let siteIndexCache = null;
+let storageTreeCache = null;
 
 export function contentApiUrl(path) {
   const encodedPath = path
@@ -23,7 +23,11 @@ export function rawContentUrl(path) {
     .map(encodeURIComponent)
     .join('/');
 
-  return `https://raw.githubusercontent.com/${BLOG_STORAGE_REPO}/${encodeURIComponent(BLOG_STORAGE_BRANCH)}/${encodedPath}`;
+  return `https://cdn.jsdelivr.net/gh/${BLOG_STORAGE_REPO}@${encodeURIComponent(BLOG_STORAGE_BRANCH)}/${encodedPath}`;
+}
+
+function packageTreeUrl() {
+  return `https://data.jsdelivr.com/v1/package/gh/${BLOG_STORAGE_REPO}@${encodeURIComponent(BLOG_STORAGE_BRANCH)}`;
 }
 
 export async function fetchJson(url) {
@@ -60,11 +64,50 @@ export async function fetchRawJson(path) {
   return JSON.parse(text);
 }
 
-export async function fetchSiteIndex() {
-  if (siteIndexCache) {
-    return siteIndexCache;
+export async function fetchStorageTree() {
+  if (storageTreeCache) {
+    return storageTreeCache;
   }
 
-  siteIndexCache = fetchRawJson('site-index.json');
-  return siteIndexCache;
+  storageTreeCache = (async () => {
+    const response = await fetch(packageTreeUrl());
+
+    if (!response.ok) {
+      throw new Error(`jsDelivr returned ${response.status} for ${packageTreeUrl()}`);
+    }
+
+    return response.json();
+  })();
+
+  return storageTreeCache;
+}
+
+function findEntryInTree(entries, pathParts) {
+  if (pathParts.length === 0) {
+    return { type: 'directory', name: '', files: entries };
+  }
+
+  const [nextPart, ...remainingParts] = pathParts;
+  const entry = entries.find((candidate) => candidate.name === nextPart);
+
+  if (!entry || remainingParts.length === 0) {
+    return entry || null;
+  }
+
+  if (!Array.isArray(entry.files)) {
+    return null;
+  }
+
+  return findEntryInTree(entry.files, remainingParts);
+}
+
+export async function getStorageEntry(path) {
+  const tree = await fetchStorageTree();
+  const pathParts = path.split('/').filter(Boolean);
+  return findEntryInTree(tree.files || [], pathParts);
+}
+
+export async function listStorageDirectory(path) {
+  const entry = await getStorageEntry(path);
+  return Array.isArray(entry?.files) ? entry.files : [];
 }

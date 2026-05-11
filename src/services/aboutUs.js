@@ -1,4 +1,4 @@
-import { fetchRawJson, fetchSiteIndex, rawContentUrl } from './storageApi';
+import { fetchRawJson, listStorageDirectory, rawContentUrl } from './storageApi';
 
 const ABOUT_ROOT = 'about-us';
 const ABOUT_IMAGE_FOLDER = 'image';
@@ -19,18 +19,13 @@ async function fetchAboutIndex() {
 }
 
 async function fetchMembers() {
-  const siteIndex = await fetchSiteIndex();
-  const memberFiles = siteIndex.aboutUs?.members || [];
-
-  if (!Array.isArray(memberFiles)) {
-    return [];
-  }
+  const entries = await listStorageDirectory(`${ABOUT_ROOT}/${ABOUT_MEMBERS_FOLDER}`);
 
   const members = await Promise.all(
-    memberFiles
-      .filter((fileName) => fileName.toLowerCase().endsWith('.json'))
-      .sort((first, second) => first.localeCompare(second))
-      .map((fileName) => fetchRawJson(`${ABOUT_ROOT}/${ABOUT_MEMBERS_FOLDER}/${fileName}`))
+    entries
+      .filter((entry) => entry.type === 'file' && entry.name.toLowerCase().endsWith('.json'))
+      .sort((first, second) => first.name.localeCompare(second.name))
+      .map((entry) => fetchRawJson(`${ABOUT_ROOT}/${ABOUT_MEMBERS_FOLDER}/${entry.name}`))
   );
 
   return members.map((member) => {
