@@ -23,7 +23,7 @@ export function rawContentUrl(path) {
     .map(encodeURIComponent)
     .join('/');
 
-  return `https://cdn.jsdelivr.net/gh/${BLOG_STORAGE_REPO}@${encodeURIComponent(BLOG_STORAGE_BRANCH)}/${encodedPath}`;
+  return `https://raw.githubusercontent.com/${BLOG_STORAGE_REPO}/${encodeURIComponent(BLOG_STORAGE_BRANCH)}/${encodedPath}`;
 }
 
 function packageTreeUrl() {

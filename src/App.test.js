@@ -2,287 +2,65 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from './App';
 
-const gameFolders = [
-  { type: 'dir', name: 'singleplayer-roguelite' },
-  { type: 'dir', name: 'multiplayer-arena' },
-];
+const storageFiles = {
+  'games/singleplayer-roguelite/index.json': { name: 'SingleplayerRoguelite' },
+  'games/multiplayer-arena/index.json': {
+    name: 'MultiplayerArena',
+    mainDescription: 'A fast 2D arena fighter where movement, aim, and destructible maps shape every round.',
+    secondaryDescription: 'MultiplayerArena is built around short, tense PvP matches.',
+  },
+  'about-us/index.json': {
+    title: 'About Us.',
+    lead: 'Wigum Gaming is loaded from storage.',
+    releaseNote: 'Release note loaded from storage.',
+  },
+  'about-us/members/ole-kristian-wigum.json': {
+    name: 'Ole Kristian Wigum',
+    role: 'Founder and coder',
+    image: 'placeholder-member.svg',
+    paragraphs: ['Member text loaded from storage.'],
+  },
+};
 
-function mockGitHubContentsApi() {
+function file(name) {
+  return { type: 'file', name };
+}
+
+function directory(name, files) {
+  return { type: 'directory', name, files };
+}
+
+function gameDirectory(slug) {
+  return directory(slug, [
+    file('index.json'),
+    directory('image', [file('index-landscape.svg'), file('index-portrait.svg')]),
+    directory('blog', []),
+  ]);
+}
+
+function storageTree() {
+  return {
+    files: [
+      directory('games', [gameDirectory('singleplayer-roguelite'), gameDirectory('multiplayer-arena')]),
+      directory('about-us', [
+        file('index.json'),
+        directory('image', [file('placeholder-member.svg')]),
+        directory('members', [file('ole-kristian-wigum.json')]),
+      ]),
+    ],
+  };
+}
+
+function mockStorageFetch() {
   global.fetch = jest.fn((url) => {
     if (url === 'https://data.jsdelivr.com/v1/package/gh/OL3s/Blogg-Storage@main') {
-      return Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({
-          files: [
-            {
-              type: 'directory',
-              name: 'games',
-              files: [
-                {
-                  type: 'directory',
-                  name: 'singleplayer-roguelite',
-                  files: [
-                    { type: 'file', name: 'index.json' },
-                    {
-                      type: 'directory',
-                      name: 'image',
-                      files: [
-                        { type: 'file', name: 'index-landscape.svg' },
-                        { type: 'file', name: 'index-portrait.svg' },
-                      ],
-                    },
-                    { type: 'directory', name: 'blog', files: [] },
-                  ],
-                },
-                {
-                  type: 'directory',
-                  name: 'multiplayer-arena',
-                  files: [
-                    { type: 'file', name: 'index.json' },
-                    {
-                      type: 'directory',
-                      name: 'image',
-                      files: [
-                        { type: 'file', name: 'index-landscape.svg' },
-                        { type: 'file', name: 'index-portrait.svg' },
-                      ],
-                    },
-                    { type: 'directory', name: 'blog', files: [] },
-                  ],
-                },
-              ],
-            },
-            {
-              type: 'directory',
-              name: 'about-us',
-              files: [
-                { type: 'file', name: 'index.json' },
-                { type: 'directory', name: 'image', files: [{ type: 'file', name: 'placeholder-member.svg' }] },
-                { type: 'directory', name: 'members', files: [{ type: 'file', name: 'ole-kristian-wigum.json' }] },
-              ],
-            },
-          ],
-        }),
-      });
+      return Promise.resolve({ ok: true, json: () => Promise.resolve(storageTree()) });
     }
 
-    if (url === 'https://cdn.jsdelivr.net/gh/OL3s/Blogg-Storage@main/games/singleplayer-roguelite/index.json') {
-      return Promise.resolve({
-        ok: true,
-        text: () => Promise.resolve(JSON.stringify({ name: 'SingleplayerRoguelite' })),
-      });
-    }
+    const storagePath = url.replace('https://raw.githubusercontent.com/OL3s/Blogg-Storage/main/', '');
 
-    if (url === 'https://cdn.jsdelivr.net/gh/OL3s/Blogg-Storage@main/games/multiplayer-arena/index.json') {
-      return Promise.resolve({
-        ok: true,
-        text: () => Promise.resolve(JSON.stringify({
-          name: 'MultiplayerArena',
-          mainDescription: 'A fast 2D arena fighter where movement, aim, and destructible maps shape every round.',
-          secondaryDescription: 'MultiplayerArena is built around short, tense PvP matches.',
-        })),
-      });
-    }
-
-    if (url === 'https://cdn.jsdelivr.net/gh/OL3s/Blogg-Storage@main/about-us/index.json') {
-      return Promise.resolve({
-        ok: true,
-        text: () => Promise.resolve(JSON.stringify({
-          title: 'About Us.',
-          lead: 'Wigum Gaming is loaded from storage.',
-          releaseNote: 'Release note loaded from storage.',
-        })),
-      });
-    }
-
-    if (url === 'https://cdn.jsdelivr.net/gh/OL3s/Blogg-Storage@main/about-us/members/ole-kristian-wigum.json') {
-      return Promise.resolve({
-        ok: true,
-        text: () => Promise.resolve(JSON.stringify({
-          name: 'Ole Kristian Wigum',
-          role: 'Founder and coder',
-          image: 'placeholder-member.svg',
-          paragraphs: ['Member text loaded from storage.'],
-        })),
-      });
-    }
-
-    if (url === 'https://raw.githubusercontent.com/OL3s/Blogg-Storage/main/site-index.json') {
-      return Promise.resolve({
-        ok: true,
-        text: () => Promise.resolve(JSON.stringify({
-          games: [
-            {
-              slug: 'singleplayer-roguelite',
-              images: { landscape: 'index-landscape.svg', portrait: 'index-portrait.svg' },
-              blogFiles: [],
-            },
-            {
-              slug: 'multiplayer-arena',
-              images: { landscape: 'index-landscape.svg', portrait: 'index-portrait.svg' },
-              blogFiles: [],
-            },
-          ],
-          aboutUs: { members: ['ole-kristian-wigum.json'] },
-        })),
-      });
-    }
-
-    if (url === 'https://raw.githubusercontent.com/OL3s/Blogg-Storage/main/games/singleplayer-roguelite/index.json') {
-      return Promise.resolve({
-        ok: true,
-        text: () => Promise.resolve(JSON.stringify({ name: 'SingleplayerRoguelite' })),
-      });
-    }
-
-    if (url === 'https://raw.githubusercontent.com/OL3s/Blogg-Storage/main/games/multiplayer-arena/index.json') {
-      return Promise.resolve({
-        ok: true,
-        text: () => Promise.resolve(JSON.stringify({
-          name: 'MultiplayerArena',
-          mainDescription: 'A fast 2D arena fighter where movement, aim, and destructible maps shape every round.',
-          secondaryDescription: 'MultiplayerArena is built around short, tense PvP matches.',
-        })),
-      });
-    }
-
-    if (url === 'https://raw.githubusercontent.com/OL3s/Blogg-Storage/main/about-us/index.json') {
-      return Promise.resolve({
-        ok: true,
-        text: () => Promise.resolve(JSON.stringify({
-          title: 'About Us.',
-          lead: 'Wigum Gaming is loaded from storage.',
-          releaseNote: 'Release note loaded from storage.',
-        })),
-      });
-    }
-
-    if (url === 'https://raw.githubusercontent.com/OL3s/Blogg-Storage/main/about-us/members/ole-kristian-wigum.json') {
-      return Promise.resolve({
-        ok: true,
-        text: () => Promise.resolve(JSON.stringify({
-          name: 'Ole Kristian Wigum',
-          role: 'Founder and coder',
-          image: 'placeholder-member.svg',
-          paragraphs: ['Member text loaded from storage.'],
-        })),
-      });
-    }
-
-    if (url.includes('/contents/games?')) {
-      return Promise.resolve({ ok: true, json: () => Promise.resolve(gameFolders) });
-    }
-
-    if (url.includes('/contents/games/singleplayer-roguelite?')) {
-      return Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve([
-          { type: 'file', name: 'index.json', download_url: 'https://example.com/singleplayer-index.json' },
-        ]),
-      });
-    }
-
-    if (url.includes('/contents/games/multiplayer-arena?')) {
-      return Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve([
-          { type: 'file', name: 'index.json', download_url: 'https://example.com/multiplayer-index.json' },
-        ]),
-      });
-    }
-
-    if (url === 'https://example.com/singleplayer-index.json') {
-      return Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({ name: 'SingleplayerRoguelite' }),
-      });
-    }
-
-    if (url === 'https://example.com/multiplayer-index.json') {
-      return Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({
-          name: 'MultiplayerArena',
-          mainDescription: 'A fast 2D arena fighter where movement, aim, and destructible maps shape every round.',
-          secondaryDescription: 'MultiplayerArena is built around short, tense PvP matches.',
-        }),
-      });
-    }
-
-    if (url.includes('/contents/games/singleplayer-roguelite/image?')) {
-      return Promise.resolve({ status: 404, ok: false, json: () => Promise.resolve(null) });
-    }
-
-    if (url.includes('/contents/games/multiplayer-arena/image?')) {
-      return Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve([
-          {
-            type: 'file',
-            name: 'index-landscape.svg',
-            download_url: 'https://example.com/multiplayer-landscape.svg',
-          },
-          {
-            type: 'file',
-            name: 'index-portrait.svg',
-            download_url: 'https://example.com/multiplayer-portrait.svg',
-          },
-        ]),
-      });
-    }
-
-    if (url.includes('/contents/games/multiplayer-arena/blog?') || url.includes('/contents/games/singleplayer-roguelite/blog?')) {
-      return Promise.resolve({ ok: true, json: () => Promise.resolve([]) });
-    }
-
-    if (url.includes('/contents/about-us/index.json?')) {
-      return Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({ download_url: 'https://example.com/about-index.json' }),
-      });
-    }
-
-    if (url === 'https://example.com/about-index.json') {
-      return Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({
-          title: 'About Us.',
-          lead: 'Wigum Gaming is loaded from storage.',
-          releaseNote: 'Release note loaded from storage.',
-        }),
-      });
-    }
-
-    if (url.includes('/contents/about-us/members?')) {
-      return Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve([
-          {
-            type: 'file',
-            name: 'ole-kristian-wigum.json',
-            download_url: 'https://example.com/ole-kristian-wigum.json',
-          },
-        ]),
-      });
-    }
-
-    if (url === 'https://example.com/ole-kristian-wigum.json') {
-      return Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({
-          name: 'Ole Kristian Wigum',
-          role: 'Founder and coder',
-          image: 'placeholder-member.svg',
-          paragraphs: ['Member text loaded from storage.'],
-        }),
-      });
-    }
-
-    if (url.includes('/contents/about-us/image/placeholder-member.svg?')) {
-      return Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({ download_url: 'https://example.com/placeholder-member.svg' }),
-      });
+    if (storageFiles[storagePath]) {
+      return Promise.resolve({ ok: true, text: () => Promise.resolve(JSON.stringify(storageFiles[storagePath])) });
     }
 
     return Promise.reject(new Error(`Unhandled fetch: ${url}`));
@@ -290,7 +68,7 @@ function mockGitHubContentsApi() {
 }
 
 beforeEach(() => {
-  mockGitHubContentsApi();
+  mockStorageFetch();
   window.scrollTo = jest.fn();
 });
 
