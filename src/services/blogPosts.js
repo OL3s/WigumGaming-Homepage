@@ -1,7 +1,4 @@
-const BLOG_STORAGE_REPO = process.env.REACT_APP_BLOG_STORAGE_REPO || 'OL3s/Blogg-Storage';
-const BLOG_STORAGE_BRANCH = process.env.REACT_APP_BLOG_STORAGE_BRANCH || 'main';
-const blogStorageRoot = process.env.REACT_APP_BLOG_STORAGE_ROOT;
-const BLOG_STORAGE_ROOT = (blogStorageRoot === undefined ? 'games' : blogStorageRoot).replace(/^\/+|\/+$/g, '');
+import { BLOG_STORAGE_ROOT, fetchRawText, fetchSiteIndex } from './storageApi';
 
 const postsCache = new Map();
 
@@ -50,48 +47,14 @@ function dateFromFileName(fileName) {
   return match ? match[1] : '';
 }
 
-function contentApiUrl(path) {
-  const encodedPath = path
-    .split('/')
-    .filter(Boolean)
-    .map(encodeURIComponent)
-    .join('/');
-
-  return `https://api.github.com/repos/${BLOG_STORAGE_REPO}/contents/${encodedPath}?ref=${encodeURIComponent(BLOG_STORAGE_BRANCH)}`;
-}
-
-async function fetchJson(url) {
-  const response = await fetch(url, {
-    headers: {
-      Accept: 'application/vnd.github+json',
-    },
-  });
-
-  if (response.status === 404) {
-    return null;
-  }
-
-  if (!response.ok) {
-    throw new Error(`GitHub returned ${response.status} for ${url}`);
-  }
-
-  return response.json();
-}
-
-async function fetchMarkdownPost(entry) {
-  const response = await fetch(entry.download_url);
-
-  if (!response.ok) {
-    throw new Error(`GitHub returned ${response.status} for ${entry.download_url}`);
-  }
-
-  const fileContent = await response.text();
+async function fetchMarkdownPost(gameSlug, fileName) {
+  const fileContent = await fetchRawText(`${BLOG_STORAGE_ROOT}/${gameSlug}/blog/${fileName}`);
   const { data, body } = parseFrontMatter(fileContent);
 
   return {
-    slug: entry.name.replace(/\.md$/i, ''),
-    title: data.title || titleFromFileName(entry.name),
-    date: data.date || dateFromFileName(entry.name),
+    slug: fileName.replace(/\.md$/i, ''),
+    title: data.title || titleFromFileName(fileName),
+    date: data.date || dateFromFileName(fileName),
     excerpt: data.excerpt || '',
     body,
   };
@@ -103,21 +66,14 @@ export async function fetchGameBlogPosts(gameSlug) {
   }
 
   const postsPromise = (async () => {
-    const blogPath = [BLOG_STORAGE_ROOT, gameSlug, 'blog'].filter(Boolean).join('/');
-    const entries = await fetchJson(contentApiUrl(blogPath));
-
-    if (!entries) {
-      return [];
-    }
-
-    if (!Array.isArray(entries)) {
-      throw new Error(`Expected ${blogPath} to be a directory in ${BLOG_STORAGE_REPO}`);
-    }
+    const siteIndex = await fetchSiteIndex();
+    const game = (siteIndex.games || []).find((entry) => entry.slug === gameSlug);
+    const blogFiles = game?.blogFiles || [];
 
     const posts = await Promise.all(
-      entries
-        .filter((entry) => entry.type === 'file' && entry.name.toLowerCase().endsWith('.md') && entry.download_url)
-        .map(fetchMarkdownPost)
+      blogFiles
+        .filter((fileName) => fileName.toLowerCase().endsWith('.md'))
+        .map((fileName) => fetchMarkdownPost(gameSlug, fileName))
     );
 
     return posts.sort((a, b) => {
