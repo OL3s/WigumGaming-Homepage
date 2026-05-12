@@ -1,46 +1,30 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+
+const MENU_COLLAPSE_QUERY = '(max-width: 980px)';
 
 function SiteHeader({ games, gamesStatus }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
-  const headerRef = useRef(null);
-  const brandContainerRef = useRef(null);
-  const menuMeasureRef = useRef(null);
 
   useEffect(() => {
-    const updateMenuLayout = () => {
-      const header = headerRef.current;
-      const brandContainer = brandContainerRef.current;
-      const menuMeasure = menuMeasureRef.current;
+    if (typeof window.matchMedia !== 'function') {
+      const updateMenuLayout = () => setIsMenuCollapsed(window.innerWidth <= 980);
 
-      if (!header || !brandContainer || !menuMeasure) {
-        return;
-      }
-
-      const headerStyle = window.getComputedStyle(header);
-      const horizontalPadding = parseFloat(headerStyle.paddingLeft) + parseFloat(headerStyle.paddingRight);
-      const headerGap = parseFloat(headerStyle.columnGap || headerStyle.gap) || 0;
-      const availableMenuWidth = header.clientWidth - horizontalPadding - brandContainer.offsetWidth - headerGap;
-      const needsCollapsedMenu = menuMeasure.scrollWidth > availableMenuWidth;
-
-      setIsMenuCollapsed(needsCollapsedMenu);
-    };
-
-    updateMenuLayout();
-
-    if (typeof ResizeObserver === 'undefined') {
+      updateMenuLayout();
       window.addEventListener('resize', updateMenuLayout);
+
       return () => window.removeEventListener('resize', updateMenuLayout);
     }
 
-    const resizeObserver = new ResizeObserver(updateMenuLayout);
-    resizeObserver.observe(document.documentElement);
-    resizeObserver.observe(headerRef.current);
-    resizeObserver.observe(menuMeasureRef.current);
+    const mediaQuery = window.matchMedia(MENU_COLLAPSE_QUERY);
+    const updateMenuLayout = () => setIsMenuCollapsed(mediaQuery.matches);
 
-    return () => resizeObserver.disconnect();
-  }, [games, gamesStatus]);
+    updateMenuLayout();
+    mediaQuery.addEventListener('change', updateMenuLayout);
+
+    return () => mediaQuery.removeEventListener('change', updateMenuLayout);
+  }, []);
 
   useEffect(() => {
     if (!isMenuCollapsed) {
@@ -48,16 +32,14 @@ function SiteHeader({ games, gamesStatus }) {
     }
   }, [isMenuCollapsed]);
 
-  const renderHeaderMenu = (className, ref = null, isMeasure = false) => {
-    const linkProps = isMeasure ? { tabIndex: -1 } : { onClick: () => setIsMenuOpen(false) };
-
+  const renderHeaderMenu = (className) => {
     return (
-      <div ref={ref} className={className} aria-hidden={isMeasure}>
+      <div className={className}>
         <div className="site-nav-group site-nav-group-primary">
           <nav className="site-nav" aria-label="Site pages">
-            <NavLink to="/" {...linkProps}>Home</NavLink>
-            <NavLink to="/updates" {...linkProps}>Updates</NavLink>
-            <NavLink to="/about" {...linkProps}>About Us</NavLink>
+            <NavLink to="/" onClick={() => setIsMenuOpen(false)}>Home</NavLink>
+            <NavLink to="/updates" onClick={() => setIsMenuOpen(false)}>Updates</NavLink>
+            <NavLink to="/about" onClick={() => setIsMenuOpen(false)}>About Us</NavLink>
           </nav>
         </div>
 
@@ -75,7 +57,7 @@ function SiteHeader({ games, gamesStatus }) {
           <nav className="site-nav site-nav-games" aria-label="Games navigation">
             {gamesStatus === 'loading' && <span className="site-nav-loading">Loading games...</span>}
             {games.map((game) => (
-              <NavLink key={game.slug} to={`/games/${game.slug}`} {...linkProps}>
+              <NavLink key={game.slug} to={`/games/${game.slug}`} onClick={() => setIsMenuOpen(false)}>
                 {game.name}
               </NavLink>
             ))}
@@ -86,8 +68,8 @@ function SiteHeader({ games, gamesStatus }) {
   };
 
   return (
-    <header ref={headerRef} className={`site-header ${isMenuCollapsed ? 'is-menu-collapsed' : ''}`}>
-      <div ref={brandContainerRef} className="site-header-brand-container">
+    <header className={`site-header ${isMenuCollapsed ? 'is-menu-collapsed' : ''}`}>
+      <div className="site-header-brand-container">
         <Link className="brand" to="/" onClick={() => setIsMenuOpen(false)}>
           Wigum Gaming
         </Link>
@@ -115,7 +97,6 @@ function SiteHeader({ games, gamesStatus }) {
       </div>
 
       {renderHeaderMenu(`site-header-menu ${isMenuOpen ? 'is-open' : ''}`)}
-      {renderHeaderMenu('site-header-menu site-header-menu-measure', menuMeasureRef, true)}
     </header>
   );
 }
