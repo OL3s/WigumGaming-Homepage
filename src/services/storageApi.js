@@ -54,7 +54,7 @@ export async function fetchJson(url) {
 
 export async function fetchRawText(path) {
   const url = rawContentUrl(path);
-  const response = await fetch(url, { cache: 'no-store' });
+  const response = await fetch(url);
 
   if (!response.ok) {
     const error = new Error(`GitHub returned ${response.status} for ${url}`);
