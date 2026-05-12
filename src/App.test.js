@@ -2,6 +2,8 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from './App';
 
+const routerFutureFlags = { v7_startTransition: true, v7_relativeSplatPath: true };
+
 const storageFiles = {
   'games/singleplayer-roguelite/index.json': { name: 'SingleplayerRoguelite' },
   'games/multiplayer-arena/index.json': {
@@ -9,17 +11,23 @@ const storageFiles = {
     mainDescription: 'A fast 2D arena fighter where movement, aim, and destructible maps shape every round.',
     secondaryDescription: 'MultiplayerArena is built around short, tense PvP matches.',
   },
-  'about-us/index.json': {
-    title: 'About Us.',
-    lead: 'Wigum Gaming is loaded from storage.',
-    releaseNote: 'Release note loaded from storage.',
-  },
-  'about-us/members/ole-kristian-wigum.json': {
-    name: 'Ole Kristian Wigum',
-    role: 'Founder and coder',
-    image: 'placeholder-member.svg',
-    paragraphs: ['Member text loaded from storage.'],
-  },
+  'about-us/index.md': `---
+title: About Us.
+releaseNote: Release note loaded from storage.
+---
+
+Wigum Gaming is **loaded** from storage.
+
+## New section loaded from storage.
+`,
+  'about-us/members/ole-kristian-wigum.md': `---
+name: Ole Kristian Wigum
+role: Founder and coder
+image: placeholder-member.svg
+---
+
+Member text **loaded** from storage.
+`,
 };
 
 function file(name) {
@@ -43,9 +51,9 @@ function storageTree() {
     files: [
       directory('games', [gameDirectory('singleplayer-roguelite'), gameDirectory('multiplayer-arena')]),
       directory('about-us', [
-        file('index.json'),
+        file('index.md'),
         directory('image', [file('placeholder-member.svg')]),
-        directory('members', [file('ole-kristian-wigum.json')]),
+        directory('members', [file('ole-kristian-wigum.md')]),
       ]),
     ],
   };
@@ -60,7 +68,11 @@ function mockStorageFetch() {
     const storagePath = url.replace('https://raw.githubusercontent.com/OL3s/Blogg-Storage/main/', '');
 
     if (storageFiles[storagePath]) {
-      return Promise.resolve({ ok: true, text: () => Promise.resolve(JSON.stringify(storageFiles[storagePath])) });
+      const body = typeof storageFiles[storagePath] === 'string'
+        ? storageFiles[storagePath]
+        : JSON.stringify(storageFiles[storagePath]);
+
+      return Promise.resolve({ ok: true, text: () => Promise.resolve(body) });
     }
 
     return Promise.reject(new Error(`Unhandled fetch: ${url}`));
@@ -78,7 +90,7 @@ afterEach(() => {
 
 test('renders homepage navigation and game links', async () => {
   render(
-    <MemoryRouter initialEntries={['/']}>
+    <MemoryRouter initialEntries={['/']} future={routerFutureFlags}>
       <App />
     </MemoryRouter>
   );
@@ -90,7 +102,7 @@ test('renders homepage navigation and game links', async () => {
 
 test('renders loaded homepage game links', async () => {
   render(
-    <MemoryRouter initialEntries={['/']}>
+    <MemoryRouter initialEntries={['/']} future={routerFutureFlags}>
       <App />
     </MemoryRouter>
   );
@@ -103,7 +115,7 @@ test('renders loaded homepage game links', async () => {
 
 test('renders a game page from its route', async () => {
   render(
-    <MemoryRouter initialEntries={['/games/multiplayer-arena']}>
+    <MemoryRouter initialEntries={['/games/multiplayer-arena']} future={routerFutureFlags}>
       <App />
     </MemoryRouter>
   );
@@ -115,7 +127,7 @@ test('renders a game page from its route', async () => {
 
 test('renders games overview route', async () => {
   render(
-    <MemoryRouter initialEntries={['/games']}>
+    <MemoryRouter initialEntries={['/games']} future={routerFutureFlags}>
       <App />
     </MemoryRouter>
   );
@@ -125,14 +137,37 @@ test('renders games overview route', async () => {
   expect(screen.getAllByRole('link', { name: /view game page/i })).toHaveLength(2);
 });
 
-test('renders about page from storage content', async () => {
+test('shows GitHub about page fetch errors', async () => {
+  const defaultFetch = global.fetch.getMockImplementation();
+  jest.spyOn(console, 'error').mockImplementation(() => {});
+
+  global.fetch.mockImplementation((url) => {
+    if (url === 'https://raw.githubusercontent.com/OL3s/Blogg-Storage/main/about-us/index.md') {
+      return Promise.resolve({ ok: false, status: 403, statusText: 'Forbidden' });
+    }
+
+    return defaultFetch(url);
+  });
+
   render(
-    <MemoryRouter initialEntries={['/about']}>
+    <MemoryRouter initialEntries={['/about']} future={routerFutureFlags}>
       <App />
     </MemoryRouter>
   );
 
-  expect(await screen.findByText('Wigum Gaming is loaded from storage.')).toBeInTheDocument();
+  expect(await screen.findAllByText(/GitHub refused the about-us content request/)).toHaveLength(2);
+});
+
+test('renders about page from storage content', async () => {
+  render(
+    <MemoryRouter initialEntries={['/about']} future={routerFutureFlags}>
+      <App />
+    </MemoryRouter>
+  );
+
+  expect(await screen.findByText(/Wigum Gaming is/)).toBeInTheDocument();
+  expect(screen.getAllByText('loaded')).toHaveLength(2);
+  expect(screen.getByRole('heading', { name: 'New section loaded from storage.' })).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Ole Kristian Wigum' })).toBeInTheDocument();
-  expect(screen.getByText('Member text loaded from storage.')).toBeInTheDocument();
+  expect(screen.getByText(/Member text/)).toBeInTheDocument();
 });

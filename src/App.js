@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import { Link, NavLink, Route, Routes, useParams, useLocation } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
+import remarkGfm from 'remark-gfm';
 import GitHubProject from './components/GitHubProject';
 import GameBlog, { BlogPost } from './components/GameBlog';
 import { fetchBlogPostsByGame } from './services/blogPosts';
@@ -407,15 +410,18 @@ function GamePage({ games, gamesStatus }) {
 function AboutPage() {
   const [aboutUs, setAboutUs] = useState({ page: null, members: [] });
   const [status, setStatus] = useState('loading');
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     let isMounted = true;
 
     setStatus('loading');
+    setErrorMessage('');
     fetchAboutUs()
       .then((nextAboutUs) => {
         if (isMounted) {
           setAboutUs(nextAboutUs);
+          setErrorMessage('');
           setStatus('ready');
         }
       })
@@ -423,6 +429,7 @@ function AboutPage() {
         console.error('Failed to load about-us content', error);
         if (isMounted) {
           setAboutUs({ page: null, members: [] });
+          setErrorMessage(formatAboutUsError(error));
           setStatus('error');
         }
       });
@@ -433,18 +440,21 @@ function AboutPage() {
   }, []);
 
   const page = aboutUs.page || {};
+  const aboutMarkdown = status === 'loading'
+    ? 'Fetching about-us content from blog git repo...'
+    : status === 'error'
+      ? errorMessage
+      : page.body || 'Failed to fetch about-us page text.';
 
   return (
     <section className="section about-page">
       <div className="about-hero">
         <h1>{status === 'ready' ? page.title : 'About Us.'}</h1>
-        <p className="page-lead">
-          {status === 'loading'
-            ? 'Fetching about-us content from blog git repo...'
-            : status === 'error'
-              ? 'Failed to fetch about-us content.'
-              : page.lead || 'Failed to fetch about-us page text.'}
-        </p>
+        <div className="about-markdown page-lead">
+          <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+            {aboutMarkdown}
+          </ReactMarkdown>
+        </div>
       </div>
 
       <section className="about-workflow-section" aria-labelledby="workflow-title">
@@ -500,7 +510,7 @@ function AboutPage() {
       {status === 'loading' ? (
         <p className="about-members-status">Fetching team members from blog git repo...</p>
       ) : status === 'error' ? (
-        <p className="about-members-status">Failed to fetch team members.</p>
+        <p className="about-members-status">{errorMessage}</p>
       ) : aboutUs.members.length === 0 ? (
         <p className="about-members-status">Failed to fetch team members.</p>
       ) : (
@@ -518,6 +528,31 @@ function AboutPage() {
   );
 }
 
+function formatAboutUsError(error) {
+  const status = error?.status;
+  const statusText = error?.statusText ? ` ${error.statusText}` : '';
+
+  if (status === 403 || status === 429) {
+    return `GitHub refused the about-us content request${status ? ` (${status}${statusText})` : ''}. This is usually a rate limit or temporary access issue.`;
+  }
+
+  if (status === 404) {
+    return 'About-us content was not found in the GitHub blog storage repository.';
+  }
+
+  if (status >= 500) {
+    return `GitHub or the content fetch service is temporarily unavailable${status ? ` (${status}${statusText})` : ''}.`;
+  }
+
+  if (error instanceof TypeError) {
+    return 'Could not reach GitHub right now. The network or content fetch service may be down.';
+  }
+
+  return status
+    ? `Failed to fetch about-us content from GitHub (${status}${statusText}).`
+    : 'Failed to fetch about-us content from GitHub.';
+}
+
 function TeamMemberCard({ member }) {
   return (
     <article className="about-founder-card">
@@ -529,9 +564,11 @@ function TeamMemberCard({ member }) {
       <div>
         {member.role && <p className="eyebrow">{member.role}</p>}
         <h2>{member.name || 'Failed to fetch member name.'}</h2>
-        {(member.paragraphs || []).map((paragraph) => (
-          <p key={paragraph}>{paragraph}</p>
-        ))}
+        <div className="about-member-markdown">
+          <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+            {member.body || 'Failed to fetch member text.'}
+          </ReactMarkdown>
+        </div>
       </div>
     </article>
   );

@@ -42,7 +42,11 @@ export async function fetchJson(url) {
   }
 
   if (!response.ok) {
-    throw new Error(`GitHub returned ${response.status} for ${url}`);
+    const error = new Error(`GitHub returned ${response.status} for ${url}`);
+    error.status = response.status;
+    error.statusText = response.statusText;
+    error.url = url;
+    throw error;
   }
 
   return response.json();
@@ -53,7 +57,11 @@ export async function fetchRawText(path) {
   const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error(`GitHub returned ${response.status} for ${url}`);
+    const error = new Error(`GitHub returned ${response.status} for ${url}`);
+    error.status = response.status;
+    error.statusText = response.statusText;
+    error.url = url;
+    throw error;
   }
 
   return response.text();
@@ -73,7 +81,11 @@ export async function fetchStorageTree() {
     const response = await fetch(packageTreeUrl());
 
     if (!response.ok) {
-      throw new Error(`jsDelivr returned ${response.status} for ${packageTreeUrl()}`);
+      const error = new Error(`jsDelivr returned ${response.status} for ${packageTreeUrl()}`);
+      error.status = response.status;
+      error.statusText = response.statusText;
+      error.url = packageTreeUrl();
+      throw error;
     }
 
     return response.json();
