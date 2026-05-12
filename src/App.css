@@ -878,6 +878,18 @@ main {
   font-weight: 700;
 }
 
+.about-markdown strong,
+.about-member-markdown strong {
+  color: #f4fcf6;
+  font-weight: 800;
+}
+
+.about-markdown em,
+.about-member-markdown em {
+  color: #dff4e5;
+  font-style: italic;
+}
+
 .about-member-markdown > :first-child {
   margin-top: 1rem;
 }

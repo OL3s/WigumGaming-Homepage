@@ -1,4 +1,4 @@
-import { fetchRawText, listStorageDirectory, rawContentUrl } from './storageApi';
+import { contentApiUrl, fetchJson, fetchRawText, listStorageDirectory, rawContentUrl } from './storageApi';
 
 const ABOUT_ROOT = 'about-us';
 const ABOUT_IMAGE_FOLDER = 'image';
@@ -69,7 +69,9 @@ async function fetchMember(fileName) {
 }
 
 async function fetchMembers() {
-  const entries = await listStorageDirectory(`${ABOUT_ROOT}/${ABOUT_MEMBERS_FOLDER}`);
+  const membersPath = `${ABOUT_ROOT}/${ABOUT_MEMBERS_FOLDER}`;
+  const githubEntries = await fetchJson(contentApiUrl(membersPath));
+  const entries = Array.isArray(githubEntries) ? githubEntries : await listStorageDirectory(membersPath);
 
   return Promise.all(
     entries

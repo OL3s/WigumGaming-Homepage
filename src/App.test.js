@@ -61,6 +61,10 @@ function storageTree() {
 
 function mockStorageFetch() {
   global.fetch = jest.fn((url) => {
+    if (url === 'https://api.github.com/repos/OL3s/Blogg-Storage/contents/about-us/members?ref=main') {
+      return Promise.resolve({ ok: true, json: () => Promise.resolve([file('ole-kristian-wigum.md')]) });
+    }
+
     if (url === 'https://data.jsdelivr.com/v1/package/gh/OL3s/Blogg-Storage@main') {
       return Promise.resolve({ ok: true, json: () => Promise.resolve(storageTree()) });
     }
