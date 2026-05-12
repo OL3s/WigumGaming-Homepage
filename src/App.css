@@ -89,6 +89,13 @@
   white-space: nowrap;
 }
 
+.site-nav-loading {
+  color: #8da795;
+  font-size: 0.92rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 .site-nav a.active,
 .site-nav a:hover,
 .game-link:hover,
@@ -162,6 +169,14 @@ main {
   display: flex;
   flex-direction: column;
   gap: var(--section-gap);
+}
+
+.games-list-status {
+  width: min(62rem, calc(100% - 4rem));
+  margin: 0 auto;
+  color: #c6e3cd;
+  font-size: 1.05rem;
+  line-height: 1.7;
 }
 
 .game-card,
@@ -313,6 +328,22 @@ main {
     linear-gradient(180deg, #080c09 0%, rgba(9, 11, 18, 0) 18%, rgba(9, 11, 18, 0) 66%, #080c09 100%),
     linear-gradient(180deg, rgba(9, 11, 18, 0.08) 0%, rgba(9, 11, 18, 0.24) 54%, rgba(9, 11, 18, 0.88) 100%),
     linear-gradient(135deg, rgba(86, 194, 113, 0.22), transparent 45%);
+}
+
+.game-image-missing,
+.game-detail-hero-missing {
+  display: grid;
+  place-items: center;
+  min-height: 100%;
+  margin: 0;
+  padding: 2rem;
+  color: #c6e3cd;
+  background: #0d140f;
+  text-align: center;
+}
+
+.game-detail-hero-missing p {
+  margin: 0;
 }
 
 .game-panel:hover .game-image,
@@ -798,6 +829,7 @@ main {
 .about-section-title,
 .about-workflow-section,
 .about-founder-card,
+.about-members-status,
 .about-release-note,
 .about-page > .text-link {
   margin-left: 2rem;
@@ -956,6 +988,27 @@ main {
   aspect-ratio: 1 / 1;
   object-fit: cover;
   background: #0d140f;
+}
+
+.about-founder-image-missing {
+  display: grid;
+  place-items: center;
+  min-height: 18rem;
+  padding: 2rem;
+  color: #c6e3cd;
+  text-align: center;
+}
+
+.about-members-list {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--section-gap) * 0.4);
+}
+
+.about-members-status {
+  color: #c6e3cd;
+  font-size: 1.05rem;
+  line-height: 1.7;
 }
 
 .about-founder-card > div {

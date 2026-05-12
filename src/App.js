@@ -4,6 +4,8 @@ import { Link, NavLink, Route, Routes, useParams, useLocation } from 'react-rout
 import GitHubProject from './components/GitHubProject';
 import GameBlog, { BlogPost } from './components/GameBlog';
 import { fetchBlogPostsByGame } from './services/blogPosts';
+import { fetchGames } from './services/games';
+import { fetchAboutUs } from './services/aboutUs';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -15,37 +17,34 @@ function ScrollToTop() {
   return null;
 }
 
-const games = [
-  {
-    slug: 'singleplayer-roguelite',
-    name: 'SingleplayerRoguelite',
-    mainDescription: 'A run-based roguelite about choosing your path, growing stronger, and hunting three lost gems.',
-    teaser: 'Choose a path, survive the run, defeat bosses, and collect the three lost gems.',
-    secondaryDescription:
-      'Each run is a new attempt to push deeper, make better choices, and prepare for the next boss. Between fights, the player builds momentum through upgrades, items, and outpost stops before taking another step toward collecting all three gems.',
-    imageWideSrc: '/singleplayer-roguelite-wide-placeholder.svg',
-    imagePortraitSrc: '/singleplayer-roguelite-portrait-placeholder.svg',
-    imageScale: 1.04,
-    githubRepo: 'OL3s/SinglePlayerRogueliteV2',
-    githubUrl: 'https://github.com/OL3s/SinglePlayerRogueliteV2.git',
-  },
-  {
-    slug: 'multiplayer-arena',
-    name: 'MultiplayerArena',
-    mainDescription: 'A fast 2D arena fighter where movement, aim, and destructible maps shape every round.',
-    teaser: 'Fast 2D PvP arena fights where bullets, movement, and destruction decide the round.',
-    secondaryDescription:
-      'MultiplayerArena is built around short, tense PvP matches where players fight for position while the arena breaks apart around them. The goal is quick rounds with clear skill expression: dodge, aim, use the map, and turn destruction into an advantage.',
-    imageWideSrc: '/multiplayer-arena-wide-placeholder.svg',
-    imagePortraitSrc: '/multiplayer-arena-portrait-placeholder.svg',
-    imageScale: 1.04,
-    githubRepo: 'OL3s/MultiplayerArenaV2',
-    githubUrl: 'https://github.com/OL3s/MultiplayerArenaV2.git',
-  },
-];
-
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [games, setGames] = useState([]);
+  const [gamesStatus, setGamesStatus] = useState('loading');
+
+  useEffect(() => {
+    let isMounted = true;
+
+    setGamesStatus('loading');
+    fetchGames()
+      .then((nextGames) => {
+        if (isMounted) {
+          setGames(nextGames);
+          setGamesStatus('ready');
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to load games', error);
+        if (isMounted) {
+          setGames([]);
+          setGamesStatus('error');
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <div className="App">
@@ -99,6 +98,7 @@ function App() {
               <span>Games</span>
             </div>
             <nav className="site-nav site-nav-games" aria-label="Games navigation">
+              {gamesStatus === 'loading' && <span className="site-nav-loading">Loading games...</span>}
               {games.map((game) => (
                 <NavLink key={game.slug} to={`/games/${game.slug}`} onClick={() => setIsMenuOpen(false)}>
                   {game.name}
@@ -111,10 +111,10 @@ function App() {
 
       <main>
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/updates" element={<UpdatesPage />} />
-          <Route path="/games" element={<GamesPage />} />
-          <Route path="/games/:slug" element={<GamePage />} />
+          <Route path="/" element={<HomePage games={games} gamesStatus={gamesStatus} />} />
+          <Route path="/updates" element={<UpdatesPage games={games} gamesStatus={gamesStatus} />} />
+          <Route path="/games" element={<GamesPage games={games} gamesStatus={gamesStatus} />} />
+          <Route path="/games/:slug" element={<GamePage games={games} gamesStatus={gamesStatus} />} />
           <Route path="/about" element={<AboutPage />} />
         </Routes>
       </main>
@@ -122,11 +122,11 @@ function App() {
   );
 }
 
-function HomePage() {
+function HomePage({ games, gamesStatus }) {
   return (
     <div className="home-stack">
       <section className="games-section" id="games">
-        <GamesGrid />
+        <GamesGrid games={games} gamesStatus={gamesStatus} />
       </section>
 
       <section className="home-footer-prompt">
@@ -139,7 +139,7 @@ function HomePage() {
   );
 }
 
-function GamesPage() {
+function GamesPage({ games, gamesStatus }) {
   return (
     <section className="section page-shell">
       <h1>Current projects.</h1>
@@ -147,17 +147,21 @@ function GamesPage() {
         Each game has its own page so the homepage stays clean while the projects get
         room to grow.
       </p>
-      <GamesGrid />
+      <GamesGrid games={games} gamesStatus={gamesStatus} />
     </section>
   );
 }
 
-function UpdatesPage() {
+function UpdatesPage({ games, gamesStatus }) {
   const [blogPostsByGame, setBlogPostsByGame] = useState({});
   const [status, setStatus] = useState('loading');
 
   useEffect(() => {
     let isMounted = true;
+
+    if (gamesStatus !== 'ready') {
+      return undefined;
+    }
 
     setStatus('loading');
     fetchBlogPostsByGame(games.map((game) => game.slug))
@@ -178,7 +182,7 @@ function UpdatesPage() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [games, gamesStatus]);
 
   const posts = games
     .flatMap((game) => (blogPostsByGame[game.slug] || []).map((post) => ({ post, game })))
@@ -216,7 +220,19 @@ function UpdatesPage() {
   );
 }
 
-function GamesGrid() {
+function GamesGrid({ games, gamesStatus }) {
+  if (gamesStatus === 'loading') {
+    return <p className="games-list-status">Fetching games from blog git repo...</p>;
+  }
+
+  if (gamesStatus === 'error') {
+    return <p className="games-list-status">Could not load games.</p>;
+  }
+
+  if (games.length === 0) {
+    return <p className="games-list-status">No games found.</p>;
+  }
+
   return (
     <ul className="games-list" aria-label="Games list">
       {games.map((game) => (
@@ -229,6 +245,7 @@ function GamesGrid() {
 function GameCard({ game }) {
   const cardRef = useRef(null);
   const [imageMotion, setImageMotion] = useState({ offset: 0, scale: game.imageScale });
+  const hasPreviewImages = game.imageWideSrc && game.imagePortraitSrc;
 
   useEffect(() => {
     const updateOffset = () => {
@@ -260,25 +277,29 @@ function GameCard({ game }) {
     <li ref={cardRef} className="game-card">
       <div className="game-image-frame">
         <Link className="game-panel" to={`/games/${game.slug}`}>
-          <picture>
-            <source media="(orientation: portrait)" srcSet={game.imagePortraitSrc} />
-            <img
-              className="game-image"
-              src={game.imageWideSrc}
-              alt=""
-              style={{
-                '--parallax-offset': `${imageMotion.offset}px`,
-                '--image-scale': imageMotion.scale,
-              }}
-            />
-          </picture>
+          {hasPreviewImages ? (
+            <picture>
+              <source media="(orientation: portrait)" srcSet={game.imagePortraitSrc} />
+              <img
+                className="game-image"
+                src={game.imageWideSrc}
+                alt=""
+                style={{
+                  '--parallax-offset': `${imageMotion.offset}px`,
+                  '--image-scale': imageMotion.scale,
+                }}
+              />
+            </picture>
+          ) : (
+            <p className="game-image-missing">Failed to fetch game preview image.</p>
+          )}
           <div className="game-image-overlay" />
         </Link>
       </div>
       <div className="game-card-copy">
         <Link to={`/games/${game.slug}`} style={{ color: 'inherit', textDecoration: 'none' }}>
           <h3>{game.name}</h3>
-          <p>{game.teaser}</p>
+          <p>{game.teaser || 'Failed to fetch game description.'}</p>
         </Link>
       </div>
       <div className="game-card-actions">
@@ -307,26 +328,56 @@ function GameCard({ game }) {
 }
 
 function GameDetailContainer({ game }) {
+  const hasPreviewImages = game.imageWideSrc && game.imagePortraitSrc;
+
   return (
     <div className="game-detail-hero">
-      <picture className="game-detail-hero-media">
-        <source media="(orientation: portrait)" srcSet={game.imagePortraitSrc} />
-        <img className="game-detail-hero-image" src={game.imageWideSrc} alt="" />
-      </picture>
+      {hasPreviewImages ? (
+        <picture className="game-detail-hero-media">
+          <source media="(orientation: portrait)" srcSet={game.imagePortraitSrc} />
+          <img className="game-detail-hero-image" src={game.imageWideSrc} alt="" />
+        </picture>
+      ) : (
+        <div className="game-detail-hero-media game-detail-hero-missing">
+          <p>Failed to fetch game preview image.</p>
+        </div>
+      )}
       <div className="game-detail-hero-overlay" />
       <div className="game-detail-hero-copy">
         <div className="game-detail-copy-panel">
           <h1>{game.name}</h1>
-          <p className="page-lead">{game.mainDescription}</p>
-          <p>{game.secondaryDescription}</p>
+          <p className="page-lead">{game.mainDescription || 'Failed to fetch game description.'}</p>
+          {game.secondaryDescription && <p>{game.secondaryDescription}</p>}
         </div>
       </div>
     </div>
   );
 }
 
-function GamePage() {
+function GamePage({ games, gamesStatus }) {
   const { slug } = useParams();
+
+  if (gamesStatus === 'loading') {
+    return (
+      <section className="section page-shell">
+        <h1>Loading game.</h1>
+        <p>Fetching the game folder from the blog git repo...</p>
+      </section>
+    );
+  }
+
+  if (gamesStatus === 'error') {
+    return (
+      <section className="section page-shell">
+        <h1>Could not load games.</h1>
+        <p>The game folder list is unavailable right now.</p>
+        <Link className="text-link" to="/">
+          Back to homepage
+        </Link>
+      </section>
+    );
+  }
+
   const game = games.find((entry) => entry.slug === slug);
 
   if (!game) {
@@ -354,14 +405,45 @@ function GamePage() {
 }
 
 function AboutPage() {
+  const [aboutUs, setAboutUs] = useState({ page: null, members: [] });
+  const [status, setStatus] = useState('loading');
+
+  useEffect(() => {
+    let isMounted = true;
+
+    setStatus('loading');
+    fetchAboutUs()
+      .then((nextAboutUs) => {
+        if (isMounted) {
+          setAboutUs(nextAboutUs);
+          setStatus('ready');
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to load about-us content', error);
+        if (isMounted) {
+          setAboutUs({ page: null, members: [] });
+          setStatus('error');
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const page = aboutUs.page || {};
+
   return (
     <section className="section about-page">
       <div className="about-hero">
-        <h1>About Us.</h1>
+        <h1>{status === 'ready' ? page.title : 'About Us.'}</h1>
         <p className="page-lead">
-          Wigum Gaming is a small independent game development project focused on
-          clear systems, transparent progress, and practical workflows that can scale
-          from experiments into polished releases.
+          {status === 'loading'
+            ? 'Fetching about-us content from blog git repo...'
+            : status === 'error'
+              ? 'Failed to fetch about-us content.'
+              : page.lead || 'Failed to fetch about-us page text.'}
         </p>
       </div>
 
@@ -412,43 +494,46 @@ function AboutPage() {
         </div>
       </section>
 
-      <p className="about-release-note">
-        While this is currently a hobby project, we are gearing up to release polished,
-        finished products starting in 2027.
-      </p>
+      {status === 'ready' && page.releaseNote && <p className="about-release-note">{page.releaseNote}</p>}
 
       <h2 className="about-section-title">Team</h2>
-      <article className="about-founder-card">
-        <img
-          className="about-founder-image"
-          src="https://placehold.co/900x900/333333/cccccc?text=Ole+Kristian+Wigum"
-          alt="Ole Kristian Wigum"
-        />
-        <div>
-          <p className="eyebrow">Founder and coder</p>
-          <h2>Ole Kristian Wigum</h2>
-          <p>
-            My name is Ole Kristian Wigum, and I am a Computer Engineering student at
-            NTNU. Over the years, I have developed projects across GameMaker, Roblox,
-            and Godot, refining skills in object-oriented programming and system
-            architecture.
-          </p>
-          <p>
-            Today, my main focus is transitioning all projects to Godot Engine, using C#
-            for scalable and modular design. All code and dev logs are maintained
-            through GitHub, ensuring transparency and structure in every build.
-          </p>
-          <p>
-            Thank you for following Wigum Gaming. Stay tuned for our first polished
-            releases coming from 2027 onward.
-          </p>
+      {status === 'loading' ? (
+        <p className="about-members-status">Fetching team members from blog git repo...</p>
+      ) : status === 'error' ? (
+        <p className="about-members-status">Failed to fetch team members.</p>
+      ) : aboutUs.members.length === 0 ? (
+        <p className="about-members-status">Failed to fetch team members.</p>
+      ) : (
+        <div className="about-members-list">
+          {aboutUs.members.map((member) => (
+            <TeamMemberCard key={member.name} member={member} />
+          ))}
         </div>
-      </article>
+      )}
 
       <Link className="text-link" to="/">
         Back to homepage
       </Link>
     </section>
+  );
+}
+
+function TeamMemberCard({ member }) {
+  return (
+    <article className="about-founder-card">
+      {member.imageSrc ? (
+        <img className="about-founder-image" src={member.imageSrc} alt={member.name} />
+      ) : (
+        <div className="about-founder-image about-founder-image-missing">Failed to fetch member image.</div>
+      )}
+      <div>
+        {member.role && <p className="eyebrow">{member.role}</p>}
+        <h2>{member.name || 'Failed to fetch member name.'}</h2>
+        {(member.paragraphs || []).map((paragraph) => (
+          <p key={paragraph}>{paragraph}</p>
+        ))}
+      </div>
+    </article>
   );
 }
 
