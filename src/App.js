@@ -399,6 +399,66 @@ function AboutPage() {
         </div>
       </div>
 
+      <figure className="about-roadmap">
+        <img src="/roadmapImage.png" alt="Wigum Gaming roadmap" />
+      </figure>
+
+      <section className="about-roadmap-summary" aria-labelledby="roadmap-title">
+        <div className="about-roadmap-intro">
+          <h2 id="roadmap-title">Wigum Gaming Roadmap</h2>
+          <p>
+            A simple company-level direction for the projects. The current focus is
+            Mob Gladiator, while the next games reuse the systems and lessons learned.
+          </p>
+        </div>
+
+        <div className="about-roadmap-steps">
+          <article className="about-roadmap-step">
+            <span className="about-roadmap-number">01</span>
+            <div>
+              <h3>Mob Gladiator</h3>
+              <p>
+                Active main focus. Build one small complete loop for managing fighters,
+                entering arena contracts, earning rewards, and returning to town.
+              </p>
+            </div>
+          </article>
+
+          <article className="about-roadmap-step">
+            <span className="about-roadmap-number">02</span>
+            <div>
+              <h3>Multiplayer Arena</h3>
+              <p>
+                Early foundation exists. A fast 2D PvP arena shooter that should benefit
+                from stronger scene organization, UI, input, and planning patterns.
+              </p>
+            </div>
+          </article>
+
+          <article className="about-roadmap-step">
+            <span className="about-roadmap-number">03</span>
+            <div>
+              <h3>Roguelite Project</h3>
+              <p>
+                Early foundation exists. Planned around runs, upgrades, bosses, rewards,
+                and progression, with reusable save data and UI-heavy flow lessons.
+              </p>
+            </div>
+          </article>
+
+          <article className="about-roadmap-step">
+            <span className="about-roadmap-number">04</span>
+            <div>
+              <h3>Choose The Next Path</h3>
+              <p>
+                Decide after the prototypes are clearer: polish one game, test a smaller
+                system, explore 3D, improve tooling, or rework the public presence.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
       <section className="about-workflow-section" aria-labelledby="workflow-title">
         <h2 id="workflow-title" className="about-section-title">Workflow</h2>
         <div className="about-feature-grid" aria-label="Workflow">
