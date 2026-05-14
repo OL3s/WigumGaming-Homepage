@@ -133,9 +133,6 @@ test('renders loaded homepage game links', async () => {
   expect(screen.getByRole('link', { name: 'MultiplayerArena' })).toBeInTheDocument();
   expect(screen.getAllByRole('link', { name: /view game page/i })).toHaveLength(2);
   expect(screen.getAllByRole('link', { name: /about us/i })).toHaveLength(2);
-  expect(await screen.findByText('Roadmap')).toBeInTheDocument();
-  expect(screen.getByRole('heading', { name: 'First roadmap step.' })).toBeInTheDocument();
-  expect(screen.getByText(/Roadmap item text loaded from storage/)).toBeInTheDocument();
 });
 
 test('renders a game page from its route', async () => {
@@ -193,6 +190,9 @@ test('renders about page from storage content', async () => {
   expect(await screen.findByText(/Wigum Gaming is/)).toBeInTheDocument();
   expect(screen.getAllByText('loaded')).toHaveLength(2);
   expect(screen.getByRole('heading', { name: 'New section loaded from storage.' })).toBeInTheDocument();
+  expect(await screen.findByText('Roadmap')).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'First roadmap step.' })).toBeInTheDocument();
+  expect(screen.getByText(/Roadmap item text loaded from storage/)).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Ole Kristian Wigum' })).toBeInTheDocument();
   expect(screen.getByText(/Member text/)).toBeInTheDocument();
 });

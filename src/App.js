@@ -74,8 +74,6 @@ function HomePage({ games, gamesStatus }) {
         <GamesGrid games={games} gamesStatus={gamesStatus} />
       </section>
 
-      <RoadmapSection />
-
       <section className="home-footer-prompt">
         <p>Want to learn about the team?</p>
         <Link className="text-link" to="/about">
