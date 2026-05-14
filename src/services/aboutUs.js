@@ -3,8 +3,10 @@ import { contentApiUrl, fetchJson, fetchRawText, listStorageDirectory, rawConten
 const ABOUT_ROOT = 'about-us';
 const ABOUT_IMAGE_FOLDER = 'image';
 const ABOUT_MEMBERS_FOLDER = 'members';
+const ABOUT_ROADMAP_FOLDER = 'roadmap';
 
 let aboutUsCache = null;
+let roadmapCache = null;
 
 function parseFrontMatter(fileContent) {
   const match = fileContent.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
@@ -79,6 +81,60 @@ async function fetchMembers() {
       .sort((first, second) => first.name.localeCompare(second.name))
       .map((entry) => fetchMember(entry.name))
   );
+}
+
+async function fetchRoadmapIndex() {
+  const fileContent = await fetchRawText(`${ABOUT_ROOT}/${ABOUT_ROADMAP_FOLDER}/index.md`);
+  const { data, body } = parseFrontMatter(fileContent);
+
+  return {
+    title: data.title || 'Wigum Gaming Roadmap',
+    body,
+  };
+}
+
+async function fetchRoadmapItem(fileName) {
+  const fileContent = await fetchRawText(`${ABOUT_ROOT}/${ABOUT_ROADMAP_FOLDER}/${fileName}`);
+  const { data, body } = parseFrontMatter(fileContent);
+  const number = Number.parseInt(data.number, 10);
+
+  return {
+    slug: fileName.replace(/\.md$/i, ''),
+    number: Number.isFinite(number) ? number : 0,
+    title: data.title || '',
+    body,
+  };
+}
+
+export async function fetchRoadmap() {
+  if (roadmapCache) {
+    return roadmapCache;
+  }
+
+  roadmapCache = (async () => {
+    const roadmapPath = `${ABOUT_ROOT}/${ABOUT_ROADMAP_FOLDER}`;
+    const [page, entries] = await Promise.all([
+      fetchRoadmapIndex(),
+      fetchJson(contentApiUrl(roadmapPath)),
+    ]);
+    const roadmapEntries = Array.isArray(entries) ? entries : await listStorageDirectory(roadmapPath);
+
+    const items = await Promise.all(
+      roadmapEntries
+        .filter((entry) => entry.type === 'file' && entry.name.toLowerCase().endsWith('.md') && entry.name !== 'index.md')
+        .map((entry) => fetchRoadmapItem(entry.name))
+    );
+
+    return {
+      page,
+      items: items.sort((first, second) => first.number - second.number || first.slug.localeCompare(second.slug)),
+    };
+  })().catch((error) => {
+    roadmapCache = null;
+    throw error;
+  });
+
+  return roadmapCache;
 }
 
 export async function fetchAboutUs() {

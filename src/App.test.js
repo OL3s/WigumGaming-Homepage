@@ -28,6 +28,19 @@ image: placeholder-member.svg
 
 Member text **loaded** from storage.
 `,
+  'about-us/roadmap/index.md': `---
+title: Roadmap
+---
+
+A simple company-level roadmap loaded from storage.
+`,
+  'about-us/roadmap/001-first-step.md': `---
+number: 1
+title: First roadmap step.
+---
+
+Roadmap item text loaded from storage.
+`,
 };
 
 function file(name) {
@@ -54,6 +67,7 @@ function storageTree() {
         file('index.md'),
         directory('image', [file('placeholder-member.svg')]),
         directory('members', [file('ole-kristian-wigum.md')]),
+        directory('roadmap', [file('index.md'), file('001-first-step.md')]),
       ]),
     ],
   };
@@ -63,6 +77,10 @@ function mockStorageFetch() {
   global.fetch = jest.fn((url) => {
     if (url === 'https://api.github.com/repos/OL3s/Blogg-Storage/contents/about-us/members?ref=main') {
       return Promise.resolve({ ok: true, json: () => Promise.resolve([file('ole-kristian-wigum.md')]) });
+    }
+
+    if (url === 'https://api.github.com/repos/OL3s/Blogg-Storage/contents/about-us/roadmap?ref=main') {
+      return Promise.resolve({ ok: true, json: () => Promise.resolve([file('index.md'), file('001-first-step.md')]) });
     }
 
     if (url === 'https://data.jsdelivr.com/v1/package/gh/OL3s/Blogg-Storage@main') {
@@ -115,6 +133,9 @@ test('renders loaded homepage game links', async () => {
   expect(screen.getByRole('link', { name: 'MultiplayerArena' })).toBeInTheDocument();
   expect(screen.getAllByRole('link', { name: /view game page/i })).toHaveLength(2);
   expect(screen.getAllByRole('link', { name: /about us/i })).toHaveLength(2);
+  expect(await screen.findByText('Roadmap')).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'First roadmap step.' })).toBeInTheDocument();
+  expect(screen.getByText(/Roadmap item text loaded from storage/)).toBeInTheDocument();
 });
 
 test('renders a game page from its route', async () => {

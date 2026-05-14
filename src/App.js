@@ -9,7 +9,7 @@ import GameBlog, { BlogPost } from './components/GameBlog';
 import SiteHeader from './components/SiteHeader';
 import { fetchBlogPostsByGame } from './services/blogPosts';
 import { fetchGames } from './services/games';
-import { fetchAboutUs } from './services/aboutUs';
+import { fetchAboutUs, fetchRoadmap } from './services/aboutUs';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -74,6 +74,8 @@ function HomePage({ games, gamesStatus }) {
         <GamesGrid games={games} gamesStatus={gamesStatus} />
       </section>
 
+      <RoadmapSection />
+
       <section className="home-footer-prompt">
         <p>Want to learn about the team?</p>
         <Link className="text-link" to="/about">
@@ -81,6 +83,108 @@ function HomePage({ games, gamesStatus }) {
         </Link>
       </section>
     </div>
+  );
+}
+
+function RoadmapSection({ className = 'roadmap-section' }) {
+  const [roadmap, setRoadmap] = useState({ page: null, items: [] });
+  const [status, setStatus] = useState('loading');
+
+  useEffect(() => {
+    let isMounted = true;
+
+    setStatus('loading');
+    fetchRoadmap()
+      .then((nextRoadmap) => {
+        if (isMounted) {
+          setRoadmap(nextRoadmap);
+          setStatus('ready');
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to load roadmap', error);
+        if (isMounted) {
+          setRoadmap({ page: null, items: [] });
+          setStatus('error');
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const page = roadmap.page || {};
+  const roadmapIntro = status === 'loading'
+    ? 'Fetching roadmap from blog git repo...'
+    : status === 'error'
+      ? 'Could not load roadmap.'
+      : page.body || '';
+  const roadmapTitle = status === 'ready' ? page.title : 'Roadmap';
+
+  if (className === 'about-roadmap-summary') {
+    return (
+      <section className={className} aria-labelledby="roadmap-title">
+        <div className="about-roadmap-intro">
+          <p id="roadmap-title" className="eyebrow">{roadmapTitle}</p>
+          {roadmapIntro && (
+            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+              {roadmapIntro}
+            </ReactMarkdown>
+          )}
+        </div>
+
+        {status === 'ready' && roadmap.items.length > 0 ? (
+          <div className="about-roadmap-steps">
+            {roadmap.items.map((item) => (
+              <article key={item.slug} className="about-roadmap-step">
+                <span className="about-roadmap-number">{String(item.number).padStart(2, '0')}</span>
+                <div>
+                  <h3>{item.title || 'Untitled roadmap item.'}</h3>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                    {item.body || 'No roadmap text found.'}
+                  </ReactMarkdown>
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : status === 'ready' ? (
+          <p className="about-members-status">No roadmap steps found.</p>
+        ) : null}
+      </section>
+    );
+  }
+
+  return (
+    <section className={className} aria-labelledby="roadmap-title">
+      <div className="roadmap-panel">
+        <p id="roadmap-title" className="eyebrow">{roadmapTitle}</p>
+        {roadmapIntro && (
+          <div className="roadmap-intro">
+            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+              {roadmapIntro}
+            </ReactMarkdown>
+          </div>
+        )}
+        {status === 'ready' && roadmap.items.length > 0 && (
+          <ul className="roadmap-list">
+            {roadmap.items.map((item) => (
+              <li key={item.slug}>
+                <article className="roadmap-item">
+                  <span className="roadmap-item-number">#{item.number}</span>
+                  <div>
+                    <h3>{item.title || 'Untitled roadmap item.'}</h3>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                      {item.body || 'No roadmap text found.'}
+                    </ReactMarkdown>
+                  </div>
+                </article>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </section>
   );
 }
 
@@ -403,61 +507,7 @@ function AboutPage() {
         <img src="/roadmapImage.png" alt="Wigum Gaming roadmap" />
       </figure>
 
-      <section className="about-roadmap-summary" aria-labelledby="roadmap-title">
-        <div className="about-roadmap-intro">
-          <h2 id="roadmap-title">Wigum Gaming Roadmap</h2>
-          <p>
-            A simple company-level direction for the projects. The current focus is
-            Mob Gladiator, while the next games reuse the systems and lessons learned.
-          </p>
-        </div>
-
-        <div className="about-roadmap-steps">
-          <article className="about-roadmap-step">
-            <span className="about-roadmap-number">01</span>
-            <div>
-              <h3>Mob Gladiator</h3>
-              <p>
-                Active main focus. Build one small complete loop for managing fighters,
-                entering arena contracts, earning rewards, and returning to town.
-              </p>
-            </div>
-          </article>
-
-          <article className="about-roadmap-step">
-            <span className="about-roadmap-number">02</span>
-            <div>
-              <h3>Multiplayer Arena</h3>
-              <p>
-                Early foundation exists. A fast 2D PvP arena shooter that should benefit
-                from stronger scene organization, UI, input, and planning patterns.
-              </p>
-            </div>
-          </article>
-
-          <article className="about-roadmap-step">
-            <span className="about-roadmap-number">03</span>
-            <div>
-              <h3>Roguelite Project</h3>
-              <p>
-                Early foundation exists. Planned around runs, upgrades, bosses, rewards,
-                and progression, with reusable save data and UI-heavy flow lessons.
-              </p>
-            </div>
-          </article>
-
-          <article className="about-roadmap-step">
-            <span className="about-roadmap-number">04</span>
-            <div>
-              <h3>Choose The Next Path</h3>
-              <p>
-                Decide after the prototypes are clearer: polish one game, test a smaller
-                system, explore 3D, improve tooling, or rework the public presence.
-              </p>
-            </div>
-          </article>
-        </div>
-      </section>
+      <RoadmapSection className="about-roadmap-summary" />
 
       <section className="about-workflow-section" aria-labelledby="workflow-title">
         <h2 id="workflow-title" className="about-section-title">Workflow</h2>
