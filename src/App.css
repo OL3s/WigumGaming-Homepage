@@ -204,24 +204,41 @@
 @media (orientation: landscape) {
   .site-header.is-menu-collapsed .site-header-menu.is-open {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
-    align-items: start;
-    column-gap: 2rem;
-  }
-
-  .site-header.is-menu-collapsed .games-nav-container {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-columns: minmax(7rem, 0.9fr) minmax(8rem, 1fr) auto;
+    grid-template-areas: 'pages games language';
     align-items: start;
     column-gap: 1.25rem;
   }
 
-  .site-header.is-menu-collapsed .games-nav-label {
-    width: auto;
+  .site-header.is-menu-collapsed .site-nav-group-primary {
+    grid-area: pages;
+    height: 100%;
     padding-right: 1.25rem;
-    padding-bottom: 0;
     border-right: 1px solid rgba(255, 255, 255, 0.08);
-    border-bottom: none;
+  }
+
+  .site-header.is-menu-collapsed .language-selector {
+    grid-area: language;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%;
+    padding-left: 1.25rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .site-header.is-menu-collapsed .games-nav-container {
+    grid-area: games;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .site-header.is-menu-collapsed .games-nav-label {
+    width: 100%;
+    padding-right: 0;
+    padding-bottom: 0.65rem;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 }
 
@@ -337,7 +354,7 @@ main {
 }
 
 .games-section {
-  padding-top: var(--top-gap);
+  padding-top: clamp(2rem, 6vw, 5rem);
 }
 
 .home-games-divider {
@@ -434,14 +451,15 @@ main {
 .game-detail-hero {
   position: relative;
   min-height: clamp(30rem, 56vw, 46rem);
+  margin-bottom: clamp(7rem, 13vw, 12rem);
   background: transparent;
-  overflow: clip;
+  overflow: visible;
 }
 
-.game-detail-hero-media,
-.game-detail-hero-overlay {
+.game-detail-hero-media {
   position: absolute;
-  inset: 0;
+  inset: 0 0 -10rem;
+  overflow: hidden;
 }
 
 .game-detail-hero-image {
@@ -454,8 +472,11 @@ main {
 }
 
 .game-detail-hero-overlay {
+  position: absolute;
+  inset: 0 0 -10rem;
+  pointer-events: none;
   background:
-    linear-gradient(180deg, #080c09 0%, rgba(8, 12, 9, 0) 14%, rgba(8, 12, 9, 0) 76%, #080c09 100%);
+    linear-gradient(180deg, #080c09 0%, rgba(8, 12, 9, 0) 14%, rgba(8, 12, 9, 0) 64%, rgba(8, 12, 9, 0.82) 86%, #080c09 100%);
 }
 
 .game-detail-hero-copy {
@@ -464,8 +485,10 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  width: min(62rem, calc(100% - 4rem));
   min-height: inherit;
-  padding: clamp(2rem, 5vw, 4rem);
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 4rem) 0 0;
 }
 
 .game-detail-copy-panel {
@@ -477,6 +500,7 @@ main {
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.24);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+  transform: translateY(50%);
 }
 
 .game-detail-copy-panel h1 {
@@ -1435,6 +1459,7 @@ main {
   .github-panel-compact,
   .home-games-divider,
   .game-card-content,
+  .game-detail-hero-copy,
   .about-hero,
   .about-page > .about-section-title,
   .about-roadmap,

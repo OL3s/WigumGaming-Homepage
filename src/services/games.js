@@ -41,13 +41,10 @@ async function getGameImages(slug) {
 async function fetchGameMetadata(slug, language) {
   const fileContent = await fetchLocalizedRawText(`${BLOG_STORAGE_ROOT}/${slug}/index.md`, language);
   const { data, body } = parseFrontMatter(fileContent);
-  const [mainDescription = '', ...secondaryDescriptionParts] = body.split(/\n{2,}/).map((part) => part.trim()).filter(Boolean);
 
   return {
     ...data,
-    body,
-    mainDescription: data.mainDescription || mainDescription,
-    secondaryDescription: data.secondaryDescription || secondaryDescriptionParts.join('\n\n'),
+    description: body,
   };
 }
 
@@ -60,9 +57,8 @@ async function fetchGame(entry, language) {
   return {
     slug,
     name,
-    mainDescription: metadata?.mainDescription || '',
     teaser: metadata?.teaser || '',
-    secondaryDescription: metadata?.secondaryDescription || '',
+    description: metadata?.description || '',
     githubRepo: metadata?.githubRepo || '',
     githubUrl: metadata?.githubUrl || '',
     imageScale: 1.04,

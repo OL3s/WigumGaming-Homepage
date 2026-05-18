@@ -385,6 +385,7 @@ function GameCard({ game, t }) {
 
 function GameDetailContainer({ game, t }) {
   const hasPreviewImages = game.imageWideSrc && game.imagePortraitSrc;
+  const shortDescription = game.teaser || game.description || t('failedGameDescription');
 
   return (
     <div className="game-detail-hero">
@@ -402,8 +403,8 @@ function GameDetailContainer({ game, t }) {
       <div className="game-detail-hero-copy">
         <div className="game-detail-copy-panel">
           <h1>{game.name}</h1>
-          <p className="page-lead">{game.mainDescription || t('failedGameDescription')}</p>
-          {game.secondaryDescription && <p>{game.secondaryDescription}</p>}
+          <p className="page-lead">{shortDescription}</p>
+          {game.description && <p>{game.description}</p>}
         </div>
       </div>
     </div>

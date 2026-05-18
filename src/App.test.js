@@ -11,17 +11,17 @@ name: SingleplayerRoguelite
 `,
   'games/multiplayer-arena/index.md': `---
 name: MultiplayerArena
+teaser: Shared short arena teaser.
 ---
 
-A fast 2D arena fighter where movement, aim, and destructible maps shape every round.
-
-MultiplayerArena is built around short, tense PvP matches.
+MultiplayerArena is built around short, tense PvP matches where destructible maps shape every round.
 `,
   'games/multiplayer-arena/index.no.md': `---
 name: FlerspillerArena
+teaser: Kort norsk arenatekst.
 ---
 
-En rask 2D arenaopplevelse.
+En lengre norsk arenaopplevelse.
 `,
   'about-us/index.md': `---
 title: About Us.
@@ -156,6 +156,7 @@ test('renders a game page from its route', async () => {
   );
 
   expect(await screen.findByRole('heading', { name: 'MultiplayerArena' })).toBeInTheDocument();
+  expect(screen.getByText(/shared short arena teaser/i)).toBeInTheDocument();
   expect(screen.getByText(/destructible maps shape every round/i)).toBeInTheDocument();
   expect(await screen.findByText(/blog: no blog found/i)).toBeInTheDocument();
 });
@@ -168,7 +169,8 @@ test('renders localized game metadata when available', async () => {
   );
 
   expect(await screen.findByRole('heading', { name: 'FlerspillerArena' })).toBeInTheDocument();
-  expect(screen.getByText(/rask 2D arenaopplevelse/i)).toBeInTheDocument();
+  expect(screen.getByText(/kort norsk arenatekst/i)).toBeInTheDocument();
+  expect(screen.getByText(/lengre norsk arenaopplevelse/i)).toBeInTheDocument();
 });
 
 test('renders games overview route', async () => {
