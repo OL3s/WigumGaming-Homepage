@@ -80,6 +80,9 @@ function HomePage({ games, gamesStatus, t }) {
   return (
     <div className="home-stack">
       <section className="games-section" id="games">
+        <div className="home-games-divider">
+          <span>{t('upcomingGames')}</span>
+        </div>
         <GamesGrid games={games} gamesStatus={gamesStatus} t={t} />
       </section>
 
@@ -327,7 +330,7 @@ function GameCard({ game, t }) {
   return (
     <li ref={cardRef} className="game-card">
       <div className="game-image-frame">
-        <Link className="game-panel" to={`/games/${game.slug}`}>
+        <div className="game-panel">
           {hasPreviewImages ? (
             <picture>
               <source media="(orientation: portrait)" srcSet={game.imagePortraitSrc} />
@@ -345,34 +348,36 @@ function GameCard({ game, t }) {
             <p className="game-image-missing">{t('failedGamePreviewImage')}</p>
           )}
           <div className="game-image-overlay" />
-        </Link>
-      </div>
-      <div className="game-card-copy">
-        <Link to={`/games/${game.slug}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-          <h3>{game.name}</h3>
-          <p>{game.teaser || t('failedGameDescription')}</p>
-        </Link>
-      </div>
-      <div className="game-card-actions">
-        <Link className="game-link" to={`/games/${game.slug}`}>
-          {t('viewGamePage')}
-        </Link>
-        {game.githubRepo && (
-          <a
-            className="game-github-link"
-            href={game.githubUrl || `https://github.com/${game.githubRepo}`}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={`${game.name} ${t('githubRepositoryLabel')}`}
-          >
-            <img
-              className="game-github-logo"
-              src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-              alt=""
-            />
-            GitHub
-          </a>
-        )}
+          <div className="game-card-content">
+            <div className="game-card-copy">
+              <Link to={`/games/${game.slug}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                <h3>{game.name}</h3>
+                <p>{game.teaser || t('failedGameDescription')}</p>
+              </Link>
+            </div>
+            <div className="game-card-actions">
+              <Link className="game-link" to={`/games/${game.slug}`}>
+                {t('viewGamePage')}
+              </Link>
+              {game.githubRepo && (
+                <a
+                  className="game-github-link"
+                  href={game.githubUrl || `https://github.com/${game.githubRepo}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`${game.name} ${t('githubRepositoryLabel')}`}
+                >
+                  <img
+                    className="game-github-logo"
+                    src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+                    alt=""
+                  />
+                  GitHub
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </li>
   );

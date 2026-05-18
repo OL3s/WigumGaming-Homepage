@@ -340,6 +340,25 @@ main {
   padding-top: var(--top-gap);
 }
 
+.home-games-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: min(62rem, calc(100% - 4rem));
+  margin: 0 auto 2rem;
+  color: #56c271;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.home-games-divider::after {
+  content: '';
+  flex: 1;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
 .section-heading h2 {
   margin: 0;
   font-size: clamp(1.8rem, 4vw, 2.6rem);
@@ -522,6 +541,18 @@ main {
     linear-gradient(135deg, rgba(86, 194, 113, 0.22), transparent 45%);
 }
 
+.game-card-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: min(62rem, calc(100% - 4rem));
+  min-height: 100%;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3rem) 0;
+}
+
 .game-image-missing,
 .game-detail-hero-missing {
   display: grid;
@@ -544,10 +575,8 @@ main {
 }
 
 .game-card-copy {
-  position: relative;
-  z-index: 1;
-  width: calc(100% - 4rem);
-  margin: clamp(-5rem, -8vw, -1.5rem) 2rem 2.5rem;
+  max-width: 44rem;
+  margin: 0;
   padding: 0;
 }
 
@@ -568,7 +597,7 @@ main {
   align-items: center;
   gap: 0.85rem;
   flex-wrap: wrap;
-  margin: 1.5rem 0 0 2rem;
+  margin: 1.5rem 0 0;
 }
 
 .game-link,
@@ -1034,6 +1063,7 @@ main {
 .about-page > .about-section-title,
 .about-roadmap,
 .about-roadmap-summary,
+.about-workflow-section,
 .about-founder-card,
 .about-members-status,
 .about-page > .text-link {
@@ -1222,7 +1252,7 @@ main {
 .about-feature-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0;
+  gap: clamp(2rem, 5vw, 4rem);
 }
 
 .about-feature-card {
@@ -1403,10 +1433,13 @@ main {
   .game-blog,
   .github-panel,
   .github-panel-compact,
+  .home-games-divider,
+  .game-card-content,
   .about-hero,
   .about-page > .about-section-title,
   .about-roadmap,
   .about-roadmap-summary,
+  .about-workflow-section,
   .about-founder-card,
   .about-members-status,
   .about-page > .text-link {
