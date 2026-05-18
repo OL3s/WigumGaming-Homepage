@@ -67,11 +67,6 @@ export async function fetchRawText(path) {
   return response.text();
 }
 
-export async function fetchRawJson(path) {
-  const text = await fetchRawText(path);
-  return JSON.parse(text);
-}
-
 export async function fetchStorageTree() {
   if (storageTreeCache) {
     return storageTreeCache;

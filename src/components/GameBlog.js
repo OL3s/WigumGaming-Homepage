@@ -4,7 +4,7 @@ import remarkGfm from 'remark-gfm';
 import { Link } from 'react-router-dom';
 import { fetchGameBlogPosts } from '../services/blogPosts';
 
-export function BlogPost({ post, game }) {
+export function BlogPost({ post, game, t }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const postContentId = `${post.slug}-content`;
 
@@ -27,7 +27,7 @@ export function BlogPost({ post, game }) {
           <span className="blog-post-title">{post.title}</span>
           {post.excerpt && <span className="blog-post-excerpt">{post.excerpt}</span>}
         </span>
-        <span className="blog-post-toggle-action">{isExpanded ? 'Collapse' : 'Read post'}</span>
+        <span className="blog-post-toggle-action">{isExpanded ? t('collapse') : t('readPost')}</span>
       </button>
       {isExpanded && (
         <div id={postContentId} className="blog-post-content">
@@ -38,7 +38,7 @@ export function BlogPost({ post, game }) {
   );
 }
 
-function GameBlog({ game }) {
+function GameBlog({ game, t }) {
   const [posts, setPosts] = useState([]);
   const [status, setStatus] = useState('loading');
 
@@ -67,25 +67,25 @@ function GameBlog({ game }) {
   }, [game.slug]);
 
   return (
-    <section className="game-blog" aria-label="Development blog">
+    <section className="game-blog" aria-label={t('developmentBlog')}>
       <div className="game-blog-header">
         <div className="game-blog-heading">
-          <p className="eyebrow">Development blog</p>
+          <p className="eyebrow">{t('developmentBlog')}</p>
         </div>
       </div>
 
       {status === 'loading' ? (
-        <p className="game-blog-empty">Fetching content from blog git repo...</p>
+        <p className="game-blog-empty">{t('fetchingBlogContent')}</p>
       ) : status === 'error' ? (
-        <p className="game-blog-empty">Blog: Could not load posts</p>
+        <p className="game-blog-empty">{t('blogCouldNotLoadPosts')}</p>
       ) : posts.length === 0 ? (
-        <p className="game-blog-empty">Blog: No blog found</p>
+        <p className="game-blog-empty">{t('blogNoBlogFound')}</p>
       ) : (
         <div className="blog-posts">
           {posts.map((post, index) => (
             <div key={post.slug}>
               {index > 0 && <hr className="blog-post-separator" />}
-              <BlogPost post={post} />
+              <BlogPost post={post} t={t} />
             </div>
           ))}
         </div>

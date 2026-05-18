@@ -49,7 +49,7 @@ games/
       2026-05-10-networking-test.md
 ```
 
-The folder name must match the game `slug` in `src/App.js`.
+The folder name is the game slug used by routes like `/games/<slug>`.
 
 Examples:
 
@@ -186,6 +186,126 @@ git clone git@github.com:OL3s/Blogg-Storage.git ~/Documents/Code/Homepage/Blogg-
 This app reads from `https://api.github.com/repos/OL3s/Blogg-Storage/contents/games/<game-slug>/blog?ref=main` at runtime.
 
 The blog storage repository must be public for this static frontend to fetch it without a GitHub token.
+
+## Language System
+
+Language-related code is intentionally centralized in one file:
+
+```text
+src/services/i18n.js
+```
+
+This file owns:
+
+- The default language.
+- Supported language codes, labels, and flag icons.
+- The `localStorage` key used for language preference.
+- All UI strings used directly by the React app.
+- The `createTranslator(language)` helper used as `t('stringKey')` in components.
+
+Current supported languages:
+
+```text
+en = English/default
+no = Norwegian
+```
+
+Language selection behavior:
+
+- The flag buttons in `SiteHeader` call `onLanguageChange` from `App`.
+- The selected language is saved to `localStorage` using `I18N.storageKey`.
+- A URL query parameter can set the initial language, for example `/about?lang=no`.
+- Unknown language codes fall back to `I18N.defaultLanguage`.
+
+When adding or editing hardcoded UI text, do not put visitor-facing strings directly in components. Add a key under `I18N.strings.en`, add the same key for every supported language, then use `t('keyName')` in the component.
+
+Example:
+
+```js
+// src/services/i18n.js
+I18N.strings.en.exampleKey = 'English text';
+I18N.strings.no.exampleKey = 'Norwegian text';
+
+// Component
+const label = t('exampleKey');
+```
+
+The translator falls back to English if a translated key is missing, but missing keys should still be treated as incomplete work.
+
+## Localized Content Files
+
+The homepage supports language selection for essential content fetched from `BloggStorage`: game metadata pages, about-us content, team members, and roadmap entries.
+
+English is the default language and uses unsuffixed Markdown filenames:
+
+```text
+games/multiplayer-arena/index.md
+about-us/index.md
+about-us/members/ole-kristian-wigum.md
+```
+
+Translations add a language suffix before `.md`:
+
+```text
+games/multiplayer-arena/index.no.md
+about-us/index.no.md
+about-us/members/ole-kristian-wigum.no.md
+```
+
+The app checks for the selected language first, then falls back to the default `.md` file. Blog posts are currently not localized.
+
+Fallback examples:
+
+```text
+games/multiplayer-arena/index.no.md -> games/multiplayer-arena/index.md
+about-us/index.no.md -> about-us/index.md
+about-us/members/ole-kristian-wigum.no.md -> about-us/members/ole-kristian-wigum.md
+about-us/roadmap/001-mob-gladiator.no.md -> about-us/roadmap/001-mob-gladiator.md
+```
+
+Important implementation files:
+
+- `src/services/i18n.js`: languages, flags, UI strings, language persistence.
+- `src/services/localizedContent.js`: selected-language filename lookup and default `.md` fallback.
+- `src/services/games.js`: localized game metadata loading.
+- `src/services/aboutUs.js`: localized about/member/roadmap loading.
+- `src/components/SiteHeader.js`: language flag buttons.
+
+Blog posts are intentionally not localized yet. Keep blog post files unsuffixed, for example `2026-05-10-player-items-and-damage-visuals.md`.
+
+## Adding A New Language
+
+1. Pick one short language code and use it everywhere. Current convention uses `no` for Norwegian.
+2. Add the language to `I18N.languages` in `src/services/i18n.js` with `code`, `label`, and `flag`.
+3. Add a full string dictionary under `I18N.strings.<code>` in `src/services/i18n.js`.
+4. Add localized content files in `BloggStorage` for essential content using `.<code>.md` before `.md`.
+5. Do not rename default English files. English/default remains the unsuffixed `.md` file.
+6. Run `npm test -- --watchAll=false` and `npm run build` from this repository.
+
+Required content locations for a new language:
+
+```text
+games/<game-slug>/index.<code>.md
+about-us/index.<code>.md
+about-us/members/<member-slug>.<code>.md
+about-us/roadmap/index.<code>.md
+about-us/roadmap/<roadmap-item>.<code>.md
+```
+
+Optional content locations:
+
+```text
+More game folders can be translated one by one. Missing translated files fall back to default English .md files.
+```
+
+Agent checklist for language changes:
+
+1. Read `src/services/i18n.js` first.
+2. Keep all UI strings in `I18N.strings`; do not scatter hardcoded labels through components.
+3. Keep content translations in `BloggStorage`, not this homepage repository.
+4. Use unsuffixed `.md` for English/default and `.<code>.md` for translations.
+5. Do not localize blog post filenames unless the blog localization system is explicitly implemented later.
+6. Verify with tests and build.
 
 Optional environment variables:
 

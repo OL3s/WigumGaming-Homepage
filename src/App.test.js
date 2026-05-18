@@ -5,12 +5,24 @@ import App from './App';
 const routerFutureFlags = { v7_startTransition: true, v7_relativeSplatPath: true };
 
 const storageFiles = {
-  'games/singleplayer-roguelite/index.json': { name: 'SingleplayerRoguelite' },
-  'games/multiplayer-arena/index.json': {
-    name: 'MultiplayerArena',
-    mainDescription: 'A fast 2D arena fighter where movement, aim, and destructible maps shape every round.',
-    secondaryDescription: 'MultiplayerArena is built around short, tense PvP matches.',
-  },
+  'games/singleplayer-roguelite/index.md': `---
+name: SingleplayerRoguelite
+---
+`,
+  'games/multiplayer-arena/index.md': `---
+name: MultiplayerArena
+---
+
+A fast 2D arena fighter where movement, aim, and destructible maps shape every round.
+
+MultiplayerArena is built around short, tense PvP matches.
+`,
+  'games/multiplayer-arena/index.no.md': `---
+name: FlerspillerArena
+---
+
+En rask 2D arenaopplevelse.
+`,
   'about-us/index.md': `---
 title: About Us.
 releaseNote: Release note loaded from storage.
@@ -53,7 +65,8 @@ function directory(name, files) {
 
 function gameDirectory(slug) {
   return directory(slug, [
-    file('index.json'),
+    file('index.md'),
+    ...(slug === 'multiplayer-arena' ? [file('index.no.md')] : []),
     directory('image', [file('index-landscape.svg'), file('index-portrait.svg')]),
     directory('blog', []),
   ]);
@@ -145,6 +158,17 @@ test('renders a game page from its route', async () => {
   expect(await screen.findByRole('heading', { name: 'MultiplayerArena' })).toBeInTheDocument();
   expect(screen.getByText(/destructible maps shape every round/i)).toBeInTheDocument();
   expect(await screen.findByText(/blog: no blog found/i)).toBeInTheDocument();
+});
+
+test('renders localized game metadata when available', async () => {
+  render(
+    <MemoryRouter initialEntries={['/games/multiplayer-arena?lang=no']} future={routerFutureFlags}>
+      <App />
+    </MemoryRouter>
+  );
+
+  expect(await screen.findByRole('heading', { name: 'FlerspillerArena' })).toBeInTheDocument();
+  expect(screen.getByText(/rask 2D arenaopplevelse/i)).toBeInTheDocument();
 });
 
 test('renders games overview route', async () => {

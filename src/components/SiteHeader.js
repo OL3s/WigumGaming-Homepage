@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { SUPPORTED_LANGUAGES } from '../services/i18n';
 
 const MENU_COLLAPSE_QUERY = '(max-width: 980px)';
 
-function SiteHeader({ games, gamesStatus }) {
+function SiteHeader({ games, gamesStatus, language, onLanguageChange, t }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
 
@@ -36,11 +37,27 @@ function SiteHeader({ games, gamesStatus }) {
     return (
       <div className={className}>
         <div className="site-nav-group site-nav-group-primary">
-          <nav className="site-nav" aria-label="Site pages">
-            <NavLink to="/" onClick={() => setIsMenuOpen(false)}>Home</NavLink>
-            <NavLink to="/updates" onClick={() => setIsMenuOpen(false)}>Updates</NavLink>
-            <NavLink to="/about" onClick={() => setIsMenuOpen(false)}>About Us</NavLink>
+          <nav className="site-nav" aria-label={t('sitePages')}>
+            <NavLink to="/" onClick={() => setIsMenuOpen(false)}>{t('home')}</NavLink>
+            <NavLink to="/updates" onClick={() => setIsMenuOpen(false)}>{t('updates')}</NavLink>
+            <NavLink to="/about" onClick={() => setIsMenuOpen(false)}>{t('aboutUs')}</NavLink>
           </nav>
+        </div>
+
+        <div className="language-selector" aria-label={t('languageSelector')}>
+          {SUPPORTED_LANGUAGES.map((entry) => (
+            <button
+              key={entry.code}
+              className={entry.code === language ? 'is-active' : ''}
+              type="button"
+              onClick={() => onLanguageChange(entry.code)}
+              aria-label={`${t('switchLanguageTo')} ${entry.label}`}
+              aria-pressed={entry.code === language}
+              title={entry.label}
+            >
+              <span aria-hidden="true">{entry.flag}</span>
+            </button>
+          ))}
         </div>
 
         <div className="games-nav-container">
@@ -52,10 +69,10 @@ function SiteHeader({ games, gamesStatus }) {
               <path d="M15 13h.01"></path>
               <path d="M18 11h.01"></path>
             </svg>
-            <span>Games</span>
+            <span>{t('games')}</span>
           </div>
-          <nav className="site-nav site-nav-games" aria-label="Games navigation">
-            {gamesStatus === 'loading' && <span className="site-nav-loading">Loading games...</span>}
+          <nav className="site-nav site-nav-games" aria-label={t('games')}>
+            {gamesStatus === 'loading' && <span className="site-nav-loading">{t('loadingGames')}</span>}
             {games.map((game) => (
               <NavLink key={game.slug} to={`/games/${game.slug}`} onClick={() => setIsMenuOpen(false)}>
                 {game.name}
@@ -77,7 +94,7 @@ function SiteHeader({ games, gamesStatus }) {
           className="mobile-menu-toggle"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-expanded={isMenuOpen}
-          aria-label="Toggle navigation menu"
+          aria-label={t('toggleNavigationMenu')}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             {isMenuOpen ? (

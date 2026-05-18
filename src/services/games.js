@@ -1,4 +1,6 @@
-import { BLOG_STORAGE_ROOT, fetchRawJson, listStorageDirectory, rawContentUrl } from './storageApi';
+import { BLOG_STORAGE_ROOT, listStorageDirectory, rawContentUrl } from './storageApi';
+import { fetchLocalizedRawText } from './localizedContent';
+import { parseFrontMatter } from './markdown';
 
 const IMAGE_FOLDER = 'image';
 const IMAGE_EXTENSIONS = ['.avif', '.webp', '.jpg', '.jpeg', '.png', '.svg'];
@@ -36,13 +38,22 @@ async function getGameImages(slug) {
   };
 }
 
-async function fetchGameMetadata(slug) {
-  return fetchRawJson(`${BLOG_STORAGE_ROOT}/${slug}/index.json`);
+async function fetchGameMetadata(slug, language) {
+  const fileContent = await fetchLocalizedRawText(`${BLOG_STORAGE_ROOT}/${slug}/index.md`, language);
+  const { data, body } = parseFrontMatter(fileContent);
+  const [mainDescription = '', ...secondaryDescriptionParts] = body.split(/\n{2,}/).map((part) => part.trim()).filter(Boolean);
+
+  return {
+    ...data,
+    body,
+    mainDescription: data.mainDescription || mainDescription,
+    secondaryDescription: data.secondaryDescription || secondaryDescriptionParts.join('\n\n'),
+  };
 }
 
-async function fetchGame(entry) {
+async function fetchGame(entry, language) {
   const slug = entry.name;
-  const metadata = await fetchGameMetadata(slug);
+  const metadata = await fetchGameMetadata(slug, language);
   const images = await getGameImages(slug);
   const name = metadata?.name || titleFromSlug(slug);
 
@@ -59,8 +70,8 @@ async function fetchGame(entry) {
   };
 }
 
-export async function fetchGames() {
-  const cacheKey = BLOG_STORAGE_ROOT || 'root';
+export async function fetchGames(language = 'en') {
+  const cacheKey = `${BLOG_STORAGE_ROOT || 'root'}:${language}`;
 
   if (gamesCache.has(cacheKey)) {
     return gamesCache.get(cacheKey);
@@ -73,7 +84,7 @@ export async function fetchGames() {
       entries
         .filter((entry) => entry.type === 'directory')
         .sort((first, second) => first.name.localeCompare(second.name))
-        .map(fetchGame)
+        .map((entry) => fetchGame(entry, language))
     );
 
     return games;

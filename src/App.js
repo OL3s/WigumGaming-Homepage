@@ -10,6 +10,7 @@ import SiteHeader from './components/SiteHeader';
 import { fetchBlogPostsByGame } from './services/blogPosts';
 import { fetchGames } from './services/games';
 import { fetchAboutUs, fetchRoadmap } from './services/aboutUs';
+import { createTranslator, readInitialLanguage, writeLanguage } from './services/i18n';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -22,14 +23,22 @@ function ScrollToTop() {
 }
 
 function App() {
+  const location = useLocation();
+  const [language, setLanguageState] = useState(() => readInitialLanguage(location.search));
   const [games, setGames] = useState([]);
   const [gamesStatus, setGamesStatus] = useState('loading');
+  const t = createTranslator(language);
+
+  const setLanguage = (nextLanguage) => {
+    setLanguageState(nextLanguage);
+    writeLanguage(nextLanguage);
+  };
 
   useEffect(() => {
     let isMounted = true;
 
     setGamesStatus('loading');
-    fetchGames()
+    fetchGames(language)
       .then((nextGames) => {
         if (isMounted) {
           setGames(nextGames);
@@ -47,44 +56,44 @@ function App() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [language]);
 
   return (
     <div className="App">
       <ScrollToTop />
-      <SiteHeader games={games} gamesStatus={gamesStatus} />
+      <SiteHeader games={games} gamesStatus={gamesStatus} language={language} onLanguageChange={setLanguage} t={t} />
 
       <main>
         <Routes>
-          <Route path="/" element={<HomePage games={games} gamesStatus={gamesStatus} />} />
-          <Route path="/updates" element={<UpdatesPage games={games} gamesStatus={gamesStatus} />} />
-          <Route path="/games" element={<GamesPage games={games} gamesStatus={gamesStatus} />} />
-          <Route path="/games/:slug" element={<GamePage games={games} gamesStatus={gamesStatus} />} />
-          <Route path="/about" element={<AboutPage />} />
+          <Route path="/" element={<HomePage games={games} gamesStatus={gamesStatus} t={t} />} />
+          <Route path="/updates" element={<UpdatesPage games={games} gamesStatus={gamesStatus} t={t} />} />
+          <Route path="/games" element={<GamesPage games={games} gamesStatus={gamesStatus} t={t} />} />
+          <Route path="/games/:slug" element={<GamePage games={games} gamesStatus={gamesStatus} t={t} />} />
+          <Route path="/about" element={<AboutPage language={language} t={t} />} />
         </Routes>
       </main>
     </div>
   );
 }
 
-function HomePage({ games, gamesStatus }) {
+function HomePage({ games, gamesStatus, t }) {
   return (
     <div className="home-stack">
       <section className="games-section" id="games">
-        <GamesGrid games={games} gamesStatus={gamesStatus} />
+        <GamesGrid games={games} gamesStatus={gamesStatus} t={t} />
       </section>
 
       <section className="home-footer-prompt">
-        <p>Want to learn about the team?</p>
+        <p>{t('aboutTeamPrompt')}</p>
         <Link className="text-link" to="/about">
-          About us
+          {t('aboutUs')}
         </Link>
       </section>
     </div>
   );
 }
 
-function RoadmapSection({ className = 'roadmap-section' }) {
+function RoadmapSection({ className = 'roadmap-section', language = 'en', t }) {
   const [roadmap, setRoadmap] = useState({ page: null, items: [] });
   const [status, setStatus] = useState('loading');
 
@@ -92,7 +101,7 @@ function RoadmapSection({ className = 'roadmap-section' }) {
     let isMounted = true;
 
     setStatus('loading');
-    fetchRoadmap()
+    fetchRoadmap(language)
       .then((nextRoadmap) => {
         if (isMounted) {
           setRoadmap(nextRoadmap);
@@ -110,15 +119,15 @@ function RoadmapSection({ className = 'roadmap-section' }) {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [language]);
 
   const page = roadmap.page || {};
   const roadmapIntro = status === 'loading'
-    ? 'Fetching roadmap from blog git repo...'
+    ? t('fetchingRoadmap')
     : status === 'error'
-      ? 'Could not load roadmap.'
+      ? t('couldNotLoadRoadmap')
       : page.body || '';
-  const roadmapTitle = status === 'ready' ? page.title : 'Roadmap';
+  const roadmapTitle = status === 'ready' ? page.title : t('roadmap');
 
   if (className === 'about-roadmap-summary') {
     return (
@@ -138,16 +147,16 @@ function RoadmapSection({ className = 'roadmap-section' }) {
               <article key={item.slug} className="about-roadmap-step">
                 <span className="about-roadmap-number">{String(item.number).padStart(2, '0')}</span>
                 <div>
-                  <h3>{item.title || 'Untitled roadmap item.'}</h3>
+                  <h3>{item.title || t('untitledRoadmapItem')}</h3>
                   <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-                    {item.body || 'No roadmap text found.'}
+                    {item.body || t('noRoadmapTextFound')}
                   </ReactMarkdown>
                 </div>
               </article>
             ))}
           </div>
         ) : status === 'ready' ? (
-          <p className="about-members-status">No roadmap steps found.</p>
+          <p className="about-members-status">{t('noRoadmapStepsFound')}</p>
         ) : null}
       </section>
     );
@@ -171,9 +180,9 @@ function RoadmapSection({ className = 'roadmap-section' }) {
                 <article className="roadmap-item">
                   <span className="roadmap-item-number">#{item.number}</span>
                   <div>
-                    <h3>{item.title || 'Untitled roadmap item.'}</h3>
+                    <h3>{item.title || t('untitledRoadmapItem')}</h3>
                     <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-                      {item.body || 'No roadmap text found.'}
+                      {item.body || t('noRoadmapTextFound')}
                     </ReactMarkdown>
                   </div>
                 </article>
@@ -186,20 +195,17 @@ function RoadmapSection({ className = 'roadmap-section' }) {
   );
 }
 
-function GamesPage({ games, gamesStatus }) {
+function GamesPage({ games, gamesStatus, t }) {
   return (
     <section className="section page-shell">
-      <h1>Current projects.</h1>
-      <p className="page-lead">
-        Each game has its own page so the homepage stays clean while the projects get
-        room to grow.
-      </p>
-      <GamesGrid games={games} gamesStatus={gamesStatus} />
+      <h1>{t('currentProjects')}</h1>
+      <p className="page-lead">{t('gamesOverviewLead')}</p>
+      <GamesGrid games={games} gamesStatus={gamesStatus} t={t} />
     </section>
   );
 }
 
-function UpdatesPage({ games, gamesStatus }) {
+function UpdatesPage({ games, gamesStatus, t }) {
   const [blogPostsByGame, setBlogPostsByGame] = useState({});
   const [status, setStatus] = useState('loading');
 
@@ -238,26 +244,24 @@ function UpdatesPage({ games, gamesStatus }) {
   return (
     <section className="section updates-page">
       <div className="updates-hero">
-        <p className="eyebrow">Development blog</p>
-        <p className="page-lead">
-          All project posts in one place, sorted by newest update first.
-        </p>
+        <p className="eyebrow">{t('developmentBlog')}</p>
+        <p className="page-lead">{t('updatesLead')}</p>
         <hr className="updates-divider" />
       </div>
 
-      <section className="game-blog updates-blog" aria-label="All development updates">
+      <section className="game-blog updates-blog" aria-label={t('allDevelopmentUpdates')}>
         {status === 'loading' ? (
-          <p className="game-blog-empty">Fetching content from blog git repo...</p>
+          <p className="game-blog-empty">{t('fetchingBlogContent')}</p>
         ) : status === 'error' ? (
-          <p className="game-blog-empty">Could not load updates.</p>
+          <p className="game-blog-empty">{t('couldNotLoadUpdates')}</p>
         ) : posts.length === 0 ? (
-          <p className="game-blog-empty">No updates found.</p>
+          <p className="game-blog-empty">{t('noUpdatesFound')}</p>
         ) : (
           <div className="blog-posts">
             {posts.map(({ post, game }, index) => (
               <div key={`${game.slug}-${post.slug}`}>
                 {index > 0 && <hr className="blog-post-separator" />}
-                <BlogPost post={post} game={game} />
+                <BlogPost post={post} game={game} t={t} />
               </div>
             ))}
           </div>
@@ -267,29 +271,29 @@ function UpdatesPage({ games, gamesStatus }) {
   );
 }
 
-function GamesGrid({ games, gamesStatus }) {
+function GamesGrid({ games, gamesStatus, t }) {
   if (gamesStatus === 'loading') {
-    return <p className="games-list-status">Fetching games from blog git repo...</p>;
+    return <p className="games-list-status">{t('fetchingGames')}</p>;
   }
 
   if (gamesStatus === 'error') {
-    return <p className="games-list-status">Could not load games.</p>;
+    return <p className="games-list-status">{t('couldNotLoadGames')}</p>;
   }
 
   if (games.length === 0) {
-    return <p className="games-list-status">No games found.</p>;
+    return <p className="games-list-status">{t('noGamesFound')}</p>;
   }
 
   return (
-    <ul className="games-list" aria-label="Games list">
+    <ul className="games-list" aria-label={t('gamesList')}>
       {games.map((game) => (
-        <GameCard key={game.slug} game={game} />
+        <GameCard key={game.slug} game={game} t={t} />
       ))}
     </ul>
   );
 }
 
-function GameCard({ game }) {
+function GameCard({ game, t }) {
   const cardRef = useRef(null);
   const [imageMotion, setImageMotion] = useState({ offset: 0, scale: game.imageScale });
   const hasPreviewImages = game.imageWideSrc && game.imagePortraitSrc;
@@ -338,7 +342,7 @@ function GameCard({ game }) {
               />
             </picture>
           ) : (
-            <p className="game-image-missing">Failed to fetch game preview image.</p>
+            <p className="game-image-missing">{t('failedGamePreviewImage')}</p>
           )}
           <div className="game-image-overlay" />
         </Link>
@@ -346,12 +350,12 @@ function GameCard({ game }) {
       <div className="game-card-copy">
         <Link to={`/games/${game.slug}`} style={{ color: 'inherit', textDecoration: 'none' }}>
           <h3>{game.name}</h3>
-          <p>{game.teaser || 'Failed to fetch game description.'}</p>
+          <p>{game.teaser || t('failedGameDescription')}</p>
         </Link>
       </div>
       <div className="game-card-actions">
         <Link className="game-link" to={`/games/${game.slug}`}>
-          View game page
+          {t('viewGamePage')}
         </Link>
         {game.githubRepo && (
           <a
@@ -359,7 +363,7 @@ function GameCard({ game }) {
             href={game.githubUrl || `https://github.com/${game.githubRepo}`}
             target="_blank"
             rel="noreferrer"
-            aria-label={`${game.name} GitHub repository`}
+            aria-label={`${game.name} ${t('githubRepositoryLabel')}`}
           >
             <img
               className="game-github-logo"
@@ -374,7 +378,7 @@ function GameCard({ game }) {
   );
 }
 
-function GameDetailContainer({ game }) {
+function GameDetailContainer({ game, t }) {
   const hasPreviewImages = game.imageWideSrc && game.imagePortraitSrc;
 
   return (
@@ -386,14 +390,14 @@ function GameDetailContainer({ game }) {
         </picture>
       ) : (
         <div className="game-detail-hero-media game-detail-hero-missing">
-          <p>Failed to fetch game preview image.</p>
+          <p>{t('failedGamePreviewImage')}</p>
         </div>
       )}
       <div className="game-detail-hero-overlay" />
       <div className="game-detail-hero-copy">
         <div className="game-detail-copy-panel">
           <h1>{game.name}</h1>
-          <p className="page-lead">{game.mainDescription || 'Failed to fetch game description.'}</p>
+          <p className="page-lead">{game.mainDescription || t('failedGameDescription')}</p>
           {game.secondaryDescription && <p>{game.secondaryDescription}</p>}
         </div>
       </div>
@@ -401,14 +405,14 @@ function GameDetailContainer({ game }) {
   );
 }
 
-function GamePage({ games, gamesStatus }) {
+function GamePage({ games, gamesStatus, t }) {
   const { slug } = useParams();
 
   if (gamesStatus === 'loading') {
     return (
       <section className="section page-shell">
-        <h1>Loading game.</h1>
-        <p>Fetching the game folder from the blog git repo...</p>
+        <h1>{t('loadingGame')}</h1>
+        <p>{t('fetchingGameFolder')}</p>
       </section>
     );
   }
@@ -416,10 +420,10 @@ function GamePage({ games, gamesStatus }) {
   if (gamesStatus === 'error') {
     return (
       <section className="section page-shell">
-        <h1>Could not load games.</h1>
-        <p>The game folder list is unavailable right now.</p>
+        <h1>{t('couldNotLoadGames')}</h1>
+        <p>{t('gameFolderUnavailable')}</p>
         <Link className="text-link" to="/">
-          Back to homepage
+          {t('backToHomepage')}
         </Link>
       </section>
     );
@@ -430,10 +434,10 @@ function GamePage({ games, gamesStatus }) {
   if (!game) {
     return (
       <section className="section page-shell">
-        <h1>Game not found.</h1>
-        <p>This page does not exist yet.</p>
+        <h1>{t('gameNotFound')}</h1>
+        <p>{t('gamePageDoesNotExist')}</p>
         <Link className="text-link" to="/">
-          Back to homepage
+          {t('backToHomepage')}
         </Link>
       </section>
     );
@@ -441,17 +445,17 @@ function GamePage({ games, gamesStatus }) {
 
   return (
     <section className="section game-detail-page">
-      <GameDetailContainer game={game} />
-      <GameBlog game={game} />
+      <GameDetailContainer game={game} t={t} />
+      <GameBlog game={game} t={t} />
       <GitHubProject game={game} />
       <Link className="text-link" to="/">
-        Back to homepage
+        {t('backToHomepage')}
       </Link>
     </section>
   );
 }
 
-function AboutPage() {
+function AboutPage({ language, t }) {
   const [aboutUs, setAboutUs] = useState({ page: null, members: [] });
   const [status, setStatus] = useState('loading');
   const [errorMessage, setErrorMessage] = useState('');
@@ -461,7 +465,7 @@ function AboutPage() {
 
     setStatus('loading');
     setErrorMessage('');
-    fetchAboutUs()
+    fetchAboutUs(language)
       .then((nextAboutUs) => {
         if (isMounted) {
           setAboutUs(nextAboutUs);
@@ -481,19 +485,19 @@ function AboutPage() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [language]);
 
   const page = aboutUs.page || {};
   const aboutMarkdown = status === 'loading'
-    ? 'Fetching about-us content from blog git repo...'
+    ? t('fetchingAboutContent')
     : status === 'error'
       ? errorMessage
-      : page.body || 'Failed to fetch about-us page text.';
+      : page.body || t('failedAboutPageText');
 
   return (
     <section className="section about-page">
       <div className="about-hero">
-        <h1>{status === 'ready' ? page.title : 'About Us.'}</h1>
+        <h1>{status === 'ready' ? page.title : t('aboutFallbackTitle')}</h1>
         <div className="about-markdown page-lead">
           <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
             {aboutMarkdown}
@@ -505,11 +509,11 @@ function AboutPage() {
         <img src="/roadmapImage.png" alt="Wigum Gaming roadmap" />
       </figure>
 
-      <RoadmapSection className="about-roadmap-summary" />
+      <RoadmapSection className="about-roadmap-summary" language={language} t={t} />
 
       <section className="about-workflow-section" aria-labelledby="workflow-title">
-        <h2 id="workflow-title" className="about-section-title">Workflow</h2>
-        <div className="about-feature-grid" aria-label="Workflow">
+        <h2 id="workflow-title" className="about-section-title">{t('workflow')}</h2>
+        <div className="about-feature-grid" aria-label={t('workflow')}>
           <article className="about-feature-card">
             <div>
               <div className="about-feature-heading">
@@ -520,13 +524,9 @@ function AboutPage() {
                 />
                 <h2>Godot Engine</h2>
               </div>
-              <p>
-                Focused on cross-platform 2D and 3D game development using C#.
-                Godot is now our main engine, chosen for its open-source flexibility,
-                lightweight performance, modular workflow, and strong Linux support.
-              </p>
+              <p>{t('workflowGodotBody')}</p>
               <a className="about-feature-link" href="https://godotengine.org/" target="_blank" rel="noreferrer">
-                Visit Godot
+                {t('visitGodot')}
               </a>
             </div>
           </article>
@@ -541,13 +541,9 @@ function AboutPage() {
                 />
                 <h2>GitHub</h2>
               </div>
-              <p>
-                All development is version-controlled and publicly documented through
-                GitHub. You can follow updates, source code, and progress logs across
-                multiple projects, from experimental systems to playable demos.
-              </p>
+              <p>{t('workflowGithubBody')}</p>
               <a className="about-feature-link" href="https://github.com/OL3s" target="_blank" rel="noreferrer">
-                Visit GitHub
+                {t('visitGithub')}
               </a>
             </div>
           </article>
@@ -556,23 +552,23 @@ function AboutPage() {
 
       {status === 'ready' && page.releaseNote && <p className="about-release-note">{page.releaseNote}</p>}
 
-      <h2 className="about-section-title">Team</h2>
+      <h2 className="about-section-title">{t('team')}</h2>
       {status === 'loading' ? (
-        <p className="about-members-status">Fetching team members from blog git repo...</p>
+        <p className="about-members-status">{t('fetchingTeamMembers')}</p>
       ) : status === 'error' ? (
         <p className="about-members-status">{errorMessage}</p>
       ) : aboutUs.members.length === 0 ? (
-        <p className="about-members-status">Failed to fetch team members.</p>
+        <p className="about-members-status">{t('failedTeamMembers')}</p>
       ) : (
         <div className="about-members-list">
           {aboutUs.members.map((member) => (
-            <TeamMemberCard key={member.name} member={member} />
+            <TeamMemberCard key={member.name} member={member} t={t} />
           ))}
         </div>
       )}
 
       <Link className="text-link" to="/">
-        Back to homepage
+        {t('backToHomepage')}
       </Link>
     </section>
   );
@@ -603,20 +599,20 @@ function formatAboutUsError(error) {
     : 'Failed to fetch about-us content from GitHub.';
 }
 
-function TeamMemberCard({ member }) {
+function TeamMemberCard({ member, t }) {
   return (
     <article className="about-founder-card">
       {member.imageSrc ? (
         <img className="about-founder-image" src={member.imageSrc} alt={member.name} />
       ) : (
-        <div className="about-founder-image about-founder-image-missing">Failed to fetch member image.</div>
+        <div className="about-founder-image about-founder-image-missing">{t('failedMemberImage')}</div>
       )}
       <div>
         {member.role && <p className="eyebrow">{member.role}</p>}
-        <h2>{member.name || 'Failed to fetch member name.'}</h2>
+        <h2>{member.name || t('failedMemberName')}</h2>
         <div className="about-member-markdown">
           <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-            {member.body || 'Failed to fetch member text.'}
+            {member.body || t('failedMemberText')}
           </ReactMarkdown>
         </div>
       </div>
