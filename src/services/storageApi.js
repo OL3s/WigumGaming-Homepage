@@ -115,6 +115,21 @@ export async function getStorageEntry(path) {
 }
 
 export async function listStorageDirectory(path) {
+  const normalizeEntry = (entry) => ({
+    ...entry,
+    type: entry.type === 'dir' ? 'directory' : entry.type,
+  });
+
+  try {
+    const githubEntries = await fetchJson(contentApiUrl(path));
+
+    if (Array.isArray(githubEntries)) {
+      return githubEntries.map(normalizeEntry);
+    }
+  } catch (error) {
+    // Fall back to jsDelivr's package tree when GitHub is rate-limited or unavailable.
+  }
+
   const entry = await getStorageEntry(path);
-  return Array.isArray(entry?.files) ? entry.files : [];
+  return Array.isArray(entry?.files) ? entry.files.map(normalizeEntry) : [];
 }

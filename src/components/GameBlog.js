@@ -46,7 +46,7 @@ function GameBlog({ game, t }) {
     let isMounted = true;
 
     setStatus('loading');
-    fetchGameBlogPosts(game.slug)
+    fetchGameBlogPosts(game)
       .then((nextPosts) => {
         if (isMounted) {
           setPosts(nextPosts);
@@ -64,7 +64,7 @@ function GameBlog({ game, t }) {
     return () => {
       isMounted = false;
     };
-  }, [game.slug]);
+  }, [game]);
 
   return (
     <section className="game-blog" aria-label={t('developmentBlog')}>

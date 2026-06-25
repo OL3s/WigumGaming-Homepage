@@ -5,18 +5,18 @@ import App from './App';
 const routerFutureFlags = { v7_startTransition: true, v7_relativeSplatPath: true };
 
 const storageFiles = {
-  'games/singleplayer-roguelite/index.md': `---
+  'games/upcoming/singleplayer-roguelite/index.md': `---
 name: SingleplayerRoguelite
 ---
 `,
-  'games/multiplayer-arena/index.md': `---
+  'games/upcoming/multiplayer-arena/index.md': `---
 name: MultiplayerArena
 teaser: Shared short arena teaser.
 ---
 
 MultiplayerArena is built around short, tense PvP matches where destructible maps shape every round.
 `,
-  'games/multiplayer-arena/index.no.md': `---
+  'games/upcoming/multiplayer-arena/index.no.md': `---
 name: FlerspillerArena
 teaser: Kort norsk arenatekst.
 ---
@@ -40,13 +40,13 @@ image: placeholder-member.svg
 
 Member text **loaded** from storage.
 `,
-  'about-us/roadmap/index.md': `---
+  'roadmap/index.md': `---
 title: Roadmap
 ---
 
 A simple company-level roadmap loaded from storage.
 `,
-  'about-us/roadmap/001-first-step.md': `---
+  'roadmap/001-first-step.md': `---
 number: 1
 title: First roadmap step.
 ---
@@ -75,13 +75,17 @@ function gameDirectory(slug) {
 function storageTree() {
   return {
     files: [
-      directory('games', [gameDirectory('singleplayer-roguelite'), gameDirectory('multiplayer-arena')]),
+      directory('games', [
+        directory('finished', []),
+        directory('upcoming', [gameDirectory('singleplayer-roguelite'), gameDirectory('multiplayer-arena')]),
+        directory('planned', []),
+      ]),
       directory('about-us', [
         file('index.md'),
         directory('image', [file('placeholder-member.svg')]),
         directory('members', [file('ole-kristian-wigum.md')]),
-        directory('roadmap', [file('index.md'), file('001-first-step.md')]),
       ]),
+      directory('roadmap', [file('index.md'), file('001-first-step.md')]),
     ],
   };
 }
@@ -92,7 +96,7 @@ function mockStorageFetch() {
       return Promise.resolve({ ok: true, json: () => Promise.resolve([file('ole-kristian-wigum.md')]) });
     }
 
-    if (url === 'https://api.github.com/repos/OL3s/Blogg-Storage/contents/about-us/roadmap?ref=main') {
+    if (url === 'https://api.github.com/repos/OL3s/Blogg-Storage/contents/roadmap?ref=main') {
       return Promise.resolve({ ok: true, json: () => Promise.resolve([file('index.md'), file('001-first-step.md')]) });
     }
 
@@ -123,7 +127,7 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-test('renders homepage navigation and game links', async () => {
+test('renders homepage navigation and section links', async () => {
   render(
     <MemoryRouter initialEntries={['/']} future={routerFutureFlags}>
       <App />
@@ -131,13 +135,25 @@ test('renders homepage navigation and game links', async () => {
   );
 
   expect(screen.getByRole('link', { name: /home/i })).toBeInTheDocument();
-  expect(screen.getByText(/fetching games/i)).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: /cross-platform games built to scale/i })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: /optimized 3d and 2d that run broadly/i })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: /flexible controls across devices/i })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: /exponential difficulty curves/i })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: /teamplay should feel rewarded/i })).toBeInTheDocument();
+  expect(screen.getByRole('img', { name: /low-poly and sprite-based game art placeholder/i })).toBeInTheDocument();
+  expect(screen.getByRole('img', { name: /tv connected to three landscape phones as controllers placeholder/i })).toBeInTheDocument();
+  expect(screen.getByRole('img', { name: /exponential difficulty curve placeholder/i })).toBeInTheDocument();
+  expect(screen.getByRole('img', { name: /players joining together without a steep difficulty spike placeholder/i })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /games browse the current game projects/i })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /tools open practical production references/i })).toBeInTheDocument();
+  expect(await screen.findByText('Roadmap')).toBeInTheDocument();
+  expect(await screen.findByRole('heading', { name: 'First roadmap step.' })).toBeInTheDocument();
   expect(await screen.findByRole('link', { name: 'SingleplayerRoguelite' })).toBeInTheDocument();
 });
 
-test('renders loaded homepage game links', async () => {
+test('renders loaded games page links', async () => {
   render(
-    <MemoryRouter initialEntries={['/']} future={routerFutureFlags}>
+    <MemoryRouter initialEntries={['/games']} future={routerFutureFlags}>
       <App />
     </MemoryRouter>
   );
@@ -146,6 +162,28 @@ test('renders loaded homepage game links', async () => {
   expect(screen.getByRole('link', { name: 'MultiplayerArena' })).toBeInTheDocument();
   expect(screen.getAllByRole('link', { name: /view game page/i })).toHaveLength(2);
   expect(screen.getAllByRole('link', { name: /about us/i })).toHaveLength(2);
+});
+
+test('renders tools page with blender sheet', async () => {
+  render(
+    <MemoryRouter initialEntries={['/tools']} future={routerFutureFlags}>
+      <App />
+    </MemoryRouter>
+  );
+
+  expect(screen.getByRole('heading', { name: /production tools/i })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Godot Engine' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: '.NET SDK' })).toBeInTheDocument();
+  expect(screen.queryByRole('heading', { name: 'GitHub' })).not.toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'GitHub CLI' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Aseprite' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Roblox Studio' })).toBeInTheDocument();
+  expect(screen.getByText('sudo apt install dotnet-sdk-8.0')).toBeInTheDocument();
+  expect(screen.getAllByRole('link', { name: /^download$/i })).toHaveLength(10);
+  expect(screen.getByRole('link', { name: /steam page/i })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /preview/i })).toHaveAttribute('href', '/sheet-blender.svg');
+  expect(screen.getByRole('img', { name: /blender keyboard shortcut reference sheet/i })).toHaveAttribute('src', '/sheet-blender.svg');
+  expect(await screen.findByRole('link', { name: 'SingleplayerRoguelite' })).toBeInTheDocument();
 });
 
 test('renders a game page from its route', async () => {
@@ -180,7 +218,11 @@ test('renders games overview route', async () => {
     </MemoryRouter>
   );
 
-  expect(screen.getByRole('heading', { name: /current projects/i })).toBeInTheDocument();
+  expect(screen.getByText(/upcoming games/i)).toBeInTheDocument();
+  expect(screen.getByText(/finished games/i)).toBeInTheDocument();
+  expect(screen.getByText(/game ideas/i)).toBeInTheDocument();
+  expect(await screen.findByText(/no finished games yet/i)).toBeInTheDocument();
+  expect(await screen.findByText(/no planned game ideas listed yet/i)).toBeInTheDocument();
   expect(await screen.findByRole('link', { name: 'MultiplayerArena' })).toBeInTheDocument();
   expect(screen.getAllByRole('link', { name: /view game page/i })).toHaveLength(2);
 });
@@ -216,9 +258,14 @@ test('renders about page from storage content', async () => {
   expect(await screen.findByText(/Wigum Gaming is/)).toBeInTheDocument();
   expect(screen.getAllByText('loaded')).toHaveLength(2);
   expect(screen.getByRole('heading', { name: 'New section loaded from storage.' })).toBeInTheDocument();
-  expect(await screen.findByText('Roadmap')).toBeInTheDocument();
-  expect(screen.getByRole('heading', { name: 'First roadmap step.' })).toBeInTheDocument();
-  expect(screen.getByText(/Roadmap item text loaded from storage/)).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Blender' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Inkscape' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Aseprite' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: '.NET SDK' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Git' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'GitHub CLI' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'VS Code' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Roblox' })).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'Ole Kristian Wigum' })).toBeInTheDocument();
   expect(screen.getByText(/Member text/)).toBeInTheDocument();
 });
