@@ -182,6 +182,7 @@ test('renders tools page with blender sheet', async () => {
   expect(screen.getAllByRole('link', { name: /^download$/i })).toHaveLength(10);
   expect(screen.getByRole('link', { name: /steam page/i })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: /preview/i })).toHaveAttribute('href', '/sheet-blender.svg');
+  expect(screen.getAllByRole('link', { name: /^download$/i }).at(-1)).toHaveAttribute('href', '/sheet-blender.png');
   expect(screen.getByRole('img', { name: /blender keyboard shortcut reference sheet/i })).toHaveAttribute('src', '/sheet-blender.svg');
   expect(await screen.findByRole('link', { name: 'SingleplayerRoguelite' })).toBeInTheDocument();
 });

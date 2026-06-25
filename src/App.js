@@ -375,7 +375,7 @@ function ToolsPage({ t }) {
             <a className="production-tool-link" href="/sheet-blender.svg" target="_blank" rel="noreferrer">
               {t('preview')}
             </a>
-            <a className="production-tool-link" href="/sheet-blender.svg" download>
+            <a className="production-tool-link" href="/sheet-blender.png" download>
               {t('download')}
             </a>
           </span>
