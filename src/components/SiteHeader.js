@@ -39,6 +39,8 @@ function SiteHeader({ games, gamesStatus, language, onLanguageChange, t }) {
         <div className="site-nav-group site-nav-group-primary">
           <nav className="site-nav" aria-label={t('sitePages')}>
             <NavLink to="/" onClick={() => setIsMenuOpen(false)}>{t('home')}</NavLink>
+            <NavLink to="/games" onClick={() => setIsMenuOpen(false)}>{t('games')}</NavLink>
+            <NavLink to="/tools" onClick={() => setIsMenuOpen(false)}>{t('tools')}</NavLink>
             <NavLink to="/updates" onClick={() => setIsMenuOpen(false)}>{t('updates')}</NavLink>
             <NavLink to="/about" onClick={() => setIsMenuOpen(false)}>{t('aboutUs')}</NavLink>
           </nav>

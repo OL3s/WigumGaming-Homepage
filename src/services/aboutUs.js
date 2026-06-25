@@ -5,7 +5,8 @@ import { parseFrontMatter } from './markdown';
 const ABOUT_ROOT = 'about-us';
 const ABOUT_IMAGE_FOLDER = 'image';
 const ABOUT_MEMBERS_FOLDER = 'members';
-const ABOUT_ROADMAP_FOLDER = 'roadmap';
+const ROADMAP_ROOT = 'roadmap';
+const LEGACY_ROADMAP_ROOT = `${ABOUT_ROOT}/roadmap`;
 
 const aboutUsCache = new Map();
 const roadmapCache = new Map();
@@ -59,8 +60,8 @@ async function fetchMembers(language) {
   );
 }
 
-async function fetchRoadmapIndex(language) {
-  const fileContent = await fetchLocalizedRawText(`${ABOUT_ROOT}/${ABOUT_ROADMAP_FOLDER}/index.md`, language);
+async function fetchRoadmapIndex(rootPath, language) {
+  const fileContent = await fetchLocalizedRawText(`${rootPath}/index.md`, language);
   const { data, body } = parseFrontMatter(fileContent);
 
   return {
@@ -69,8 +70,8 @@ async function fetchRoadmapIndex(language) {
   };
 }
 
-async function fetchRoadmapItem(fileName, language) {
-  const fileContent = await fetchLocalizedRawText(`${ABOUT_ROOT}/${ABOUT_ROADMAP_FOLDER}/${fileName}`, language);
+async function fetchRoadmapItem(rootPath, fileName, language) {
+  const fileContent = await fetchLocalizedRawText(`${rootPath}/${fileName}`, language);
   const { data, body } = parseFrontMatter(fileContent);
   const number = Number.parseInt(data.number, 10);
 
@@ -88,17 +89,21 @@ export async function fetchRoadmap(language = 'en') {
   }
 
   const roadmapPromise = (async () => {
-    const roadmapPath = `${ABOUT_ROOT}/${ABOUT_ROADMAP_FOLDER}`;
+    const preferredEntries = await fetchJson(contentApiUrl(ROADMAP_ROOT));
+    const preferredRoadmapEntries = Array.isArray(preferredEntries)
+      ? preferredEntries
+      : await listStorageDirectory(ROADMAP_ROOT);
+    const roadmapPath = preferredRoadmapEntries.length > 0 ? ROADMAP_ROOT : LEGACY_ROADMAP_ROOT;
     const [page, entries] = await Promise.all([
-      fetchRoadmapIndex(language),
-      fetchJson(contentApiUrl(roadmapPath)),
+      fetchRoadmapIndex(roadmapPath, language),
+      roadmapPath === ROADMAP_ROOT ? Promise.resolve(preferredRoadmapEntries) : fetchJson(contentApiUrl(roadmapPath)),
     ]);
     const roadmapEntries = Array.isArray(entries) ? entries : await listStorageDirectory(roadmapPath);
 
     const items = await Promise.all(
       roadmapEntries
         .filter((entry) => isDefaultMarkdownFile(entry) && entry.name !== 'index.md')
-        .map((entry) => fetchRoadmapItem(entry.name, language))
+        .map((entry) => fetchRoadmapItem(roadmapPath, entry.name, language))
     );
 
     return {

@@ -65,10 +65,11 @@ function App() {
 
       <main>
         <Routes>
-          <Route path="/" element={<HomePage games={games} gamesStatus={gamesStatus} t={t} />} />
+          <Route path="/" element={<HomePage language={language} t={t} />} />
           <Route path="/updates" element={<UpdatesPage games={games} gamesStatus={gamesStatus} t={t} />} />
           <Route path="/games" element={<GamesPage games={games} gamesStatus={gamesStatus} t={t} />} />
           <Route path="/games/:slug" element={<GamePage games={games} gamesStatus={gamesStatus} t={t} />} />
+          <Route path="/tools" element={<ToolsPage t={t} />} />
           <Route path="/about" element={<AboutPage language={language} t={t} />} />
         </Routes>
       </main>
@@ -76,15 +77,147 @@ function App() {
   );
 }
 
-function HomePage({ games, gamesStatus, t }) {
+function HomePage({ language, t }) {
+  const focusCardRefs = useRef([]);
+  const [visibleFocusCards, setVisibleFocusCards] = useState(() => new Set());
+  const focusSections = [
+    {
+      label: t('homeLowPolyLabel'),
+      title: t('homeLowPolyTitle'),
+      body: t('homeLowPolyBody'),
+      image: '/low-poly-placeholder.svg',
+      imageAlt: t('homeLowPolyImageAlt'),
+    },
+    {
+      label: t('homeControlsLabel'),
+      title: t('homeControlsTitle'),
+      body: t('homeControlsBody'),
+      image: '/flexible-controls-placeholder.svg',
+      imageAlt: t('homeControlsImageAlt'),
+    },
+    {
+      label: t('homeDesignLabel'),
+      title: t('homeDesignTitle'),
+      body: t('homeDesignBody'),
+      image: '/difficulty-loop-placeholder.svg',
+      imageAlt: t('homeDesignImageAlt'),
+    },
+    {
+      label: t('homeTeamplayLabel'),
+      title: t('homeTeamplayTitle'),
+      body: t('homeTeamplayBody'),
+      image: '/teamplay-placeholder.svg',
+      imageAlt: t('homeTeamplayImageAlt'),
+    },
+  ];
+  const featuredLinks = [
+    { to: '/games', title: t('games'), body: t('homeGamesCard'), icon: 'games' },
+    { to: '/tools', title: t('tools'), body: t('homeToolsCard'), icon: 'tools' },
+    { to: '/updates', title: t('updates'), body: t('homeUpdatesCard'), icon: 'updates' },
+  ];
+
+  useEffect(() => {
+    const cards = focusCardRefs.current.filter(Boolean);
+
+    if (cards.length === 0) {
+      return undefined;
+    }
+
+    if (typeof IntersectionObserver !== 'function') {
+      setVisibleFocusCards(new Set(cards.map((_, index) => index)));
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const visibleIndex = Number(entry.target.dataset.focusIndex);
+
+            if (Number.isFinite(visibleIndex)) {
+              setVisibleFocusCards((current) => {
+                if (current.has(visibleIndex)) {
+                  return current;
+                }
+
+                const next = new Set(current);
+                next.add(visibleIndex);
+                return next;
+              });
+            }
+          }
+        });
+      },
+      { rootMargin: '0px 0px -18% 0px', threshold: 0.2 }
+    );
+
+    cards.forEach((card) => observer.observe(card));
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section className="section home-page">
+      <div className="home-hero">
+        <p className="eyebrow">Wigum Gaming</p>
+        <h1>{t('homeTitle')}</h1>
+        <p className="page-lead">{t('homeLead')}</p>
+      </div>
+
+      <div className="home-focus-stack" aria-label={t('companyFocus')}>
+        {focusSections.map((section, index) => (
+          <section
+            key={section.title}
+            data-focus-index={index}
+            ref={(element) => {
+              focusCardRefs.current[index] = element;
+            }}
+            className={`home-focus-card ${visibleFocusCards.has(index) ? 'is-visible' : ''}`}
+          >
+            <div>
+              <p className="eyebrow">{section.label}</p>
+              <h2>{section.title}</h2>
+              <p>{section.body}</p>
+            </div>
+            {section.image && <img src={section.image} alt={section.imageAlt} />}
+          </section>
+        ))}
+      </div>
+
+      <div className="home-feature-grid" aria-label={t('homepageSections')}>
+        {featuredLinks.map((link) => (
+          <Link key={link.to} className="home-feature-card" to={link.to}>
+            <HomeFeatureIcon name={link.icon} />
+            <span>{link.title}</span>
+            <p>{link.body}</p>
+          </Link>
+        ))}
+      </div>
+
+      <section className="home-about-prompt">
+        <p>{t('moreAboutUsPrompt')}</p>
+        <Link className="text-link" to="/about">
+          {t('aboutUs')}
+        </Link>
+      </section>
+
+      <RoadmapSection language={language} t={t} />
+    </section>
+  );
+}
+
+function GamesPage({ games, gamesStatus, t }) {
+  const gamesByCategory = {
+    finished: games.filter((game) => game.category === 'finished'),
+    upcoming: games.filter((game) => game.category === 'upcoming'),
+    planned: games.filter((game) => game.category === 'planned'),
+  };
+
   return (
     <div className="home-stack">
-      <section className="games-section" id="games">
-        <div className="home-games-divider">
-          <span>{t('upcomingGames')}</span>
-        </div>
-        <GamesGrid games={games} gamesStatus={gamesStatus} t={t} />
-      </section>
+      <GameCategorySection title={t('finishedGames')} games={gamesByCategory.finished} gamesStatus={gamesStatus} emptyLabel={t('noFinishedGamesFound')} t={t} />
+      <GameCategorySection title={t('upcomingGames')} games={gamesByCategory.upcoming} gamesStatus={gamesStatus} emptyLabel={t('noUpcomingGamesFound')} t={t} />
+      <GameCategorySection title={t('plannedGameIdeas')} games={gamesByCategory.planned} gamesStatus={gamesStatus} emptyLabel={t('noPlannedGamesFound')} t={t} />
 
       <section className="home-footer-prompt">
         <p>{t('aboutTeamPrompt')}</p>
@@ -93,6 +226,162 @@ function HomePage({ games, gamesStatus, t }) {
         </Link>
       </section>
     </div>
+  );
+}
+
+function GameCategorySection({ title, games, gamesStatus, emptyLabel, t }) {
+  return (
+    <section className="games-section" id={title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}>
+      <div className="home-games-divider">
+        <span>{title}</span>
+      </div>
+      <GamesGrid games={games} gamesStatus={gamesStatus} emptyLabel={emptyLabel} t={t} />
+    </section>
+  );
+}
+
+function HomeFeatureIcon({ name }) {
+  if (name === 'games') {
+    return (
+      <svg className="home-feature-icon" viewBox="0 0 64 64" aria-hidden="true">
+        <rect x="8" y="20" width="48" height="28" rx="10" />
+        <path d="M20 34h12M26 28v12" />
+        <circle cx="42" cy="31" r="2" />
+        <circle cx="48" cy="37" r="2" />
+      </svg>
+    );
+  }
+
+  if (name === 'tools') {
+    return (
+      <svg className="home-feature-icon" viewBox="0 0 64 64" aria-hidden="true">
+        <path d="m22 42 20-20" />
+        <path d="m38 18 8-8 8 8-8 8Z" />
+        <path d="M18 26 8 16l8-8 10 10" />
+        <path d="M20 44 12 52" />
+        <circle cx="46" cy="46" r="8" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg className="home-feature-icon" viewBox="0 0 64 64" aria-hidden="true">
+      <path d="M14 14h36v36H14Z" />
+      <path d="M22 24h20M22 32h20M22 40h12" />
+      <path d="M46 10v12h12" />
+    </svg>
+  );
+}
+
+function ToolsPage({ t }) {
+  const productionTools = [
+    {
+      name: 'Godot Engine',
+      icon: 'https://godotengine.org/assets/press/icon_color.svg',
+      linuxCommand: 'flatpak install flathub org.godotengine.Godot',
+      windowsUrl: 'https://godotengine.org/download/windows/',
+    },
+    {
+      name: '.NET SDK',
+      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dot-net/dot-net-original.svg',
+      linuxCommand: 'sudo apt install dotnet-sdk-8.0',
+      windowsUrl: 'https://dotnet.microsoft.com/download',
+    },
+    {
+      name: 'Git',
+      icon: 'https://git-scm.com/images/logos/downloads/Git-Icon-1788C.svg',
+      linuxCommand: 'sudo apt install git',
+      windowsUrl: 'https://git-scm.com/download/win',
+    },
+    {
+      name: 'GitHub CLI',
+      icon: 'https://cli.github.com/assets/images/favicon.svg',
+      linuxCommand: 'sudo apt install gh',
+      windowsUrl: 'https://cli.github.com/',
+    },
+    {
+      name: 'VS Code',
+      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg',
+      linuxCommand: 'sudo snap install code --classic',
+      windowsUrl: 'https://code.visualstudio.com/Download',
+    },
+    {
+      name: 'Blender',
+      icon: 'https://www.blender.org/wp-content/uploads/2020/07/blender_logo_no_socket.svg',
+      linuxCommand: 'flatpak install flathub org.blender.Blender',
+      windowsUrl: 'https://www.blender.org/download/',
+    },
+    {
+      name: 'Inkscape',
+      icon: 'https://media.inkscape.org/static/images/inkscape-logo.svg',
+      linuxCommand: 'flatpak install flathub org.inkscape.Inkscape',
+      windowsUrl: 'https://inkscape.org/release/',
+    },
+    {
+      name: 'Aseprite',
+      icon: 'https://www.aseprite.org/assets/images/aseprite.png',
+      linuxCommand: 'flatpak install flathub org.aseprite.Aseprite',
+      windowsUrl: 'https://www.aseprite.org/download/',
+      extraUrl: 'https://store.steampowered.com/app/431730/Aseprite/',
+    },
+    {
+      name: 'Roblox Studio',
+      icon: 'https://upload.wikimedia.org/wikipedia/commons/6/6c/Roblox_Studio_Icon.png',
+      linuxCommand: 'Roblox Studio is Windows/macOS-first. On Linux, use a Windows VM or compatibility tooling if needed.',
+      windowsUrl: 'https://create.roblox.com/docs/studio/setup',
+    },
+  ];
+
+  return (
+    <section className="section tools-page">
+      <div className="tools-hero">
+        <p className="eyebrow">{t('tools')}</p>
+        <h1>{t('toolsTitle')}</h1>
+        <p className="page-lead">{t('toolsLead')}</p>
+      </div>
+
+      <section className="production-tools" aria-label={t('productionTools')}>
+        <p className="tools-install-lead">{t('toolsInstallLead')}</p>
+        <div className="production-tools-grid">
+          {productionTools.map((tool) => (
+            <article key={tool.name} className="production-tool-card">
+              <div className="production-tool-heading">
+                <img className="production-tool-icon" src={tool.icon} alt={`${tool.name} icon`} />
+                <h2>{tool.name}</h2>
+              </div>
+              <div className="production-tool-install">
+                <span>{t('linuxCommand')}</span>
+                <code>{tool.linuxCommand}</code>
+              </div>
+              <a className="production-tool-link" href={tool.windowsUrl} target="_blank" rel="noreferrer">
+                <img className="production-tool-link-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/windows8/windows8-original.svg" alt="" />
+                {t('download')}
+              </a>
+              {tool.extraUrl && (
+                <a className="production-tool-link production-tool-link-secondary" href={tool.extraUrl} target="_blank" rel="noreferrer">
+                  {t('steamDownload')}
+                </a>
+              )}
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <figure className="tool-sheet-card">
+        <img className="tool-sheet-preview" src="/sheet-blender.svg" alt={t('sheetBlenderAlt')} />
+        <figcaption>
+          <span>{t('sheetBlenderCaption')}</span>
+          <span className="tool-sheet-actions">
+            <a className="production-tool-link" href="/sheet-blender.svg" target="_blank" rel="noreferrer">
+              {t('preview')}
+            </a>
+            <a className="production-tool-link" href="/sheet-blender.svg" download>
+              {t('download')}
+            </a>
+          </span>
+        </figcaption>
+      </figure>
+    </section>
   );
 }
 
@@ -198,16 +487,6 @@ function RoadmapSection({ className = 'roadmap-section', language = 'en', t }) {
   );
 }
 
-function GamesPage({ games, gamesStatus, t }) {
-  return (
-    <section className="section page-shell">
-      <h1>{t('currentProjects')}</h1>
-      <p className="page-lead">{t('gamesOverviewLead')}</p>
-      <GamesGrid games={games} gamesStatus={gamesStatus} t={t} />
-    </section>
-  );
-}
-
 function UpdatesPage({ games, gamesStatus, t }) {
   const [blogPostsByGame, setBlogPostsByGame] = useState({});
   const [status, setStatus] = useState('loading');
@@ -215,12 +494,25 @@ function UpdatesPage({ games, gamesStatus, t }) {
   useEffect(() => {
     let isMounted = true;
 
-    if (gamesStatus !== 'ready') {
+    if (gamesStatus === 'loading') {
+      setStatus('loading');
+      return undefined;
+    }
+
+    if (gamesStatus === 'error') {
+      setBlogPostsByGame({});
+      setStatus('error');
+      return undefined;
+    }
+
+    if (games.length === 0) {
+      setBlogPostsByGame({});
+      setStatus('ready');
       return undefined;
     }
 
     setStatus('loading');
-    fetchBlogPostsByGame(games.map((game) => game.slug))
+    fetchBlogPostsByGame(games)
       .then((nextBlogPostsByGame) => {
         if (isMounted) {
           setBlogPostsByGame(nextBlogPostsByGame);
@@ -274,7 +566,7 @@ function UpdatesPage({ games, gamesStatus, t }) {
   );
 }
 
-function GamesGrid({ games, gamesStatus, t }) {
+function GamesGrid({ games, gamesStatus, emptyLabel, t }) {
   if (gamesStatus === 'loading') {
     return <p className="games-list-status">{t('fetchingGames')}</p>;
   }
@@ -284,7 +576,7 @@ function GamesGrid({ games, gamesStatus, t }) {
   }
 
   if (games.length === 0) {
-    return <p className="games-list-status">{t('noGamesFound')}</p>;
+    return <p className="games-list-status">{emptyLabel || t('noGamesFound')}</p>;
   }
 
   return (
@@ -511,12 +803,6 @@ function AboutPage({ language, t }) {
         </div>
       </div>
 
-      <figure className="about-roadmap">
-        <img src="/roadmapImage.png" alt="Wigum Gaming roadmap" />
-      </figure>
-
-      <RoadmapSection className="about-roadmap-summary" language={language} t={t} />
-
       <section className="about-workflow-section" aria-labelledby="workflow-title">
         <h2 id="workflow-title" className="about-section-title">{t('workflow')}</h2>
         <div className="about-feature-grid" aria-label={t('workflow')}>
@@ -533,6 +819,142 @@ function AboutPage({ language, t }) {
               <p>{t('workflowGodotBody')}</p>
               <a className="about-feature-link" href="https://godotengine.org/" target="_blank" rel="noreferrer">
                 {t('visitGodot')}
+              </a>
+            </div>
+          </article>
+
+          <article className="about-feature-card">
+            <div>
+              <div className="about-feature-heading">
+                <img
+                  className="about-feature-logo"
+                  src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Roblox_Logo_2022.jpg"
+                  alt="Roblox logo"
+                />
+                <h2>Roblox</h2>
+              </div>
+              <p>{t('workflowRobloxBody')}</p>
+              <a className="about-feature-link" href="https://create.roblox.com/" target="_blank" rel="noreferrer">
+                {t('visitRoblox')}
+              </a>
+            </div>
+          </article>
+
+          <article className="about-feature-card">
+            <div>
+              <div className="about-feature-heading">
+                <img
+                  className="about-feature-logo"
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dot-net/dot-net-original.svg"
+                  alt=".NET SDK logo"
+                />
+                <h2>.NET SDK</h2>
+              </div>
+              <p>{t('workflowDotnetBody')}</p>
+              <a className="about-feature-link" href="https://dotnet.microsoft.com/download" target="_blank" rel="noreferrer">
+                {t('visitDotnet')}
+              </a>
+            </div>
+          </article>
+
+          <article className="about-feature-card">
+            <div>
+              <div className="about-feature-heading">
+                <img
+                  className="about-feature-logo"
+                  src="https://git-scm.com/images/logos/downloads/Git-Icon-1788C.svg"
+                  alt="Git logo"
+                />
+                <h2>Git</h2>
+              </div>
+              <p>{t('workflowGitBody')}</p>
+              <a className="about-feature-link" href="https://git-scm.com/" target="_blank" rel="noreferrer">
+                {t('visitGit')}
+              </a>
+            </div>
+          </article>
+
+          <article className="about-feature-card">
+            <div>
+              <div className="about-feature-heading">
+                <img
+                  className="about-feature-logo"
+                  src="https://cli.github.com/assets/images/favicon.svg"
+                  alt="GitHub CLI logo"
+                />
+                <h2>GitHub CLI</h2>
+              </div>
+              <p>{t('workflowGithubCliBody')}</p>
+              <a className="about-feature-link" href="https://cli.github.com/" target="_blank" rel="noreferrer">
+                {t('visitGithubCli')}
+              </a>
+            </div>
+          </article>
+
+          <article className="about-feature-card">
+            <div>
+              <div className="about-feature-heading">
+                <img
+                  className="about-feature-logo"
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg"
+                  alt="VS Code logo"
+                />
+                <h2>VS Code</h2>
+              </div>
+              <p>{t('workflowVscodeBody')}</p>
+              <a className="about-feature-link" href="https://code.visualstudio.com/" target="_blank" rel="noreferrer">
+                {t('visitVscode')}
+              </a>
+            </div>
+          </article>
+
+          <article className="about-feature-card">
+            <div>
+              <div className="about-feature-heading">
+                <img
+                  className="about-feature-logo"
+                  src="https://www.aseprite.org/assets/images/aseprite.png"
+                  alt="Aseprite logo"
+                />
+                <h2>Aseprite</h2>
+              </div>
+              <p>{t('workflowAsepriteBody')}</p>
+              <a className="about-feature-link" href="https://www.aseprite.org/" target="_blank" rel="noreferrer">
+                {t('visitAseprite')}
+              </a>
+            </div>
+          </article>
+
+          <article className="about-feature-card">
+            <div>
+              <div className="about-feature-heading">
+                <img
+                  className="about-feature-logo"
+                  src="https://media.inkscape.org/static/images/inkscape-logo.svg"
+                  alt="Inkscape logo"
+                />
+                <h2>Inkscape</h2>
+              </div>
+              <p>{t('workflowInkscapeBody')}</p>
+              <a className="about-feature-link" href="https://inkscape.org/" target="_blank" rel="noreferrer">
+                {t('visitInkscape')}
+              </a>
+            </div>
+          </article>
+
+          <article className="about-feature-card">
+            <div>
+              <div className="about-feature-heading">
+                <img
+                  className="about-feature-logo"
+                  src="https://www.blender.org/wp-content/uploads/2020/07/blender_logo_no_socket.svg"
+                  alt="Blender logo"
+                />
+                <h2>Blender</h2>
+              </div>
+              <p>{t('workflowBlenderBody')}</p>
+              <a className="about-feature-link" href="https://www.blender.org/" target="_blank" rel="noreferrer">
+                {t('visitBlender')}
               </a>
             </div>
           </article>

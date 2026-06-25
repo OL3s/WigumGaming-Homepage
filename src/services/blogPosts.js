@@ -1,4 +1,4 @@
-import { BLOG_STORAGE_ROOT, fetchRawText, listStorageDirectory } from './storageApi';
+import { fetchRawText, listStorageDirectory } from './storageApi';
 import { parseFrontMatter } from './markdown';
 
 const postsCache = new Map();
@@ -18,8 +18,8 @@ function dateFromFileName(fileName) {
   return match ? match[1] : '';
 }
 
-async function fetchMarkdownPost(gameSlug, fileName) {
-  const fileContent = await fetchRawText(`${BLOG_STORAGE_ROOT}/${gameSlug}/blog/${fileName}`);
+async function fetchMarkdownPost(game, fileName) {
+  const fileContent = await fetchRawText(`${game.contentPath}/blog/${fileName}`);
   const { data, body } = parseFrontMatter(fileContent);
 
   return {
@@ -31,18 +31,24 @@ async function fetchMarkdownPost(gameSlug, fileName) {
   };
 }
 
-export async function fetchGameBlogPosts(gameSlug) {
-  if (postsCache.has(gameSlug)) {
-    return postsCache.get(gameSlug);
+export async function fetchGameBlogPosts(game) {
+  if (!game?.contentPath) {
+    return [];
+  }
+
+  const cacheKey = game.contentPath || game.slug;
+
+  if (postsCache.has(cacheKey)) {
+    return postsCache.get(cacheKey);
   }
 
   const postsPromise = (async () => {
-    const entries = await listStorageDirectory(`${BLOG_STORAGE_ROOT}/${gameSlug}/blog`);
+    const entries = await listStorageDirectory(`${game.contentPath}/blog`);
 
     const posts = await Promise.all(
       entries
         .filter((entry) => entry.type === 'file' && entry.name.toLowerCase().endsWith('.md'))
-        .map((entry) => fetchMarkdownPost(gameSlug, entry.name))
+        .map((entry) => fetchMarkdownPost(game, entry.name))
     );
 
     return posts.sort((a, b) => {
@@ -51,13 +57,13 @@ export async function fetchGameBlogPosts(gameSlug) {
     });
   })();
 
-  postsCache.set(gameSlug, postsPromise);
+  postsCache.set(cacheKey, postsPromise);
   return postsPromise;
 }
 
-export async function fetchBlogPostsByGame(gameSlugs) {
+export async function fetchBlogPostsByGame(games) {
   const entries = await Promise.all(
-    gameSlugs.map(async (gameSlug) => [gameSlug, await fetchGameBlogPosts(gameSlug)])
+    games.map(async (game) => [game.slug, await fetchGameBlogPosts(game)])
   );
 
   return Object.fromEntries(entries);
