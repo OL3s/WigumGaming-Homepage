@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-labelledby="title desc">
+  <title id="title">Difficulty loop placeholder</title>
+  <desc id="desc">An exponential difficulty curve rising over time.</desc>
+  <rect width="640" height="480" fill="#080c09"/>
+  <path d="M84 374h472" stroke="#d7ffe0" stroke-opacity="0.18" stroke-width="4"/>
+  <path d="M112 356C220 350 308 310 360 234c42-62 70-116 152-126" fill="none" stroke="#70de89" stroke-width="12" stroke-linecap="round"/>
+  <path d="M112 356C220 350 308 310 360 234c42-62 70-116 152-126" fill="none" stroke="#d7ffe0" stroke-opacity="0.45" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="144" cy="350" r="22" fill="#1e6a37" stroke="#70de89" stroke-width="4"/>
+  <circle cx="228" cy="330" r="22" fill="#245f36" stroke="#70de89" stroke-width="4"/>
+  <circle cx="328" cy="270" r="22" fill="#2f8a4b" stroke="#70de89" stroke-width="4"/>
+  <circle cx="452" cy="136" r="22" fill="#70de89" stroke="#d7ffe0" stroke-width="4"/>
+  <g stroke="#d7ffe0" stroke-opacity="0.16" stroke-width="3">
+    <path d="M114 326h410M114 278h410M114 230h410M114 182h410M114 134h410"/>
+    <path d="M160 112v262M240 112v262M320 112v262M400 112v262M480 112v262"/>
+  </g>
+  <path d="M128 348c64-2 122-16 170-54 64-50 86-144 188-184" fill="none" stroke="#d7ffe0" stroke-opacity="0.25" stroke-width="18" stroke-linecap="round"/>
+  <path d="M128 348c64-2 122-16 170-54 64-50 86-144 188-184" fill="none" stroke="#70de89" stroke-width="10" stroke-linecap="round"/>
+  <path d="M506 104 544 90l-14 38" fill="none" stroke="#70de89" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

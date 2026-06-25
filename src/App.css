@@ -254,6 +254,302 @@ main {
   gap: 1.5rem;
 }
 
+.home-page,
+.tools-page {
+  padding-top: clamp(3rem, 8vw, 7rem);
+}
+
+.home-hero,
+.tools-hero {
+  width: min(62rem, calc(100% - 4rem));
+  margin: 0 auto;
+}
+
+.home-hero h1,
+.tools-hero h1 {
+  max-width: 56rem;
+  margin: 0;
+  font-size: clamp(3rem, 10vw, 7.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.06em;
+}
+
+.home-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  width: min(62rem, calc(100% - 4rem));
+  margin: clamp(2rem, 5vw, 4rem) auto 0;
+}
+
+.home-focus-stack {
+  width: min(62rem, calc(100% - 4rem));
+  margin: clamp(3rem, 7vw, 6rem) auto 0;
+  display: grid;
+  gap: clamp(2.5rem, 7vw, 6rem);
+}
+
+.home-focus-card {
+  --card-offset: 0rem;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(14rem, 0.65fr);
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  padding: clamp(1.4rem, 3vw, 2.4rem);
+  min-height: clamp(22rem, 48vw, 34rem);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-left: 3px solid #56c271;
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at top right, rgba(86, 194, 113, 0.16), transparent 42%),
+    linear-gradient(90deg, rgba(86, 194, 113, 0.1), transparent 58%),
+    rgba(255, 255, 255, 0.035);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+  opacity: 0;
+  transform: translate3d(var(--card-offset), 2.5rem, 0) scale(0.96);
+  transition:
+    opacity 520ms ease,
+    transform 640ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 520ms ease,
+    box-shadow 520ms ease;
+  will-change: opacity, transform;
+}
+
+.home-focus-card.is-visible {
+  opacity: 1;
+  transform: translate3d(var(--card-offset), 0, 0) scale(1);
+  border-color: rgba(86, 194, 113, 0.38);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.34), 0 0 0 1px rgba(86, 194, 113, 0.08);
+}
+
+.home-focus-card:nth-child(even) {
+  --card-offset: 1.5rem;
+}
+
+.home-focus-card:nth-child(odd) {
+  --card-offset: -1.5rem;
+}
+
+.home-focus-card h2 {
+  max-width: 46rem;
+  margin: 0;
+  font-size: clamp(2.2rem, 5vw, 4.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.home-focus-card p:not(.eyebrow) {
+  max-width: 56rem;
+  margin: 1.1rem 0 0;
+  color: #d5ecd9;
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  line-height: 1.7;
+}
+
+.home-focus-card img {
+  width: 100%;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.home-about-prompt {
+  width: min(62rem, calc(100% - 4rem));
+  margin: 2rem auto 0;
+  color: #c6e3cd;
+  text-align: center;
+}
+
+.home-about-prompt p {
+  margin: 0 0 0.6rem;
+}
+
+.home-feature-card {
+  min-height: 13rem;
+  padding: 1.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at top right, rgba(86, 194, 113, 0.16), transparent 42%),
+    rgba(255, 255, 255, 0.04);
+  color: #f4fcf6;
+  text-decoration: none;
+  transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+}
+
+.home-feature-icon {
+  display: block;
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 1.2rem;
+  color: #56c271;
+  fill: rgba(86, 194, 113, 0.12);
+  stroke: currentColor;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.home-feature-card:hover {
+  border-color: rgba(86, 194, 113, 0.52);
+  background:
+    radial-gradient(circle at top right, rgba(86, 194, 113, 0.24), transparent 42%),
+    rgba(255, 255, 255, 0.07);
+  transform: translateY(-3px);
+}
+
+.home-feature-card span {
+  display: block;
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.home-feature-card p {
+  margin: 1rem 0 0;
+  color: #c6e3cd;
+  line-height: 1.6;
+}
+
+.production-tools {
+  width: min(70rem, calc(100% - 4rem));
+  margin: clamp(2rem, 5vw, 4rem) auto 0;
+}
+
+.tools-install-lead {
+  max-width: 52rem;
+  margin: 0 0 1.25rem;
+  color: #c6e3cd;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.production-tools-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.production-tool-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at top right, rgba(86, 194, 113, 0.12), transparent 42%),
+    rgba(255, 255, 255, 0.04);
+}
+
+.production-tool-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.production-tool-icon {
+  flex: 0 0 auto;
+  width: 3rem;
+  height: 3rem;
+  object-fit: contain;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 0.45rem;
+}
+
+.production-tool-heading h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.production-tool-install {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.production-tool-install span {
+  color: #56c271;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.production-tool-install code {
+  display: block;
+  min-height: 3.3rem;
+  padding: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.26);
+  color: #f4fcf6;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.production-tool-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: auto;
+  color: #56c271;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.production-tool-link-icon {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.production-tool-link-secondary {
+  margin-top: -0.45rem;
+  font-size: 0.92rem;
+}
+
+.production-tool-link:hover {
+  color: #ffffff;
+}
+
+.tool-sheet-card {
+  width: min(70rem, calc(100% - 4rem));
+  margin: clamp(2rem, 5vw, 4rem) auto 0;
+  padding: clamp(0.8rem, 2vw, 1.4rem);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 28px;
+  background:
+    linear-gradient(135deg, rgba(86, 194, 113, 0.12), transparent 40%),
+    rgba(255, 255, 255, 0.04);
+}
+
+.tool-sheet-preview {
+  display: block;
+  width: min(28rem, 100%);
+  height: auto;
+  max-height: 18rem;
+  object-fit: contain;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.tool-sheet-card figcaption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.9rem;
+  color: #c6e3cd;
+  font-size: 0.95rem;
+}
+
+.tool-sheet-actions {
+  display: inline-flex;
+  gap: 1rem;
+}
+
 .home-footer-prompt,
 .page-shell h1 {
   padding-left: 2rem;
@@ -1275,57 +1571,74 @@ main {
 
 .about-feature-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(2rem, 5vw, 4rem);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
 }
 
 .about-feature-card {
   position: relative;
   display: flex;
-  min-height: 0;
-  padding: 1rem;
-  align-items: flex-end;
-  overflow: hidden;
+  min-height: 21rem;
+  padding: 1.25rem;
+  align-items: stretch;
+  overflow: visible;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at top right, rgba(86, 194, 113, 0.1), transparent 42%),
+    rgba(255, 255, 255, 0.035);
 }
 
 .about-feature-card > div {
   position: relative;
   z-index: 1;
-  max-width: 38rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
 }
 
 .about-feature-heading {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 0.9rem;
+  min-width: 0;
 }
 
 .about-feature-logo {
   flex: 0 0 auto;
-  width: clamp(4rem, 8vw, 6rem);
-  height: clamp(4rem, 8vw, 6rem);
+  width: 3.5rem;
+  height: 3.5rem;
   object-fit: contain;
-  border-radius: 20px;
+  border-radius: 16px;
   background: rgba(255, 255, 255, 0.92);
-  padding: 0.75rem;
+  padding: 0.55rem;
 }
 
 .about-feature-card h2,
 .about-founder-card h2 {
   margin: 0;
-  font-size: clamp(2rem, 4vw, 4rem);
-  line-height: 0.98;
-  letter-spacing: -0.04em;
+  font-size: clamp(1.45rem, 2.3vw, 2.35rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  overflow-wrap: anywhere;
 }
 
 .about-feature-card p,
 .about-founder-card p {
+  color: #c6e3cd;
+  line-height: 1.55;
   text-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
+}
+
+.about-feature-card p {
+  margin: 1rem 0 0;
 }
 
 .about-feature-link {
   display: inline-block;
-  margin-top: 1.25rem;
+  align-self: flex-start;
+  margin-top: auto;
   padding: 0.85rem 1.1rem;
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 999px;
@@ -1419,7 +1732,31 @@ main {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .home-focus-card {
+    opacity: 1;
+    transform: translate3d(var(--card-offset), 0, 0) scale(1);
+    transition: none;
+  }
+}
+
 @media (max-width: 760px) {
+  .home-feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-focus-card {
+    position: relative;
+    top: auto;
+    grid-template-columns: 1fr;
+    min-height: 0;
+    transform: none !important;
+  }
+
+  .production-tools-grid {
+    grid-template-columns: 1fr;
+  }
+
   .about-feature-grid,
   .about-roadmap-steps,
   .about-founder-card {
@@ -1457,6 +1794,13 @@ main {
   .game-blog,
   .github-panel,
   .github-panel-compact,
+  .home-hero,
+  .home-feature-grid,
+  .home-focus-stack,
+  .home-about-prompt,
+  .production-tools,
+  .tools-hero,
+  .tool-sheet-card,
   .home-games-divider,
   .game-card-content,
   .game-detail-hero-copy,

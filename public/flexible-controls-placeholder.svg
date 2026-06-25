@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-labelledby="title desc">
+  <title id="title">TV and phone gamepad placeholder</title>
+  <desc id="desc">A TV connected to three landscape phones used as controllers.</desc>
+  <rect width="640" height="480" fill="#080c09"/>
+  <defs>
+    <linearGradient id="panel" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#234f31"/>
+      <stop offset="1" stop-color="#0d1710"/>
+    </linearGradient>
+  </defs>
+  <rect x="82" y="62" width="380" height="230" rx="24" fill="url(#panel)" stroke="#70de89" stroke-opacity="0.55" stroke-width="5"/>
+  <rect x="112" y="92" width="320" height="170" rx="16" fill="#101a13"/>
+  <rect x="492" y="92" width="70" height="196" rx="14" fill="url(#panel)" stroke="#70de89" stroke-opacity="0.55" stroke-width="5"/>
+  <circle cx="527" cy="250" r="9" fill="#70de89"/>
+  <path d="M512 124h30M512 146h30" stroke="#d7ffe0" stroke-opacity="0.3" stroke-width="6" stroke-linecap="round"/>
+  <path d="M220 318h104M272 292v26" stroke="#70de89" stroke-width="10" stroke-linecap="round"/>
+  <g fill="none" stroke="#70de89" stroke-width="7" stroke-linecap="round" stroke-dasharray="12 14">
+    <path d="M180 292c-24 20-44 42-60 66"/>
+    <path d="M272 292v66"/>
+    <path d="M364 292c24 20 44 42 60 66"/>
+  </g>
+  <g fill="url(#panel)" stroke="#70de89" stroke-opacity="0.82" stroke-width="4">
+    <rect x="34" y="340" width="172" height="82" rx="18"/>
+    <rect x="234" y="340" width="172" height="82" rx="18"/>
+    <rect x="434" y="340" width="172" height="82" rx="18"/>
+  </g>
+  <g fill="#101a13" stroke="#70de89" stroke-opacity="0.22" stroke-width="2">
+    <rect x="56" y="352" width="128" height="58" rx="10"/>
+    <rect x="256" y="352" width="128" height="58" rx="10"/>
+    <rect x="456" y="352" width="128" height="58" rx="10"/>
+  </g>
+  <g fill="#d7ffe0" fill-opacity="0.5">
+    <circle cx="194" cy="381" r="4"/>
+    <circle cx="394" cy="381" r="4"/>
+    <circle cx="594" cy="381" r="4"/>
+  </g>
+  <path d="M172 138h200M172 178h156M172 218h188" stroke="#d7ffe0" stroke-opacity="0.28" stroke-width="12" stroke-linecap="round"/>
+</svg>

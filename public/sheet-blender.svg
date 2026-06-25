@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="2048" height="1152" viewBox="0 0 2048 1152" role="img" aria-labelledby="title desc">
+  <title id="title">Blender Low-Poly Modeling Shortcut Overlay</title>
+  <desc id="desc">A widescreen nested SVG cheat sheet for Blender modeling, navigation, transform, modes, selection, and cleanup shortcuts.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1020"/>
+      <stop offset="0.55" stop-color="#111827"/>
+      <stop offset="1" stop-color="#172033"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1d2840"/>
+      <stop offset="1" stop-color="#121a2b"/>
+    </linearGradient>
+    <style>
+      .font { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .panel { fill: url(#panel); stroke: #334155; stroke-width: 2; }
+      .panel-modeling { fill: #18233a; stroke: #3b82f6; stroke-opacity: 0.28; }
+      .panel-navigation { fill: #17213a; stroke: #8b5cf6; stroke-opacity: 0.30; }
+      .panel-modes { fill: #201a3a; stroke: #a855f7; stroke-opacity: 0.34; }
+      .panel-transform { fill: #241c2f; stroke: #f97316; stroke-opacity: 0.32; }
+      .panel-selection { fill: #211f32; stroke: #facc15; stroke-opacity: 0.30; }
+      .heading { fill: #f8fafc; font-size: 32px; font-weight: 800; letter-spacing: 2px; }
+      .subtitle { fill: #94a3b8; font-size: 18px; font-weight: 500; }
+      .section { fill: #67e8f9; font-size: 20px; font-weight: 800; letter-spacing: 1.4px; }
+      .key { fill: #e2e8f0; font-size: 16px; font-weight: 800; }
+      .label { fill: #cbd5e1; font-size: 18px; font-weight: 550; }
+      .badge { fill: #0f172a; stroke: #475569; stroke-width: 1.2; }
+      .rule { stroke: #334155; stroke-width: 1; opacity: 0.85; }
+      .note { fill: #fde68a; font-size: 24px; font-weight: 800; }
+      .mental { fill: #c4b5fd; font-size: 20px; font-weight: 650; }
+    </style>
+  </defs>
+
+  <rect width="2048" height="1152" fill="url(#bg)"/>
+  <text class="font" x="48" y="32" fill="#64748b" font-size="16" font-weight="700">BLENDER LOW-POLY MODELING OVERLAY</text>
+
+  <svg x="48" y="48" width="880" height="1056" viewBox="0 0 880 1056" class="font">
+    <rect class="panel panel-modeling" x="0" y="0" width="880" height="1056" rx="26"/>
+    <text class="heading" x="32" y="54">MODELING</text>
+    <text class="subtitle" x="32" y="88">Main low-poly shape building</text>
+    <line class="rule" x1="440" y1="126" x2="440" y2="928"/>
+
+    <g id="create">
+      <text class="section" x="48" y="154">CREATE</text>
+      <g transform="translate(48 174)"><image xlink:href="icons/extrude.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="70" height="32"/><text class="key" x="79" y="20" text-anchor="middle">E</text><text class="label" x="132" y="20">Extrude</text></g>
+      <g transform="translate(48 212)"><image xlink:href="icons/inset.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="70" height="32"/><text class="key" x="79" y="20" text-anchor="middle">I</text><text class="label" x="132" y="20">Inset</text></g>
+      <g transform="translate(48 250)"><image xlink:href="icons/fill.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="70" height="32"/><text class="key" x="79" y="20" text-anchor="middle">F</text><text class="label" x="132" y="20">Fill / Make Face</text></g>
+      <g transform="translate(48 288)"><image xlink:href="icons/duplicate.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="104" height="32"/><text class="key" x="96" y="20" text-anchor="middle">Shift+D</text><text class="label" x="166" y="20">Duplicate</text></g>
+    </g>
+
+    <g id="shape">
+      <text class="section" x="464" y="154">SHAPE</text>
+      <g transform="translate(464 174)"><image xlink:href="icons/pull.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="70" height="32"/><text class="key" x="79" y="20" text-anchor="middle">G</text><text class="label" x="132" y="20">Pull / Move</text></g>
+      <g transform="translate(464 212)"><image xlink:href="icons/thicken.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="70" height="32"/><text class="key" x="79" y="20" text-anchor="middle">S</text><text class="label" x="132" y="20">Thin / Thicken</text></g>
+      <g transform="translate(464 250)"><image xlink:href="icons/angle.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="70" height="32"/><text class="key" x="79" y="20" text-anchor="middle">R</text><text class="label" x="132" y="20">Angle Parts</text></g>
+      <g transform="translate(464 288)"><image xlink:href="icons/shrink-fatten.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="86" height="32"/><text class="key" x="87" y="20" text-anchor="middle">Alt+S</text><text class="label" x="148" y="20">Shrink/Fatten</text></g>
+      <g transform="translate(464 326)"><image xlink:href="icons/to-sphere.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="142" height="32"/><text class="key" x="115" y="20" text-anchor="middle">Shift+Alt+S</text><text class="label" x="204" y="20">To Sphere</text></g>
+      <g transform="translate(464 364)"><image xlink:href="icons/proportional-edit.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="70" height="32"/><text class="key" x="79" y="20" text-anchor="middle">O</text><text class="label" x="132" y="20">Proportional Edit</text></g>
+      <g transform="translate(464 402)"><image xlink:href="icons/slide.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="70" height="32"/><text class="key" x="79" y="20" text-anchor="middle">G G</text><text class="label" x="132" y="20">Slide</text></g>
+    </g>
+
+    <g id="cut">
+      <line class="rule" x1="48" y1="512" x2="832" y2="512"/>
+      <text class="section" x="48" y="568">CUT</text>
+      <g transform="translate(48 590)"><image xlink:href="icons/loop-cut.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="96" height="32"/><text class="key" x="92" y="20" text-anchor="middle">Ctrl+R</text><text class="label" x="158" y="20">Loop Cut</text></g>
+      <g transform="translate(48 628)"><image xlink:href="icons/knife.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="70" height="32"/><text class="key" x="79" y="20" text-anchor="middle">K</text><text class="label" x="132" y="20">Knife</text></g>
+      <g transform="translate(48 666)"><image xlink:href="icons/bevel.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="96" height="32"/><text class="key" x="92" y="20" text-anchor="middle">Ctrl+B</text><text class="label" x="158" y="20">Bevel</text></g>
+      <g transform="translate(48 704)"><image xlink:href="icons/vertex-bevel.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="132" height="32"/><text class="key" x="110" y="20" text-anchor="middle">Shift+Ctrl+B</text><text class="label" x="190" y="20">Vertex Bevel</text></g>
+    </g>
+
+    <g id="clean-fix">
+      <text class="section" x="464" y="568">CLEAN / FIX</text>
+      <g transform="translate(464 590)"><image xlink:href="icons/merge.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="70" height="32"/><text class="key" x="79" y="20" text-anchor="middle">M</text><text class="label" x="132" y="20">Merge</text></g>
+      <g transform="translate(464 628)"><image xlink:href="icons/delete.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="70" height="32"/><text class="key" x="79" y="20" text-anchor="middle">X</text><text class="label" x="132" y="20">Delete</text></g>
+      <g transform="translate(464 666)"><image xlink:href="icons/split.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="70" height="32"/><text class="key" x="79" y="20" text-anchor="middle">Y</text><text class="label" x="132" y="20">Split</text></g>
+      <g transform="translate(464 704)"><image xlink:href="icons/rip.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="70" height="32"/><text class="key" x="79" y="20" text-anchor="middle">V</text><text class="label" x="132" y="20">Rip</text></g>
+      <g transform="translate(464 742)"><image xlink:href="icons/rip-fill.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="86" height="32"/><text class="key" x="87" y="20" text-anchor="middle">Alt+V</text><text class="label" x="148" y="20">Rip + Fill</text></g>
+      <g transform="translate(464 780)"><image xlink:href="icons/fill-hole.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="86" height="32"/><text class="key" x="87" y="20" text-anchor="middle">Alt+F</text><text class="label" x="148" y="20">Fill Hole</text></g>
+      <g transform="translate(464 818)"><image xlink:href="icons/tris-quads.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="86" height="32"/><text class="key" x="87" y="20" text-anchor="middle">Alt+J</text><text class="label" x="148" y="20">Tris to Quads</text></g>
+      <g transform="translate(464 856)"><image xlink:href="icons/normals.svg" width="26" height="26"/><rect class="badge" x="44" y="-3" width="86" height="32"/><text class="key" x="87" y="20" text-anchor="middle">Alt+N</text><text class="label" x="148" y="20">Normals</text></g>
+    </g>
+  </svg>
+
+  <svg x="956" y="48" width="500" height="1056" viewBox="0 0 500 1056" class="font">
+    <svg x="0" y="0" width="500" height="640" viewBox="0 0 500 640">
+      <rect class="panel panel-navigation" x="0" y="0" width="500" height="640" rx="26"/>
+      <text class="heading" x="32" y="54">NAVIGATION</text>
+      <text class="subtitle" x="32" y="88">View control</text>
+      <g transform="translate(48 126)"><image xlink:href="icons/orbit.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="86" height="36"/><text class="key" x="89" y="22" text-anchor="middle">MMB</text><text class="label" x="152" y="22">Orbit</text></g>
+      <g transform="translate(48 174)"><image xlink:href="icons/pan.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="132" height="36"/><text class="key" x="112" y="22" text-anchor="middle">Shift+MMB</text><text class="label" x="198" y="22">Pan</text></g>
+      <g transform="translate(48 222)"><image xlink:href="icons/zoom.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="90" height="36"/><text class="key" x="91" y="22" text-anchor="middle">Scroll</text><text class="label" x="156" y="22">Zoom</text></g>
+      <line class="rule" x1="48" y1="282" x2="452" y2="282"/>
+      <g transform="translate(48 316)"><image xlink:href="icons/front.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="112" height="36"/><text class="key" x="102" y="22" text-anchor="middle">Numpad 1</text><text class="label" x="178" y="22">Front</text></g>
+      <g transform="translate(48 364)"><image xlink:href="icons/side.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="112" height="36"/><text class="key" x="102" y="22" text-anchor="middle">Numpad 3</text><text class="label" x="178" y="22">Side</text></g>
+      <g transform="translate(48 412)"><image xlink:href="icons/top.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="112" height="36"/><text class="key" x="102" y="22" text-anchor="middle">Numpad 7</text><text class="label" x="178" y="22">Top</text></g>
+      <g transform="translate(48 460)"><image xlink:href="icons/camera.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="112" height="36"/><text class="key" x="102" y="22" text-anchor="middle">Numpad 0</text><text class="label" x="178" y="22">Camera</text></g>
+      <g transform="translate(48 508)"><image xlink:href="icons/focus.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="112" height="36"/><text class="key" x="102" y="22" text-anchor="middle">Numpad .</text><text class="label" x="178" y="22">Focus</text></g>
+      <g transform="translate(48 556)"><image xlink:href="icons/isolate.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="112" height="36"/><text class="key" x="102" y="22" text-anchor="middle">Numpad /</text><text class="label" x="178" y="22">Isolate</text></g>
+    </svg>
+
+    <svg x="0" y="668" width="500" height="388" viewBox="0 0 500 388">
+      <rect class="panel panel-modes" x="0" y="0" width="500" height="388" rx="26"/>
+      <text class="heading" x="32" y="54">MODES</text>
+      <text class="subtitle" x="32" y="88">Edit level control</text>
+      <g transform="translate(48 126)"><image xlink:href="icons/tab-mode.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="70" height="36"/><text class="key" x="81" y="22" text-anchor="middle">Tab</text><text class="label" x="136" y="22">Object/Edit</text></g>
+      <g transform="translate(48 174)"><image xlink:href="icons/vertex.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="70" height="36"/><text class="key" x="81" y="22" text-anchor="middle">1</text><text class="label" x="136" y="22">Vertex</text></g>
+      <g transform="translate(48 222)"><image xlink:href="icons/edge.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="70" height="36"/><text class="key" x="81" y="22" text-anchor="middle">2</text><text class="label" x="136" y="22">Edge</text></g>
+      <g transform="translate(48 270)"><image xlink:href="icons/face.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="70" height="36"/><text class="key" x="81" y="22" text-anchor="middle">3</text><text class="label" x="136" y="22">Face</text></g>
+      <g transform="translate(48 318)"><image xlink:href="icons/mode-menu.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="104" height="36"/><text class="key" x="98" y="22" text-anchor="middle">Ctrl+Tab</text><text class="label" x="170" y="22">Mode Menu</text></g>
+    </svg>
+  </svg>
+
+  <svg x="1484" y="48" width="516" height="1056" viewBox="0 0 516 1056" class="font">
+    <svg x="0" y="0" width="516" height="412" viewBox="0 0 516 412">
+      <rect class="panel panel-transform" x="0" y="0" width="516" height="412" rx="26"/>
+      <text class="heading" x="32" y="54">TRANSFORM</text>
+      <text class="subtitle" x="32" y="88">Move / rotate / scale</text>
+      <g transform="translate(48 126)"><image xlink:href="icons/move.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="70" height="36"/><text class="key" x="81" y="22" text-anchor="middle">G</text><text class="label" x="136" y="22">Move</text></g>
+      <g transform="translate(48 174)"><image xlink:href="icons/rotate.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="70" height="36"/><text class="key" x="81" y="22" text-anchor="middle">R</text><text class="label" x="136" y="22">Rotate</text></g>
+      <g transform="translate(48 222)"><image xlink:href="icons/scale.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="70" height="36"/><text class="key" x="81" y="22" text-anchor="middle">S</text><text class="label" x="136" y="22">Scale</text></g>
+      <g transform="translate(48 270)"><image xlink:href="icons/axis-lock.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="86" height="36"/><text class="key" x="89" y="22" text-anchor="middle">X/Y/Z</text><text class="label" x="152" y="22">Axis lock</text></g>
+      <g transform="translate(48 318)"><image xlink:href="icons/snap.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="76" height="36"/><text class="key" x="84" y="22" text-anchor="middle">Ctrl</text><text class="label" x="142" y="22">Snap</text></g>
+      <g transform="translate(48 366)"><image xlink:href="icons/apply.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="88" height="36"/><text class="key" x="90" y="22" text-anchor="middle">Ctrl+A</text><text class="label" x="154" y="22">Apply</text></g>
+      <text class="note" x="300" y="158">QUICK RULE</text>
+      <text class="label" x="300" y="198">G/R/S -> Axis</text>
+      <text class="label" x="300" y="226">-> Number</text>
+    </svg>
+
+    <svg x="0" y="432" width="516" height="624" viewBox="0 0 516 624">
+      <rect class="panel panel-selection" x="0" y="0" width="516" height="624" rx="26"/>
+      <text class="heading" x="32" y="54">SELECTION / CLEANUP</text>
+      <text class="subtitle" x="32" y="88">Select / hide / fix</text>
+      <g transform="translate(48 126)"><image xlink:href="icons/select-all.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="70" height="36"/><text class="key" x="81" y="22" text-anchor="middle">A</text><text class="label" x="136" y="22">Select all</text></g>
+      <g transform="translate(48 174)"><image xlink:href="icons/deselect.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="86" height="36"/><text class="key" x="89" y="22" text-anchor="middle">Alt+A</text><text class="label" x="152" y="22">Deselect</text></g>
+      <g transform="translate(48 222)"><image xlink:href="icons/edge-loop.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="104" height="36"/><text class="key" x="98" y="22" text-anchor="middle">Alt+Click</text><text class="label" x="170" y="22">Edge Loop</text></g>
+      <g transform="translate(48 270)"><image xlink:href="icons/hide.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="70" height="36"/><text class="key" x="81" y="22" text-anchor="middle">H</text><text class="label" x="136" y="22">Hide</text></g>
+      <g transform="translate(48 318)"><image xlink:href="icons/unhide.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="86" height="36"/><text class="key" x="89" y="22" text-anchor="middle">Alt+H</text><text class="label" x="152" y="22">Unhide</text></g>
+      <g transform="translate(48 366)"><image xlink:href="icons/isolate-selection.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="96" height="36"/><text class="key" x="94" y="22" text-anchor="middle">Shift+H</text><text class="label" x="162" y="22">Isolate</text></g>
+      <g transform="translate(48 414)"><image xlink:href="icons/delete-dissolve.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="70" height="36"/><text class="key" x="81" y="22" text-anchor="middle">X</text><text class="label" x="136" y="22">Delete/Dissolve</text></g>
+      <g transform="translate(48 462)"><image xlink:href="icons/merge-selected.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="70" height="36"/><text class="key" x="81" y="22" text-anchor="middle">M</text><text class="label" x="136" y="22">Merge selected</text></g>
+      <g transform="translate(48 510)"><image xlink:href="icons/normals-menu.svg" width="30" height="30"/><rect class="badge" x="46" y="-3" width="86" height="36"/><text class="key" x="89" y="22" text-anchor="middle">Alt+N</text><text class="label" x="152" y="22">Normals menu</text></g>
+    </svg>
+  </svg>
+</svg>
