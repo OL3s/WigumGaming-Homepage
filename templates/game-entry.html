@@ -8,14 +8,13 @@
     <h2 id="{{slug}}-title">{{title}}</h2>
     <p>{{One or two sentences about what the player actually does.}}</p>
     <div class="links">
-      <div class="play-group">
-        <a class="play" href="{{play_url}}">Play in browser <span aria-hidden="true">→</span></a>
-      </div>
+      <a class="play" href="{{play_url}}">Play in browser <span aria-hidden="true">→</span></a>
       <a href="{{game_homepage}}">Game website</a>
     </div>
     <details class="game-details">
       <summary>Game details</summary>
       <dl class="specs">
+        <!-- For numbered releases, add a Game version row using the deployed build's version image. -->
         <dt>Platforms</dt>
         <dd>
           <a href="{{play_url}}"><svg aria-hidden="true"><use href="art/catalog.svg#browser"/></svg>Browser</a>
