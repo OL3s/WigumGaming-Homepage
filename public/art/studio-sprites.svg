@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 320 180">
+  <defs>
+    <linearGradient id="ground" x2=".85" y2="1">
+      <stop stop-color="#263e37"/><stop offset="1" stop-color="#101f21"/>
+    </linearGradient>
+    <pattern id="dots" width="8" height="8" patternUnits="userSpaceOnUse">
+      <path fill="#bad4b7" opacity=".1" d="M2 2h1v1H2z"/>
+    </pattern>
+    <pattern id="check" width="8" height="8" patternUnits="userSpaceOnUse">
+      <path fill="#263d37" d="M0 0h8v8H0z"/><path fill="#2d433c" d="M0 0h4v4H0zm4 4h4v4H4z"/>
+    </pattern>
+    <g id="fir">
+      <path fill="#27392e" d="M9 19h6v9h-6z"/><path fill="#8d6841" d="M10 20h2v7h-2z"/>
+      <path fill="#163b32" d="M10 0h3v3h2v4h2v2h-2v2h3v3h2v2h-2v2h3v3h2v2h-3v1H3v-1H0v-2h2v-3h3v-2H3v-2h2v-3h3V9H6V7h2V4h2z"/>
+      <path fill="#4f8258" d="M10 1h2v5h2v2h-4V7H8V5h2zm-2 9h3v2H9v2H6v1H4v-1h2v-3h2zm-3 8h4v1h4v2H9v1H3v1H1v-2h2v-2h2z"/>
+      <path fill="#325e48" d="M12 8h3v2h-3zm-1 5h4v2h3v1h-6v1H9v-2h2zm4 5h3v2h2v2h-4v-1h-3v-2h2z"/>
+      <path fill="#92ad6b" d="M10 3h1v3H9V5h1zm-3 8h2v1H7zm-2 8h3v1H5z"/>
+    </g>
+    <g id="rock">
+      <path fill="#273a36" d="M0 7h2V4h3V2h7v2h3v2h2v5h-3v2H3v-2H0z"/>
+      <path fill="#718475" d="M2 6h3V3h6v1h3v3h-3v2H3V8H2z"/><path fill="#abb79a" d="M4 5h2V3h5v2H8v1H4z"/>
+      <path fill="#51685e" d="M3 9h8V7h3V6h2v4h-4v2H4z"/>
+    </g>
+    <g id="lamp">
+      <path fill="#352e28" d="M3 0h5v1h2v4H8V2H3v3H1V1h2zm-1 5h7v2h2v2H9v6h1v2H1v-2h1V9H0V7h2z"/>
+      <path fill="#c6873e" d="M3 5h5v2H3zM1 7h9v1H1zm1 8h7v1H2z"/>
+      <path fill="#f4ac42" d="M3 9h5v5H3z"/><path fill="#ffe29a" d="M4 9h3v4H4z"/>
+    </g>
+    <g id="tent">
+      <path fill="#483b2c" d="M0 19h2v-3h2v-3h2v-3h2V7h2V4h2V1h2v1h14v2h2v4h2v5h2v5h2v3H0z"/>
+      <path fill="#ce913f" d="M14 4h13v2h2v4h2v5h2v3H21v-4h-2v-4h-3V6h-2z"/>
+      <path fill="#efbb68" d="M12 4h2v3h2v4h2v3h2v5h-3v-6h-2V9h-2V7h-1v3h-2v4H8v4H4v-2h2v-3h2v-3h2V7h2z"/>
+      <path fill="#514431" d="M11 12h3v4h2v3H8v-3h2v-2h1z"/>
+      <path fill="#b27138" d="M22 6h2v2h2v4h2v4h2v2h-4v-5h-2V9h-2z"/>
+    </g>
+    <path id="tuft" fill="#a7ac68" d="M0 3h1v1h1V1h1v2h2V0h1v3H5v2H1V4H0z"/>
+    <g id="coat">
+      <path fill="#443726" d="M4 6h10v5h-1v3h-3v1h3v2h1v7H4v-2H1v-8h2v-2h3V9H4z"/>
+      <path fill="#bb7440" d="M5 4h1V2h2V1h3v1h2v3h2v2H4V5h1z"/>
+      <path fill="#efb56b" d="M7 3h2V2h2v2H7z"/><path fill="#995939" d="M3 6h12v2H3z"/>
+      <path fill="#e0ad75" d="M8 8h6v3h1v1h-2v2H9v-2H7v-2h1z"/><path fill="#433c31" d="M12 9h1v1h-1z"/>
+      <path fill="#658261" d="M5 14h3v1h3v1h2v5H5z"/><path fill="#adc297" d="M8 15h3v1h2v2h-3v-1H8z"/>
+      <path fill="#9b6540" d="M2 14h3v1h1v6H2z"/><path fill="#d79a59" d="M2 15h3v2H2z"/>
+      <path fill="#e6b276" d="M10 19h3v3h-3z"/><path fill="#34544c" d="M5 21h5v2h2v1H5z"/>
+    </g>
+    <g id="stride">
+      <path fill="#293b37" d="M4 22h8v2h2v2h2v2h-4v-1h-1v-2H8v2H6v1H2v-2h2z"/>
+      <path fill="#b08553" d="M1 27h5v2H1zm12-1h3v1h2v2h-5z"/>
+      <use href="#coat"/>
+    </g>
+    <g id="step">
+      <path fill="#30423b" d="M5 22h7v4h-2v3H7v-4H5z"/><path fill="#bf8d53" d="M7 27h4v1h2v2H7z"/>
+      <use href="#coat" y="1"/>
+    </g>
+  </defs>
+  <path fill="url(#ground)" d="M0 0h320v180H0z"/><path fill="url(#dots)" d="M0 0h320v180H0z"/>
+  <!-- Two texture pages laid on a work surface. -->
+  <g transform="translate(10 29) rotate(-6 60 40)">
+    <path fill="#101f1c" d="M3 4h116v86H3z"/><path fill="#597468" d="M0 0h116v85H0z"/>
+    <path fill="url(#check)" d="M2 9h112v74H2z"/><path fill="#172f2c" d="M1 1h114v7H1z"/>
+    <path fill="#80a28c" d="M5 3h16v2H5z"/><path fill="#d49b56" d="M104 3h3v2h-3z"/><path fill="#adc69c" d="M109 3h3v2h-3z"/>
+    <path fill="none" stroke="#52685c" stroke-width=".7" d="M39 9v74m37-74v74M2 45h112"/>
+    <use href="#fir" x="9" y="12"/><use href="#lamp" transform="translate(50 16) scale(1.4)"/>
+    <use href="#rock" transform="translate(82 18) scale(1.45)"/><use href="#tent" transform="translate(4 54) scale(.92)"/>
+    <use href="#tuft" transform="translate(53 59) scale(2)"/><use href="#fir" transform="translate(85 48) scale(.96)"/>
+  </g>
+  <g transform="translate(24 95) rotate(3 57 25)">
+    <path fill="#0e1b19" d="M3 4h112v49H3z"/><path fill="#89a698" d="M0 0h112v49H0z"/>
+    <path fill="url(#check)" d="M1 8h110v40H1z"/><path fill="#28453f" d="M1 1h110v6H1z"/>
+    <path fill="#9bb99c" d="M4 3h12v2H4z"/><path fill="#e7b36a" d="M101 3h3v2h-3z"/><path fill="#a3b696" d="M106 3h3v2h-3z"/>
+    <path fill="none" stroke="#5c7061" stroke-width=".7" d="M37 8v40M74 8v40"/>
+    <use href="#stride" transform="translate(8 11) scale(1.15)"/>
+    <use href="#step" transform="translate(45 10) scale(1.15)"/>
+    <use href="#stride" transform="translate(82 12) scale(1.12)"/>
+  </g>
+  <!-- The same assets assembled into a small playable-looking clearing. -->
+  <path fill="#10251f" d="m165 118 73-43 70 39-1 12-68 39-73-37z"/>
+  <path fill="#384b3c" d="m164 108 74-42 71 40v12l-69 42-76-40z"/>
+  <path fill="#213b33" d="m240 148 69-42v12l-69 42z"/>
+  <path fill="#587352" d="m164 108 74-43 71 41-69 42z"/>
+  <path fill="#668254" d="m178 103 61-34 58 35-60 35z"/>
+  <path fill="#82905c" d="m189 111 13-6 7 1 20-11 11-1 14-8 12 6-14 9-11 2-18 12-8 1-13 6z"/>
+  <g fill="#94a16b"><path d="m173 108 4-2 4 2-4 2zm42 24 4-2 3 2-4 2zm47-7 5-3 3 2-4 3zm20-23 4-2 3 2-4 2z"/></g>
+  <g fill="#496b48"><path d="m170 108 13-7 9 6-12 7zm19-10 17-10 13 6-16 11zm59 13 12-8 13 7-13 8zm25-6 12-8 11 7-14 8z"/></g>
+  <use href="#fir" transform="translate(184 67) scale(1.1)"/><use href="#fir" x="204" y="58"/>
+  <use href="#fir" transform="translate(262 63) scale(.91)"/>
+  <use href="#tent" x="224" y="72"/>
+  <use href="#rock" transform="translate(281 96) scale(.82)"/>
+  <use href="#fir" transform="translate(172 80) scale(.94)"/>
+  <use href="#tuft" x="195" y="111"/><use href="#tuft" x="211" y="99"/><use href="#tuft" x="271" y="111"/>
+  <use href="#stride" transform="translate(207 82) scale(1.12)"/>
+  <use href="#lamp" transform="translate(229 95) scale(1.1)"/>
+  <use href="#rock" transform="translate(251 114) scale(.7)"/><use href="#tuft" x="235" y="133"/>
+  <path fill="none" stroke="#d0d8b5" stroke-width="2" d="M141 89h16m-5-5 5 5-5 5"/>
+</svg>
