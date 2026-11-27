@@ -26,8 +26,9 @@ nav a:hover { background: #19251d; }
 nav [aria-current] { border-color: var(--green); }
 .studio {
   position: relative; isolation: isolate; overflow: hidden;
-  display: grid; align-items: center; min-height: clamp(23rem, 33vw, 34rem);
-  padding: 2.75rem var(--edge);
+  display: grid; align-items: center; margin-block-start: clamp(1.75rem, 4vw, 3.5rem);
+  --inset: clamp(1rem, 3vw, 2.5rem);
+  padding: var(--inset); border-radius: .45rem; background: #101a14;
 }
 .studio::before {
   content: ""; position: absolute; z-index: -1; inset: 0 0 0 30%;
@@ -40,12 +41,20 @@ h1 {
   text-transform: uppercase; letter-spacing: -.062em;
 }
 h1 span { display: block; color: var(--green); }
+.brand {
+  display: flex; align-items: center; gap: .5rem;
+  font-size: 1.15rem; line-height: 1.1; letter-spacing: -.035em;
+}
 .intro h2 {
+  font: italic 900 clamp(2rem, 4vw, 3.5rem)/1 system-ui, sans-serif;
+  text-transform: uppercase; letter-spacing: -.055em;
+}
+.intro h2 span { color: var(--green); }
+.intro h3 {
   display: flex; align-items: center; gap: .55rem;
   margin: 1.2rem 0 .3rem; font-size: 1.05rem; line-height: 1.35;
 }
-.intro h1 + h2 { margin-top: 1.75rem; }
-.intro h2 img { flex: none; }
+.intro h3 img { flex: none; }
 .intro p { max-width: 43ch; color: #d1e0d4; }
 .studio-link {
   display: inline-flex; align-items: center; gap: .55rem; width: fit-content;
@@ -79,12 +88,12 @@ h1 span { display: block; color: var(--green); }
   .about-intro .table-scene { grid-row: 2; }
   .about-intro p { max-width: 58ch; margin: 0; }
 }
-.showcase, .collection { margin-inline: var(--edge); }
+.showcase, .studio, .collection { margin-inline: var(--edge); }
 .showcase {
   display: grid; grid-template-columns: minmax(0, 1fr); row-gap: .75rem;
   padding-top: clamp(1rem, 2vw, 1.75rem);
 }
-.game-picker:not([hidden]) { display: flex; align-items: center; }
+.game-picker:not([hidden]) { display: flex; align-items: center; justify-content: center; }
 .game-picker [data-step] {
   display: inline-flex; align-items: center; gap: .4rem; min-height: 2.75rem;
   padding: .25rem .5rem; border: 0; border-radius: .3rem; background: none;
@@ -197,37 +206,18 @@ h1 span { display: block; color: var(--green); }
 .tools ul { list-style: none; padding: 0; margin: 0 0 .5rem; }
 .tools a { color: var(--green); }
 @media (max-width: 48rem) {
-  .studio { min-height: 22rem; }
-  .studio::before { left: 15%; mask-image: linear-gradient(to right, transparent, #0004 25%, black 75%); }
-  .intro { max-width: 56%; }
   .slides article { grid-template-columns: 1fr; gap: 1.1rem; }
+  .studio { padding-top: 0; }
+  .studio::before {
+    inset: 0 0 auto; height: 7rem; background-position: center 35%;
+    mask-image: linear-gradient(to right, #0002, #0006 45%, black);
+  }
+  .intro { max-width: none; }
+  .intro h2 { display: flex; align-items: center; gap: .2em; min-height: 7rem; }
 }
 @media (max-width: 38rem) {
-  .games-divider { flex-wrap: wrap; gap: 0 .4rem; }
+  .showcase { padding-top: .5rem; }
   .slides .links { column-gap: .75rem; }
   .slides .play { padding-inline: .75rem; }
   .game-list article { grid-template-columns: 1fr; }
-  .studio { align-items: start; min-height: auto; padding-block: 2.5rem 7.3rem; }
-  .studio::before {
-    inset: auto 0 0; height: 13rem; background-position: center 69%;
-    mask-image: linear-gradient(transparent, #0004 36%, black 70%);
-  }
-  .intro { max-width: 100%; }
-}
-@media (max-width: 38rem) and (orientation: portrait) {
-  .slide-dots { margin-inline: 0; }
-  .game-picker [data-step="-1"], .game-picker .game-word { display: none; }
-}
-@media (max-width: 48rem) and (orientation: portrait) {
-  .studio { min-height: auto; padding-block: 0 1.25rem; }
-  .intro { display: contents; }
-  .intro h1, .studio::before { grid-area: 1 / 1; }
-  .intro h1 { padding-block: clamp(2rem, 7vw, 3.5rem); }
-  .studio::before {
-    position: static; align-self: stretch; height: auto;
-    margin-inline: calc(-1 * var(--edge));
-    background-position: center 30%;
-    mask-image: linear-gradient(to right, #0004, #0008 50%, black 85%);
-  }
-  .intro h1 + h2 { margin-top: 1.5rem; }
 }

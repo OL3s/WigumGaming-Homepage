@@ -13,32 +13,16 @@
 </head>
 <body>
   <header>
-    <img src="favicon.svg" width="38" height="38" alt="Wigum Gaming">
+    <h1 class="brand"><img src="favicon.svg" width="38" height="38" alt="">Wigum Gaming</h1>
     <nav aria-label="Language">
       <a href="no/" hreflang="nb" lang="nb" title="Norsk bokmål"><img src="art/no.svg" width="28" height="20" alt="Norsk bokmål"></a>
       <a href="./" hreflang="en" lang="en" title="English" aria-current="page"><img src="art/gb.svg" width="28" height="14" alt="English"></a>
     </nav>
   </header>
   <main>
-    <section class="studio" aria-labelledby="name">
-      <div class="intro">
-        <h1 id="name">Wigum <span>Gaming</span></h1>
-        <h2><img src="art/pixel-cube.svg" width="24" height="24" alt="">Optimized 2D &amp; 3D</h2>
-        <p>Our goal is to build sprite-based 2D and low-poly 3D games that run smoothly on everyday hardware.</p>
-        <h2><img src="art/cross-play.svg" width="24" height="24" alt="">Cross-platform play</h2>
-        <p>We’re working toward cross-platform play so friends can join the same game from a phone or a PC.</p>
-        <a class="studio-link" href="about/">About the studio <span aria-hidden="true">→</span></a>
-      </div>
-    </section>
     <section class="showcase" aria-labelledby="games">
       <div class="games-divider">
-        <h2 id="games">Games</h2>
-        <div class="game-picker" role="group" aria-label="Choose a game" hidden>
-          <button type="button" data-step="-1" aria-controls="featured-games"><span aria-hidden="true">←</span> Previous game</button>
-          <div class="slide-dots" aria-hidden="true"></div>
-          <button type="button" data-step="1" aria-controls="featured-games" aria-label="Next game"><span>Next<span class="game-word"> game</span></span> <span aria-hidden="true">→</span></button>
-          <span class="sr-only" role="status"></span>
-        </div>
+        <h2 id="games">Featured game</h2>
         <a href="games/">All games <span aria-hidden="true">→</span></a>
       </div>
       <div class="slides" id="featured-games" tabindex="0" aria-label="Featured games" role="group">
@@ -156,6 +140,22 @@
             </details>
           </div>
         </article>
+      </div>
+      <div class="game-picker" role="group" aria-label="Choose a game" hidden>
+        <button type="button" data-step="-1" aria-controls="featured-games"><span aria-hidden="true">←</span> Previous game</button>
+        <div class="slide-dots" aria-hidden="true"></div>
+        <button type="button" data-step="1" aria-controls="featured-games">Next game <span aria-hidden="true">→</span></button>
+        <span class="sr-only" role="status"></span>
+      </div>
+    </section>
+    <section class="studio" aria-labelledby="name">
+      <div class="intro">
+        <h2 id="name">Wigum <span>Gaming</span></h2>
+        <h3><img src="art/pixel-cube.svg" width="24" height="24" alt="">Optimized 2D &amp; 3D</h3>
+        <p>Our goal is to build sprite-based 2D and low-poly 3D games that run smoothly on everyday hardware.</p>
+        <h3><img src="art/cross-play.svg" width="24" height="24" alt="">Cross-platform play</h3>
+        <p>We’re working toward cross-platform play so friends can join the same game from a phone or a PC.</p>
+        <a class="studio-link" href="about/">About the studio <span aria-hidden="true">→</span></a>
       </div>
     </section>
     <details class="tools">
