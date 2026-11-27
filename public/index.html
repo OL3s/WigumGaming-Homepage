@@ -13,19 +13,22 @@
 <body>
   <header>
     <img src="favicon.svg" width="38" height="38" alt="Wigum Gaming">
-    <nav aria-label="Navigation">
-      <a href="#conquora">Our game</a>
-      <a href="no/" hreflang="nb" lang="nb">Norsk</a>
+    <nav aria-label="Language">
+      <a href="no/" hreflang="nb" lang="nb" title="Norsk bokmål"><img src="art/no.svg" width="28" height="20" alt="Norsk bokmål"></a>
+      <a href="./" hreflang="en" lang="en" title="English" aria-current="page"><img src="art/gb.svg" width="28" height="14" alt="English"></a>
     </nav>
   </header>
   <main>
     <section class="studio" aria-labelledby="name">
       <div class="intro">
         <h1 id="name">Wigum <span>Gaming</span></h1>
-        <p>We build sprite-based 2D and low-poly 3D games, optimized for everyday hardware.</p>
-        <p>We’re working on cross-platform play so friends can join the same game from a phone or a PC.</p>
+        <h2><img src="art/pixel-cube.svg" width="24" height="24" alt="">Optimized 2D &amp; 3D</h2>
+        <p>Our goal is to build sprite-based 2D and low-poly 3D games that run smoothly on everyday hardware.</p>
+        <h2><img src="art/cross-play.svg" width="24" height="24" alt="">Cross-platform play</h2>
+        <p>We’re working toward cross-platform play so friends can join the same game from a phone or a PC.</p>
       </div>
     </section>
+    <p class="games-divider">Games</p>
     <article id="conquora" aria-labelledby="game">
       <div class="hand" aria-hidden="true">
         <img class="back" src="art/back.webp" width="630" height="880" alt="">
@@ -41,6 +44,12 @@
         </div>
       </div>
     </article>
+    <details class="tools">
+      <summary>Tools we use</summary>
+      <ul>
+        <li><a href="https://ol3s.github.io/art-style-atlas/">The Art Style Atlas</a> — Compare art styles through studies of the same subject.</li>
+      </ul>
+    </details>
   </main>
 </body>
 </html>

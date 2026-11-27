@@ -17,9 +17,13 @@ header {
   padding: .75rem var(--edge); border-bottom: 1px solid #253429;
 }
 nav, .links { display: flex; align-items: center; flex-wrap: wrap; gap: 1.6rem; }
-nav a { padding-block: .55rem; font-size: .9rem; text-decoration: none; }
-nav [hreflang] { color: #afc5b4; }
-nav a:hover { text-decoration: underline; }
+nav { gap: .2rem; }
+nav a {
+  display: grid; place-items: center; width: 44px; height: 44px;
+  border-bottom: 2px solid transparent;
+}
+nav a:hover { background: #19251d; }
+nav [aria-current] { border-color: var(--green); }
 .studio {
   position: relative; isolation: isolate; overflow: hidden;
   display: grid; align-items: center; min-height: clamp(23rem, 33vw, 34rem);
@@ -36,12 +40,22 @@ h1 {
   text-transform: uppercase; letter-spacing: -.062em;
 }
 h1 span { display: block; color: var(--green); }
-.intro p { max-width: 41ch; margin-top: 1.5rem; color: #d1e0d4; }
-.intro p + p { margin-top: .6rem; }
+.intro h2 {
+  display: flex; align-items: center; gap: .55rem;
+  margin: 1.2rem 0 .3rem; font-size: 1.05rem; line-height: 1.35;
+}
+.intro h1 + h2 { margin-top: 1.75rem; }
+.intro h2 img { flex: none; }
+.intro p { max-width: 43ch; color: #d1e0d4; }
+.games-divider {
+  display: flex; align-items: center; gap: .8rem; margin-inline: var(--edge);
+  padding-top: 1rem; color: var(--green); font-size: .85rem; font-weight: 650;
+}
+.games-divider::after { content: ""; flex: 1; border-top: 1px solid #354b3c; }
 article {
   display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1fr); align-items: center;
   gap: clamp(2rem, 5vw, 6rem); max-width: 76rem; margin: 0 var(--edge);
-  padding-block: clamp(2.25rem, 4vw, 4rem); border-bottom: 1px solid #253429;
+  padding-block: 1rem clamp(2rem, 4vw, 4rem); border-bottom: 1px solid #253429;
 }
 .hand {
   position: relative; isolation: isolate; overflow: hidden; aspect-ratio: 1.8;
@@ -54,14 +68,19 @@ article {
 .back { left: 18%; top: 17%; transform: rotate(-17deg); }
 .meadow { left: 35%; top: 9%; transform: rotate(-2deg); }
 .flame { left: 51%; top: 13%; transform: rotate(15deg); }
-h2 { font: 500 clamp(3.1rem, 5.1vw, 5.5rem)/1 Georgia, serif; letter-spacing: -.045em; }
-h2 small { display: block; font-size: .38em; letter-spacing: 0; color: #edc581; }
+.game-copy h2 { font: 500 clamp(3.1rem, 5.1vw, 5.5rem)/1 Georgia, serif; letter-spacing: -.045em; }
+.game-copy small { display: block; font-size: .38em; letter-spacing: 0; color: #edc581; }
 .game-copy p { margin: 1rem 0 1.4rem; max-width: 46ch; color: #c5d4c8; }
 .links { gap: .45rem 1.4rem; }
 .links a { font-weight: 650; font-size: .94rem; padding-block: .7rem; }
 .play { padding-inline: 1rem; background: var(--green); color: var(--night); text-decoration: none; border-radius: .18rem; }
 .play:hover { background: #8bdf9e; color: var(--night); }
 .play span { margin-left: .55rem; }
+.tools { margin: .5rem var(--edge) 1rem; color: #afc5b4; font-size: .875rem; }
+.tools summary { width: fit-content; padding-block: .6rem; cursor: pointer; }
+.tools summary:hover, .tools summary::marker { color: var(--green); }
+.tools ul { list-style: none; padding: 0; margin: 0 0 .5rem; }
+.tools a { color: var(--green); }
 @media (max-width: 48rem) {
   .studio { min-height: 22rem; }
   .studio::before { left: 15%; mask-image: linear-gradient(to right, transparent, #0004 25%, black 75%); }
@@ -77,11 +96,23 @@ h2 small { display: block; font-size: .38em; letter-spacing: 0; color: #edc581; 
     mask-image: linear-gradient(transparent, #0004 36%, black 70%);
   }
   .intro { max-width: 100%; }
-  .intro p { max-width: 34ch; margin-top: 1.15rem; }
-  article { grid-template-columns: 1fr; padding-block: 2rem; gap: 1.3rem; }
+  article { grid-template-columns: 1fr; gap: 1.3rem; }
   .hand { aspect-ratio: 2.25; }
   .hand img { width: 24%; top: 15%; }
   .back { left: 22%; }
   .meadow { left: 37%; }
   .flame { left: 52%; }
+}
+@media (max-width: 48rem) and (orientation: portrait) {
+  .studio { min-height: auto; padding-block: 0 1.25rem; }
+  .intro { display: contents; }
+  .intro h1, .studio::before { grid-area: 1 / 1; }
+  .intro h1 { padding-block: clamp(2rem, 7vw, 3.5rem); }
+  .studio::before {
+    position: static; align-self: stretch; height: auto;
+    margin-inline: calc(-1 * var(--edge));
+    background-position: center 30%;
+    mask-image: linear-gradient(to right, #0004, #0008 50%, black 85%);
+  }
+  .intro h1 + h2 { margin-top: 1.5rem; }
 }
