@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 24">
+  <defs>
+    <g id="devices">
+      <rect x="1" y="2" width="12" height="20" rx="2" fill="#a5bea7"/>
+      <path fill="#345448" d="M3 5h8v12H3z"/>
+      <path fill="#f4bf72" d="M5 12h3v3H5z"/>
+      <path fill="#345448" d="M6 19h3v1H6z"/>
+      <path fill="#a5bea7" d="M62 4h19v14H62zM59 19h25v2H59z"/>
+      <path fill="#345448" d="M64 6h15v10H64z"/>
+      <path fill="#f4bf72" d="M69 11h3v3h-3z"/>
+      <path d="M17 12h15m13 0h13" stroke="#69bf80" stroke-width="2" stroke-dasharray="2 3"/>
+    </g>
+    <symbol id="bluetooth" viewBox="0 0 84 24">
+      <use href="#devices"/>
+      <path d="m33 7 11 10-6 5V2l6 5-11 10" fill="none" stroke="#86d59a" stroke-width="2"/>
+    </symbol>
+    <symbol id="wifi" viewBox="0 0 84 24">
+      <use href="#devices"/>
+      <path d="M30 7q9-8 18 0m-15 3q6-5 12 0m-9 3q3-2 6 0" fill="none" stroke="#86d59a" stroke-width="2"/>
+      <path d="M32 16h14v5H32z" fill="#a5bea7"/>
+      <path d="M34 18h3" stroke="#345448"/>
+    </symbol>
+  </defs>
+</svg>

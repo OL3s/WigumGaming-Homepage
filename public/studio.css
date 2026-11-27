@@ -65,6 +65,14 @@ h1 span { display: block; color: var(--green); }
 .about-intro p, .art-studies p { color: #c5d4c8; }
 .about-intro p { max-width: 44ch; margin-top: 1rem; }
 .about img { display: block; width: 100%; height: auto; }
+.connection-panel {
+  margin-top: 1rem; max-width: 44ch; padding: .85rem 1rem;
+  background: #14221a; border-inline-start: 2px solid #609f70;
+}
+.connection-panel h2 { font: 600 1rem/1.35 system-ui, sans-serif; }
+.connection-panel ul { list-style: none; padding: 0; margin: .7rem 0 0; display: grid; gap: .45rem; }
+.connection-panel li { display: flex; align-items: center; gap: .75rem; color: #c5d4c8; }
+.connection-panel svg { width: 5.25rem; height: 1.5rem; flex: none; }
 .art-studies { border-top: 1px solid #354b3c; padding-block: clamp(1.6rem, 3vw, 3rem); }
 .art-studies h2 { font: 500 clamp(1.9rem, 3.3vw, 3rem)/1.12 Georgia, serif; letter-spacing: -.035em; }
 .art-studies > p { margin-top: .55rem; max-width: 66ch; }
@@ -78,6 +86,7 @@ h1 span { display: block; color: var(--green); }
   .about-intro > div { display: contents; }
   .about-intro .table-scene { grid-row: 2; }
   .about-intro p { max-width: 58ch; margin: 0; }
+  .connection-panel { margin-top: 0; }
 }
 .showcase, .collection { margin-inline: var(--edge); }
 .showcase {
