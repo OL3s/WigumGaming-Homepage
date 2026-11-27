@@ -27,6 +27,7 @@
         <p>Målet vårt er å lage 2D-spill med pikselgrafikk og 3D-spill med enkle modeller som kjører godt på utstyret folk allerede har.</p>
         <h2><img src="../art/cross-play.svg" width="24" height="24" alt="">Spill på tvers av plattformer</h2>
         <p>Vi jobber for at venner skal kunne spille sammen, selv om én bruker mobil og en annen bruker PC.</p>
+        <a class="studio-link" href="about/">Om studioet <span aria-hidden="true">→</span></a>
       </div>
     </section>
     <section class="showcase" aria-labelledby="games">
@@ -35,7 +36,11 @@
         <div class="slide-dots" role="group" aria-label="Velg spill"></div>
         <a href="games/">Alle spill <span aria-hidden="true">→</span></a>
       </div>
-      <div class="slides" tabindex="0" aria-label="Utvalgte spill" role="group">
+      <div class="slide-arrows" hidden>
+        <button type="button" data-step="-1" aria-label="Forrige spill" aria-controls="featured-games"></button>
+        <button type="button" data-step="1" aria-label="Neste spill" aria-controls="featured-games"></button>
+      </div>
+      <div class="slides" id="featured-games" tabindex="0" aria-label="Utvalgte spill" role="group">
         <article id="conquora" aria-labelledby="game">
           <div class="hand" aria-hidden="true">
             <img class="back" src="../art/back.webp" width="630" height="880" alt="">
@@ -53,6 +58,30 @@
               </div>
               <a href="https://ol3s.github.io/CardControlProject/">Spillets nettside</a>
             </div>
+            <details class="game-details">
+              <summary>Spilldetaljer</summary>
+              <dl class="specs">
+                <dt>Plattformer</dt>
+                <dd>
+                  <a href="https://ol3s.github.io/CardControlProject/play/"><svg aria-hidden="true"><use href="../art/catalog.svg#browser"/></svg>Nettleser</a>
+                  <span class="unavailable"><span class="sr-only">Ingen nedlasting tilgjengelig:</span>
+                    <span class="tag" title="Android – ikke tilgjengelig"><svg role="img" aria-label="Android"><use href="../art/catalog.svg#android"/></svg></span>
+                    <span class="tag" title="iOS – ikke tilgjengelig"><svg aria-hidden="true"><use href="../art/catalog.svg#apple"/></svg>iOS</span>
+                    <span class="tag" title="Windows – ikke tilgjengelig"><svg role="img" aria-label="Windows"><use href="../art/catalog.svg#windows"/></svg></span>
+                    <span class="tag" title="macOS – ikke tilgjengelig"><svg aria-hidden="true"><use href="../art/catalog.svg#apple"/></svg>macOS</span>
+                    <span class="tag" title="Linux – ikke tilgjengelig"><svg role="img" aria-label="Linux"><use href="../art/catalog.svg#linux"/></svg></span>
+                  </span>
+                </dd>
+                <dt>Styring</dt>
+                <dd>
+                  <span class="tag"><svg aria-hidden="true"><use href="../art/catalog.svg#mouse"/></svg>Mus</span>
+                  <span class="tag"><svg aria-hidden="true"><use href="../art/catalog.svg#touch"/></svg>Berøring</span>
+                  <span class="tag off" title="Ikke støttet"><span class="sr-only">Ikke støttet: </span><svg aria-hidden="true"><use href="../art/catalog.svg#gamepad"/></svg>Kontroller</span>
+                </dd>
+                <dt>Maskinkrav (anslag)</dt>
+                <dd><span class="demand low" aria-hidden="true"><i></i><i></i><i></i></span>Lave</dd>
+              </dl>
+            </details>
           </div>
         </article>
         <article id="dungeon-divers" aria-labelledby="dungeon-divers-title">
@@ -65,6 +94,30 @@
               <button class="play" type="button" disabled>Nettleserspill utilgjengelig</button>
               <a href="https://ol3s.github.io/DungeonDivers/">Spillets nettside</a>
             </div>
+            <details class="game-details">
+              <summary>Spilldetaljer</summary>
+              <dl class="specs">
+                <dt>Plattformer</dt>
+                <dd>
+                  <span class="tag off" title="Ikke tilgjengelig"><span class="sr-only">Ikke tilgjengelig: </span><svg aria-hidden="true"><use href="../art/catalog.svg#browser"/></svg>Nettleser</span>
+                  <span class="unavailable"><span class="sr-only">Ingen nedlasting tilgjengelig:</span>
+                    <span class="tag" title="Android – ikke tilgjengelig"><svg role="img" aria-label="Android"><use href="../art/catalog.svg#android"/></svg></span>
+                    <span class="tag" title="iOS – ikke tilgjengelig"><svg aria-hidden="true"><use href="../art/catalog.svg#apple"/></svg>iOS</span>
+                    <span class="tag" title="Windows – ikke tilgjengelig"><svg role="img" aria-label="Windows"><use href="../art/catalog.svg#windows"/></svg></span>
+                    <span class="tag" title="macOS – ikke tilgjengelig"><svg aria-hidden="true"><use href="../art/catalog.svg#apple"/></svg>macOS</span>
+                    <span class="tag" title="Linux – ikke tilgjengelig"><svg role="img" aria-label="Linux"><use href="../art/catalog.svg#linux"/></svg></span>
+                  </span>
+                </dd>
+                <dt>Styring</dt>
+                <dd>
+                  <span class="tag"><svg aria-hidden="true"><use href="../art/catalog.svg#keyboard"/></svg>Tastatur</span>
+                  <span class="tag"><svg aria-hidden="true"><use href="../art/catalog.svg#touch"/></svg>Berøring</span>
+                  <span class="tag"><svg aria-hidden="true"><use href="../art/catalog.svg#gamepad"/></svg>Kontroller</span>
+                </dd>
+                <dt>Maskinkrav (anslag)</dt>
+                <dd><span class="demand medium" aria-hidden="true"><i></i><i></i><i></i></span>Middels</dd>
+              </dl>
+            </details>
           </div>
         </article>
       </div>

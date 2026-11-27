@@ -2,6 +2,11 @@
 const track = document.querySelector('.slides');
 const slides = Array.from(track.children);
 const picker = document.querySelector('.slide-dots');
+const arrows = document.querySelector('.slide-arrows');
+
+function currentIndex() {
+  return Math.round(track.scrollLeft / track.clientWidth);
+}
 
 function selectSlide(index) {
   track.scrollTo({ left: index * track.clientWidth });
@@ -20,10 +25,11 @@ const dots = slides.map((slide, index) => {
 });
 
 function syncDots() {
-  const current = Math.round(track.scrollLeft / track.clientWidth);
+  const current = currentIndex();
   dots.forEach((dot, i) => {
     dot.setAttribute('aria-current', String(i === current));
     slides[i].inert = i !== current;
+    if (slides[i].inert) slides[i].querySelector('details[open]')?.removeAttribute('open');
   });
 }
 
@@ -35,6 +41,15 @@ picker.addEventListener('keydown', event => {
   dots[next].focus();
   selectSlide(next);
 });
+
+if (slides.length > 1) {
+  arrows.hidden = false;
+  for (const button of arrows.children) {
+    button.addEventListener('click', () => {
+      selectSlide((currentIndex() + Number(button.dataset.step) + slides.length) % slides.length);
+    });
+  }
+}
 
 track.addEventListener('scroll', syncDots, { passive: true });
 window.addEventListener('resize', syncDots);
