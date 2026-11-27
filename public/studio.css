@@ -71,6 +71,27 @@ article {
 .game-copy h2 { font: 500 clamp(3.1rem, 5.1vw, 5.5rem)/1 Georgia, serif; letter-spacing: -.045em; }
 .game-copy small { display: block; font-size: .38em; letter-spacing: 0; color: #edc581; }
 .game-copy p { margin: 1rem 0 1.4rem; max-width: 46ch; color: #c5d4c8; }
+.game-still { width: 100%; height: auto; display: block; }
+article + article { padding-top: clamp(2rem, 4vw, 4rem); }
+.game-copy .status { display: flex; gap: .5rem; align-items: center; margin: 0 0 .55rem; font-size: .82rem; }
+.status::before { content: ""; width: .55rem; height: .55rem; border-radius: 50%; background: #a6adb1; }
+.status.development::before { background: #edc581; }
+.status.pre-alpha::before { background: #b39edf; }
+.status.released::before { background: var(--green); }
+.game-details { margin: -.55rem 0 1rem; }
+.game-details summary { width: fit-content; padding-block: .35rem; color: #b5c7b9; font-size: .875rem; cursor: pointer; }
+.game-details summary:hover, .game-details summary::marker { color: var(--green); }
+.game-details summary:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+.specs { display: grid; grid-template-columns: auto 1fr; gap: .45rem .85rem; margin: .4rem 0 0; font-size: .8rem; }
+.specs dt { color: #b5c7b9; }
+.specs dd, .unavailable { display: flex; flex-wrap: wrap; gap: .35rem .65rem; align-items: center; margin: 0; }
+.specs dd > a, .tag { display: inline-flex; align-items: center; gap: .25rem; }
+.unavailable, .tag.off { color: #858d87; }
+.specs svg { width: 1.15rem; height: 1.15rem; }
+.demand { display: inline-flex; gap: 2px; }
+.demand i { width: .45rem; height: .65rem; background: #3f4942; }
+.demand i:first-child, .demand.medium i:nth-child(2), .demand.high i { background: #8eca9b; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .links { align-items: baseline; gap: .45rem 1.4rem; }
 .play-group { display: grid; justify-items: center; gap: .2rem; }
 .play-group img { display: block; filter: brightness(2); }
