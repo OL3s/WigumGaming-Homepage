@@ -40,14 +40,18 @@ h1 {
   text-transform: uppercase; letter-spacing: -.062em;
 }
 h1 span { display: block; color: var(--green); }
-.studio-focus { display: grid; gap: .8rem; max-width: 43ch; margin: 1.75rem 0 0; padding: 0; list-style: none; }
-.studio-focus li { display: grid; grid-template-columns: 22px 1fr; gap: .7rem; color: #d1e0d4; }
-.studio-focus img { margin-top: .15rem; }
+.intro h2 {
+  display: flex; align-items: center; gap: .55rem;
+  margin: 1.2rem 0 .3rem; font-size: 1.05rem; line-height: 1.35;
+}
+.intro h1 + h2 { margin-top: 1.75rem; }
+.intro h2 img { flex: none; }
+.intro p { max-width: 43ch; color: #d1e0d4; }
 .studio-link {
   display: inline-flex; align-items: center; gap: .55rem; width: fit-content;
   min-height: 44px; color: var(--green); font-weight: 650;
 }
-.intro .studio-link { margin: .3rem 0 0 calc(22px + .7rem); color: #b5c7b9; font-size: .9rem; font-weight: 500; text-decoration: none; }
+.intro .studio-link { margin-top: .3rem; color: #b5c7b9; font-size: .9rem; font-weight: 500; text-decoration: none; }
 .intro .studio-link:hover { color: var(--green); text-decoration: underline; }
 .about { margin-inline: var(--edge); padding-block: 1.5rem 2rem; }
 .about-intro {
@@ -210,5 +214,5 @@ h1 span { display: block; color: var(--green); }
     background-position: center 30%;
     mask-image: linear-gradient(to right, #0004, #0008 50%, black 85%);
   }
-  .studio-focus { margin-top: 1.4rem; }
+  .intro h1 + h2 { margin-top: 1.5rem; }
 }
