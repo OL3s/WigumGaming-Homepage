@@ -40,18 +40,15 @@ h1 {
   text-transform: uppercase; letter-spacing: -.062em;
 }
 h1 span { display: block; color: var(--green); }
-.intro h2 {
-  display: flex; align-items: center; gap: .55rem;
-  margin: 1.2rem 0 .3rem; font-size: 1.05rem; line-height: 1.35;
-}
-.intro h1 + h2 { margin-top: 1.75rem; }
-.intro h2 img { flex: none; }
-.intro p { max-width: 43ch; color: #d1e0d4; }
+.studio-focus { display: grid; gap: .8rem; max-width: 43ch; margin: 1.75rem 0 0; padding: 0; list-style: none; }
+.studio-focus li { display: grid; grid-template-columns: 22px 1fr; gap: .7rem; color: #d1e0d4; }
+.studio-focus img { margin-top: .15rem; }
 .studio-link {
   display: inline-flex; align-items: center; gap: .55rem; width: fit-content;
   min-height: 44px; color: var(--green); font-weight: 650;
 }
-.intro .studio-link { margin-top: .45rem; }
+.intro .studio-link { margin: .3rem 0 0 calc(22px + .7rem); color: #b5c7b9; font-size: .9rem; font-weight: 500; text-decoration: none; }
+.intro .studio-link:hover { color: var(--green); text-decoration: underline; }
 .about { margin-inline: var(--edge); padding-block: 1.5rem 2rem; }
 .about-intro {
   display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
@@ -84,27 +81,26 @@ h1 span { display: block; color: var(--green); }
 }
 .slide-arrows button {
   pointer-events: auto; display: grid; place-items: center; width: 2.75rem; height: 2.75rem;
-  border: 1px solid #526e59; border-radius: 50%; background: #101a13; color: #d9f5df; cursor: pointer;
+  border: 0; border-radius: 50%; background: transparent; color: #d9f5df; cursor: pointer;
 }
 .slide-arrows button::before {
   content: ""; width: .85rem; height: .85rem; border-top: 3px solid; border-right: 3px solid;
   transform: translateX(-.15rem) rotate(45deg);
 }
 .slide-arrows [data-step="-1"]::before { transform: translateX(.15rem) rotate(-135deg); }
-.slide-arrows button:hover { color: var(--green); border-color: currentColor; }
+.slide-arrows button:hover { color: var(--green); background: #152118; }
 .slide-arrows button:focus-visible { outline: 2px solid var(--green); }
-.games-divider { display: flex; align-items: center; gap: .45rem; padding-top: .7rem; }
-.games-divider h2, .games-divider a { font-size: .9rem; }
-.games-divider h2 { color: var(--green); }
-.games-divider::after { content: ""; flex: 1; border-top: 1px solid #354b3c; }
-.games-divider a { order: 1; padding: .65rem 0 .65rem .4rem; }
+.games-divider { display: flex; align-items: center; gap: .55rem; border-top: 1px solid #354b3c; padding-top: .65rem; }
+.games-divider h2 { font-size: clamp(1.3rem, 2vw, 1.6rem); line-height: 1.2; letter-spacing: -.035em; }
+.games-divider a { margin-left: auto; padding: .65rem 0 .65rem .4rem; color: #b5c7b9; font-size: .9rem; text-decoration: none; }
+.games-divider a:hover { color: var(--green); text-decoration: underline; }
 .slide-dots { display: flex; flex-wrap: wrap; }
 .slide-dots button {
-  display: grid; place-items: center; width: 2rem; height: 2.75rem;
+  display: grid; place-items: center; width: 1.5rem; height: 2.75rem;
   background: none; color: var(--green); border: 0; padding: 0; cursor: pointer;
 }
 .slide-dots button::after {
-  content: ""; width: .55rem; height: .55rem; border: 1px solid currentColor; border-radius: 50%;
+  content: ""; width: .42rem; height: .42rem; border: 1px solid currentColor; border-radius: 50%;
 }
 .slide-dots button[aria-current="true"]::after { background: currentColor; transform: scale(1.15); }
 .slide-dots button:focus-visible, .slides:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
@@ -150,6 +146,9 @@ h1 span { display: block; color: var(--green); }
 .game-copy p { margin: .7rem 0 1rem; max-width: 48ch; color: #c5d4c8; }
 .game-still { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
 .game-copy .status { display: flex; gap: .5rem; align-items: center; margin: 0 0 .55rem; font-size: .82rem; }
+.game-heading { display: flex; align-items: baseline; flex-wrap: wrap; gap: .25rem 1rem; }
+.game-heading .status { margin: 0; color: #b5c7b9; font-size: .77rem; }
+.slides .links > a { font-weight: 500; color: #d1e0d4; }
 .status::before { content: ""; width: .55rem; height: .55rem; border-radius: 50%; background: #a6adb1; }
 .status.development::before { background: #edc581; }
 .status.pre-alpha::before { background: #b39edf; }
@@ -185,6 +184,7 @@ h1 span { display: block; color: var(--green); }
   .slide-arrows:not([hidden]) {
     align-self: start; aspect-ratio: 16 / 9; margin: .7rem 0 0; padding-inline: .5rem;
   }
+  .slide-arrows button { background: #080c09b8; }
   .studio { min-height: 22rem; }
   .studio::before { left: 15%; mask-image: linear-gradient(to right, transparent, #0004 25%, black 75%); }
   .intro { max-width: 56%; }
@@ -210,5 +210,5 @@ h1 span { display: block; color: var(--green); }
     background-position: center 30%;
     mask-image: linear-gradient(to right, #0004, #0008 50%, black 85%);
   }
-  .intro h1 + h2 { margin-top: 1.5rem; }
+  .studio-focus { margin-top: 1.4rem; }
 }
