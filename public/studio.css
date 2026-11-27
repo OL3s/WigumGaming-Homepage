@@ -139,7 +139,7 @@ h1 span { display: block; color: var(--green); }
 .game-cover h2 {
   position: absolute; inset: auto 0 0; padding: 1.8em .55em .35em;
   background: linear-gradient(transparent, rgb(5 12 8 / 84%));
-  font: 500 clamp(1.65rem, 3vw, 2.8rem)/1.1 Georgia, serif; letter-spacing: -.035em;
+  font: italic 800 clamp(1.65rem, 3vw, 2.8rem)/1.08 system-ui, sans-serif; letter-spacing: -.04em;
 }
 .game-cover small { font-size: .68em; }
 .slides .game-copy { min-width: 0; align-self: center; padding: 0; }
