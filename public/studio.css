@@ -81,7 +81,11 @@ h1 span { display: block; color: var(--green); }
 .study-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.6rem, 3vw, 3rem); margin-top: 1.5rem; }
 .study-pair figure { margin: 0; }
 .study-pair figcaption { margin-top: 1rem; max-width: 54ch; }
-.about-end { border-top: 1px solid #354b3c; padding-top: .65rem; }
+.about-end {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .25rem 1rem;
+  border-top: 1px solid #354b3c; padding-top: .65rem;
+}
+.about-end .back-link { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; }
 @media (max-width: 48rem) {
   .about-intro, .study-pair { grid-template-columns: 1fr; }
   .about-intro { gap: 1rem; }
@@ -103,11 +107,9 @@ h1 span { display: block; color: var(--green); }
 }
 .game-picker [data-step] [aria-hidden] { font-size: 1.2rem; color: var(--green); }
 .game-picker [data-step]:hover { background: #19251d; color: #fff; }
-.games-divider { display: flex; align-items: center; gap: .75rem; }
+.games-divider { position: relative; display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
 .games-divider h2 { font-size: clamp(1.25rem, 2vw, 1.6rem); letter-spacing: -.035em; line-height: 1.2; }
-.games-divider::after { content: ""; flex: 1; border-top: 1px solid #293a2e; }
-.games-divider a { order: 1; padding-block: .7rem; color: #c5d4c8; font-size: .9rem; text-decoration: none; }
-.games-divider a:hover { text-decoration: underline; color: var(--green); }
+.catalog-link { justify-self: end; padding-block: .65rem; color: #c5d4c8; font-size: .9rem; text-underline-offset: .25em; }
 .slide-dots { display: flex; align-items: center; flex-wrap: wrap; gap: .4rem; margin-inline: .35rem; }
 .slide-dots span {
   width: .45rem; height: .45rem; border: 1px solid var(--green); border-radius: 50%;
@@ -134,17 +136,31 @@ h1 span { display: block; color: var(--green); }
 .slides .links { align-items: center; gap: .35rem 1.25rem; }
 .slides .links > a:not(.play) { color: #c5d4c8; font-weight: 500; text-decoration-color: #596e60; }
 .slides .links > a:not(.play):hover { color: var(--green); }
-.slides .game-details { margin-top: .85rem; border-top: 1px solid #293a2e; }
+.slides .game-details[open] {
+  margin-top: .85rem; padding-inline: .9rem; border-inline-start: 2px solid #609f70;
+  background: linear-gradient(110deg, #14221a, #101a14);
+}
 .slides .game-details summary {
   display: flex; align-items: center; justify-content: space-between;
-  width: 100%; min-height: 2.75rem; list-style: none;
+  width: 100%; min-height: 2.75rem; list-style: none; font-weight: 650; color: #d1e0d4;
 }
 .slides .game-details summary::-webkit-details-marker { display: none; }
+.slides .game-details:not([open]) summary {
+  width: fit-content; min-height: 2rem; gap: .1rem;
+  font-size: .8rem; font-weight: 400; color: #a2b1a6;
+}
+.slides .game-details:not([open]) summary:hover { color: var(--green); }
 .slides .game-details summary::after {
   content: ""; width: .45rem; height: .45rem; margin-inline: .4rem;
   border: solid currentColor; border-width: 0 1.5px 1.5px 0; transform: rotate(45deg);
 }
 .slides .game-details[open] summary::after { transform: rotate(225deg); }
+.slides .specs {
+  margin: 0; padding-block: .7rem .95rem; border-top: 1px solid #354b3c;
+  gap: .65rem .85rem; font-size: .875rem;
+}
+.slides .specs dd > a, .slides .specs .tag:not(.off) svg { color: #8bdf9e; }
+.slides .specs .unavailable .tag svg { color: inherit; }
 @media (prefers-reduced-motion: no-preference) {
   .slides { scroll-behavior: smooth; }
   .slide-dots span { transition: background-color .2s, transform .2s; }
@@ -214,6 +230,8 @@ h1 span { display: block; color: var(--green); }
   .slides article { grid-template-columns: 1fr; gap: 1.1rem; }
 }
 @media (max-width: 38rem) {
+  .slides .specs { grid-template-columns: 1fr; gap: .2rem; }
+  .slides .specs dt:not(:first-child) { margin-top: .5rem; }
   .games-divider { flex-wrap: wrap; gap: 0 .4rem; }
   .slides .links { column-gap: .75rem; }
   .slides .play { padding-inline: .75rem; }
@@ -226,7 +244,7 @@ h1 span { display: block; color: var(--green); }
   .intro { max-width: 100%; }
 }
 @media (max-width: 38rem) and (orientation: portrait) {
-  .slide-dots { margin-inline: 0; }
+  .slide-dots { position: absolute; left: 50%; transform: translateX(-50%); margin-inline: 0; }
   .game-picker [data-step="-1"], .game-picker .game-word { display: none; }
 }
 @media (max-width: 48rem) and (orientation: portrait) {
