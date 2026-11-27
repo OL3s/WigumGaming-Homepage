@@ -1,22 +1,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 24">
   <defs>
     <g id="devices">
-      <path fill="#56c271" d="M3 2h8v1h2v18h-2v1H3v-1H1V3h2zM61 4h20v14H61z"/>
-      <path fill="#173524" d="M3 5h8v12H3zM63 6h16v10H63z"/>
-      <!-- The same little pine on both screens echoes the game at the kitchen table. -->
-      <path fill="#8bdf9e" d="M6 8h2v2h1v2h1v2H4v-2h1v-2h1zM70 7h2v2h1v2h1v2h-6v-2h1V9h1zM6 19h2v1H6zM58 18h26v2H58z"/>
-      <path fill="#339351" d="M60 20h22v2H60z"/>
-      <path d="M17 12h12m20 0h8" stroke="#56c271" stroke-width="2" stroke-dasharray="2 3"/>
+      <rect x="1" y="2" width="12" height="20" rx="2" fill="#a5bea7"/>
+      <path fill="#345448" d="M3 5h8v12H3z"/>
+      <path fill="#f4bf72" d="M5 12h3v3H5z"/>
+      <path fill="#345448" d="M6 19h3v1H6z"/>
+      <path fill="#a5bea7" d="M62 4h19v14H62zM59 19h25v2H59z"/>
+      <path fill="#345448" d="M64 6h15v10H64z"/>
+      <path fill="#f4bf72" d="M69 11h3v3h-3z"/>
+      <path d="M17 12h15m13 0h13" stroke="#69bf80" stroke-width="2" stroke-dasharray="2 3"/>
     </g>
     <symbol id="bluetooth" viewBox="0 0 84 24">
       <use href="#devices"/>
-      <path d="m33 7 11 10-6 5V2l6 5-11 10" fill="none" stroke="#8bdf9e" stroke-width="2"/>
+      <path d="m33 7 11 10-6 5V2l6 5-11 10" fill="none" stroke="#86d59a" stroke-width="2"/>
     </symbol>
     <symbol id="wifi" viewBox="0 0 84 24">
       <use href="#devices"/>
-      <path d="M30 7h3V5h3V4h6v1h3v2h3m-15 3h3V8h6v2h3m-9 3h6" fill="none" stroke="#8bdf9e" stroke-width="2"/>
-      <path d="M32 16h14v5H32z" fill="#56c271"/>
-      <path d="M34 18h3" stroke="#173524"/>
+      <path d="M30 7q9-8 18 0m-15 3q6-5 12 0m-9 3q3-2 6 0" fill="none" stroke="#86d59a" stroke-width="2"/>
+      <path d="M32 16h14v5H32z" fill="#a5bea7"/>
+      <path d="M34 18h3" stroke="#345448"/>
     </symbol>
   </defs>
 </svg>
