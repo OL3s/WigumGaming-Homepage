@@ -71,7 +71,9 @@ article {
 .game-copy h2 { font: 500 clamp(3.1rem, 5.1vw, 5.5rem)/1 Georgia, serif; letter-spacing: -.045em; }
 .game-copy small { display: block; font-size: .38em; letter-spacing: 0; color: #edc581; }
 .game-copy p { margin: 1rem 0 1.4rem; max-width: 46ch; color: #c5d4c8; }
-.links { gap: .45rem 1.4rem; }
+.links { align-items: baseline; gap: .45rem 1.4rem; }
+.play-group { display: grid; justify-items: center; gap: .2rem; }
+.play-group object { filter: brightness(2); }
 .links a { font-weight: 650; font-size: .94rem; padding-block: .7rem; }
 .play { padding-inline: 1rem; background: var(--green); color: var(--night); text-decoration: none; border-radius: .18rem; }
 .play:hover { background: #8bdf9e; color: var(--night); }
