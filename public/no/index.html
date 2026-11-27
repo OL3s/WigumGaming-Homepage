@@ -13,16 +13,32 @@
 </head>
 <body>
   <header>
-    <h1 class="brand"><img src="../favicon.svg" width="38" height="38" alt="">Wigum Gaming</h1>
+    <img src="../favicon.svg" width="38" height="38" alt="Wigum Gaming">
     <nav aria-label="Språk">
       <a href="./" hreflang="nb" lang="nb" title="Norsk bokmål" aria-current="page"><img src="../art/no.svg" width="28" height="20" alt="Norsk bokmål"></a>
       <a href="../" hreflang="en" lang="en" title="English"><img src="../art/gb.svg" width="28" height="14" alt="English"></a>
     </nav>
   </header>
   <main>
+    <section class="studio" aria-labelledby="name">
+      <div class="intro">
+        <h1 id="name">Wigum <span>Gaming</span></h1>
+        <h2><img src="../art/pixel-cube.svg" width="24" height="24" alt="">Ytelse i 2D og 3D</h2>
+        <p>Målet vårt er å lage 2D-spill med pikselgrafikk og 3D-spill med enkle modeller som kjører godt på utstyret folk allerede har.</p>
+        <h2><img src="../art/cross-play.svg" width="24" height="24" alt="">Spill på tvers av plattformer</h2>
+        <p>Vi jobber for at venner skal kunne spille sammen, selv om én bruker mobil og en annen bruker PC.</p>
+        <a class="studio-link" href="about/">Om studioet <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
     <section class="showcase" aria-labelledby="games">
       <div class="games-divider">
-        <h2 id="games">Utvalgt spill</h2>
+        <h2 id="games">Spill</h2>
+        <div class="game-picker" role="group" aria-label="Velg spill" hidden>
+          <button type="button" data-step="-1" aria-controls="featured-games"><span aria-hidden="true">←</span> Forrige spill</button>
+          <div class="slide-dots" aria-hidden="true"></div>
+          <button type="button" data-step="1" aria-controls="featured-games" aria-label="Neste spill"><span>Neste<span class="game-word"> spill</span></span> <span aria-hidden="true">→</span></button>
+          <span class="sr-only" role="status"></span>
+        </div>
         <a href="games/">Alle spill <span aria-hidden="true">→</span></a>
       </div>
       <div class="slides" id="featured-games" tabindex="0" aria-label="Utvalgte spill" role="group">
@@ -140,22 +156,6 @@
             </details>
           </div>
         </article>
-      </div>
-      <div class="game-picker" role="group" aria-label="Velg spill" hidden>
-        <button type="button" data-step="-1" aria-controls="featured-games"><span aria-hidden="true">←</span> Forrige spill</button>
-        <div class="slide-dots" aria-hidden="true"></div>
-        <button type="button" data-step="1" aria-controls="featured-games">Neste spill <span aria-hidden="true">→</span></button>
-        <span class="sr-only" role="status"></span>
-      </div>
-    </section>
-    <section class="studio" aria-labelledby="name">
-      <div class="intro">
-        <h2 id="name">Wigum <span>Gaming</span></h2>
-        <h3><img src="../art/pixel-cube.svg" width="24" height="24" alt="">Ytelse i 2D og 3D</h3>
-        <p>Målet vårt er å lage 2D-spill med pikselgrafikk og 3D-spill med enkle modeller som kjører godt på utstyret folk allerede har.</p>
-        <h3><img src="../art/cross-play.svg" width="24" height="24" alt="">Spill på tvers av plattformer</h3>
-        <p>Vi jobber for at venner skal kunne spille sammen, selv om én bruker mobil og en annen bruker PC.</p>
-        <a class="studio-link" href="about/">Om studioet <span aria-hidden="true">→</span></a>
       </div>
     </section>
     <details class="tools">
