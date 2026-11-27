@@ -28,8 +28,8 @@ Update the two HTML files together. `public/art/nightfall.svg` is the studio
 landscape. The three WebP cards alongside it come from `docs/assets/` in the
 Conquora project (`monster-back.webp`, `meadow.webp`, and `flame.webp`).
 The projects publish their own [Conquora](https://ol3s.github.io/CardControlProject/)
-and [Dungeon Divers](https://ol3s.github.io/DungeonDivers/) sites. The latter's
-Plains screenshot is copied locally for the studio catalog.
+and [Dungeon Divers](https://ol3s.github.io/DungeonDivers/) sites. The studio
+catalog uses a local combat capture from Dungeon Divers' Plains dungeon.
 
 Use [the entry template](templates/game-entry.html) when adding a game. The
 [catalog guide](AGENTS.md) defines stages, platform availability, controls and

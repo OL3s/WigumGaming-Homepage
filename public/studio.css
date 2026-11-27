@@ -52,13 +52,14 @@ h1 span { display: block; color: var(--green); }
   padding-top: 1rem; color: var(--green); font-size: .85rem; font-weight: 650;
 }
 .games-divider::after { content: ""; flex: 1; border-top: 1px solid #354b3c; }
-article {
-  display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1fr); align-items: center;
-  gap: clamp(2rem, 5vw, 6rem); max-width: 76rem; margin: 0 var(--edge);
+.game-list {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start;
+  gap: clamp(2rem, 4vw, 4rem); margin: 0 var(--edge);
   padding-block: 1rem clamp(2rem, 4vw, 4rem); border-bottom: 1px solid #253429;
 }
+.game-copy { padding-top: 1rem; }
 .hand {
-  position: relative; isolation: isolate; overflow: hidden; aspect-ratio: 1.8;
+  position: relative; isolation: isolate; overflow: hidden; aspect-ratio: 16 / 9;
   background: radial-gradient(ellipse at 50% 65%, #345247, #182e25 75%, #13241e);
 }
 .hand img {
@@ -68,17 +69,16 @@ article {
 .back { left: 18%; top: 17%; transform: rotate(-17deg); }
 .meadow { left: 35%; top: 9%; transform: rotate(-2deg); }
 .flame { left: 51%; top: 13%; transform: rotate(15deg); }
-.game-copy h2 { font: 500 clamp(3.1rem, 5.1vw, 5.5rem)/1 Georgia, serif; letter-spacing: -.045em; }
-.game-copy small { display: block; font-size: .38em; letter-spacing: 0; color: #edc581; }
-.game-copy p { margin: 1rem 0 1.4rem; max-width: 46ch; color: #c5d4c8; }
-.game-still { width: 100%; height: auto; display: block; }
-article + article { padding-top: clamp(2rem, 4vw, 4rem); }
+.game-copy h2 { font: 500 clamp(2.2rem, 3.8vw, 3.6rem)/1.12 Georgia, serif; letter-spacing: -.045em; }
+.game-copy small { font-size: .57em; letter-spacing: -.025em; color: #edc581; }
+.game-copy p { margin: .7rem 0 1rem; max-width: 48ch; color: #c5d4c8; }
+.game-still { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
 .game-copy .status { display: flex; gap: .5rem; align-items: center; margin: 0 0 .55rem; font-size: .82rem; }
 .status::before { content: ""; width: .55rem; height: .55rem; border-radius: 50%; background: #a6adb1; }
 .status.development::before { background: #edc581; }
 .status.pre-alpha::before { background: #b39edf; }
 .status.released::before { background: var(--green); }
-.game-details { margin: -.55rem 0 1rem; }
+.game-details { margin-top: .65rem; }
 .game-details summary { width: fit-content; padding-block: .35rem; color: #b5c7b9; font-size: .875rem; cursor: pointer; }
 .game-details summary:hover, .game-details summary::marker { color: var(--green); }
 .game-details summary:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
@@ -98,6 +98,7 @@ article + article { padding-top: clamp(2rem, 4vw, 4rem); }
 .links a { font-weight: 650; font-size: .94rem; padding-block: .7rem; }
 .play { padding-inline: 1rem; background: var(--green); color: var(--night); text-decoration: none; border-radius: .18rem; }
 .play:hover { background: #8bdf9e; color: var(--night); }
+.play:disabled { font: 650 .94rem/1.55 system-ui, sans-serif; padding-block: .7rem; border: 0; background: #212923; color: #b5c3b8; }
 .play span { margin-left: .55rem; }
 .tools { margin: .5rem var(--edge) 1rem; color: #afc5b4; font-size: .875rem; }
 .tools summary { width: fit-content; padding-block: .6rem; cursor: pointer; }
@@ -108,9 +109,8 @@ article + article { padding-top: clamp(2rem, 4vw, 4rem); }
   .studio { min-height: 22rem; }
   .studio::before { left: 15%; mask-image: linear-gradient(to right, transparent, #0004 25%, black 75%); }
   .intro { max-width: 56%; }
-  article { gap: 1.5rem; }
-  .hand { aspect-ratio: 1.35; }
-  .hand img { width: 35%; top: 20%; }
+  .game-list { grid-template-columns: 1fr; }
+  .game-list article + article { padding-top: 1.5rem; border-top: 1px solid #253429; }
 }
 @media (max-width: 38rem) {
   .studio { align-items: start; min-height: auto; padding-block: 2.5rem 7.3rem; }
@@ -119,12 +119,6 @@ article + article { padding-top: clamp(2rem, 4vw, 4rem); }
     mask-image: linear-gradient(transparent, #0004 36%, black 70%);
   }
   .intro { max-width: 100%; }
-  article { grid-template-columns: 1fr; gap: 1.3rem; }
-  .hand { aspect-ratio: 2.25; }
-  .hand img { width: 24%; top: 15%; }
-  .back { left: 22%; }
-  .meadow { left: 37%; }
-  .flame { left: 52%; }
 }
 @media (max-width: 48rem) and (orientation: portrait) {
   .studio { min-height: auto; padding-block: 0 1.25rem; }

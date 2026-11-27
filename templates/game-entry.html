@@ -7,6 +7,12 @@
     <p class="status pre-alpha">Pre-alpha</p>
     <h2 id="{{slug}}-title">{{title}}</h2>
     <p>{{One or two sentences about what the player actually does.}}</p>
+    <div class="links">
+      <div class="play-group">
+        <a class="play" href="{{play_url}}">Play in browser <span aria-hidden="true">→</span></a>
+      </div>
+      <a href="{{game_homepage}}">Game website</a>
+    </div>
     <details class="game-details">
       <summary>Game details</summary>
       <dl class="specs">
@@ -15,9 +21,9 @@
           <a href="{{play_url}}"><svg aria-hidden="true"><use href="art/catalog.svg#browser"/></svg>Browser</a>
           <span class="unavailable"><span class="sr-only">No download available:</span>
             <span class="tag" title="Android — unavailable"><svg role="img" aria-label="Android"><use href="art/catalog.svg#android"/></svg></span>
-            <span class="tag" title="iOS — unavailable"><svg role="img" aria-label="iOS"><use href="art/catalog.svg#ios"/></svg></span>
+            <span class="tag" title="iOS — unavailable"><svg aria-hidden="true"><use href="art/catalog.svg#apple"/></svg>iOS</span>
             <span class="tag" title="Windows — unavailable"><svg role="img" aria-label="Windows"><use href="art/catalog.svg#windows"/></svg></span>
-            <span class="tag" title="macOS — unavailable"><svg role="img" aria-label="macOS"><use href="art/catalog.svg#macos"/></svg></span>
+            <span class="tag" title="macOS — unavailable"><svg aria-hidden="true"><use href="art/catalog.svg#apple"/></svg>macOS</span>
             <span class="tag" title="Linux — unavailable"><svg role="img" aria-label="Linux"><use href="art/catalog.svg#linux"/></svg></span>
           </span>
         </dd>
@@ -31,11 +37,5 @@
         <dd><span class="demand medium" aria-hidden="true"><i></i><i></i><i></i></span>Moderate</dd>
       </dl>
     </details>
-    <div class="links">
-      <div class="play-group">
-        <a class="play" href="{{play_url}}">Play in browser <span aria-hidden="true">→</span></a>
-      </div>
-      <a href="{{game_homepage}}">Game website</a>
-    </div>
   </div>
 </article>
