@@ -159,6 +159,7 @@ h1 span { display: block; color: var(--green); }
 .game-copy small { font-size: .57em; letter-spacing: -.025em; color: #edc581; }
 .game-copy p { margin: .7rem 0 1rem; max-width: 48ch; color: #c5d4c8; }
 .game-still { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
+.site-pending { font-size: .94rem; color: #b5c3b8; }
 .game-copy .status { display: flex; gap: .5rem; align-items: center; margin: 0 0 .55rem; font-size: .82rem; }
 .status::before { content: ""; width: .55rem; height: .55rem; border-radius: 50%; background: #a6adb1; }
 .status.development::before { background: #edc581; }
@@ -170,7 +171,8 @@ h1 span { display: block; color: var(--green); }
 .game-details summary:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
 .specs { display: grid; grid-template-columns: auto 1fr; gap: .45rem .85rem; margin: .4rem 0 0; font-size: .8rem; }
 .specs dt { color: #b5c7b9; }
-.specs dd, .unavailable { display: flex; flex-wrap: wrap; gap: .35rem .65rem; align-items: center; margin: 0; }
+.specs dd { display: flex; flex-wrap: wrap; gap: .35rem .65rem; align-items: center; margin: 0; }
+.unavailable { display: contents; }
 .specs dd > a, .tag { display: inline-flex; align-items: center; gap: .25rem; }
 .unavailable, .tag.off { color: #858d87; }
 .specs svg { width: 1.15rem; height: 1.15rem; }

@@ -1,6 +1,6 @@
 # Wigum Gaming
 
-A static studio homepage featuring *Elements: Conquora* and *Dungeon Divers*. English lives at
+A static studio homepage featuring *Elements: Conquora*, *Dungeon Divers*, and *Cave Divers*. English lives at
 `public/index.html`, Norwegian Bokmål at `public/no/index.html`. The homepages
 feature one game at a time; the full lists live at `/games/` and `/no/games/`.
 The illustrated studio story lives at `/about/` and `/no/about/`, with shared artwork in `public/art/`.
@@ -33,6 +33,9 @@ Conquora project (`monster-back.webp`, `meadow.webp`, and `flame.webp`).
 The projects publish their own [Conquora](https://ol3s.github.io/CardControlProject/)
 and [Dungeon Divers](https://ol3s.github.io/DungeonDivers/) sites. The studio
 catalog uses a local combat capture from Dungeon Divers' Plains dungeon.
+The Cave Divers image is an in-engine capture of Verdant from the project's cave
+generator (seed `734921`, High preset), lit for the shot with an off-camera
+flashlight and volumetric fog.
 
 Use [the entry template](templates/game-entry.html) when adding a game. The
 [catalog guide](AGENTS.md) defines stages, platform availability, controls and
