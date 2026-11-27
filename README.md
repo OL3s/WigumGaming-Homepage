@@ -16,9 +16,11 @@ Visit <http://localhost:3000/> or <http://localhost:3000/no/>.
 
 ## Publish
 
-Serve `public/` as the site's document root. On a static host, select no
-framework, leave the build command empty and set the publish directory to
-`public`. No install or build step is needed.
+Netlify publishes [wigumgaming.no](https://wigumgaming.no/) from `main`.
+`netlify.toml` checks that both language pages exist and publishes `public/`
+directly. No install or compilation is needed. Check the
+[production deploys](https://app.netlify.com/projects/wigumgaming/deploys)
+to see which commit is live.
 
 ## Edit
 

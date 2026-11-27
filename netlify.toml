@@ -1,0 +1,4 @@
+[build]
+  base = "."
+  command = "test -s public/index.html && test -s public/no/index.html"
+  publish = "public"
