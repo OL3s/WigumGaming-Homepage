@@ -67,7 +67,9 @@ h1 span { display: block; color: var(--green); }
 .about img { display: block; width: 100%; height: auto; }
 .connection-panel {
   margin-top: 1rem; max-width: 44ch; padding: .85rem 1rem;
-  background: #14221a; border-inline-start: 2px solid #609f70;
+  background: linear-gradient(to right, #14221a 38%, rgb(20 34 26 / 92%) 60%, rgb(20 34 26 / 48%)),
+    #14221a url("art/local-play.webp") right center / cover no-repeat;
+  border-inline-start: 2px solid #609f70;
 }
 .connection-panel h2 { font: 600 1rem/1.35 system-ui, sans-serif; }
 .connection-panel ul { list-style: none; padding: 0; margin: .7rem 0 0; display: grid; gap: .45rem; }
