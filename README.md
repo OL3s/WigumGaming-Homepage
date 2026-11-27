@@ -1,8 +1,10 @@
 # Wigum Gaming
 
 A static studio homepage featuring *Elements: Conquora* and *Dungeon Divers*. English lives at
-`public/index.html`, Norwegian Bokmål at `public/no/index.html`. Both use
-`public/studio.css`.
+`public/index.html`, Norwegian Bokmål at `public/no/index.html`. The homepages
+feature one game at a time; the full lists live at `/games/` and `/no/games/`.
+All pages use `public/studio.css`. The homepage dots in `public/showcase.js`
+follow the native swipeable track; the catalog works without JavaScript.
 
 ## Preview
 
@@ -17,7 +19,7 @@ Visit <http://localhost:3000/> or <http://localhost:3000/no/>.
 ## Publish
 
 Netlify publishes [wigumgaming.no](https://wigumgaming.no/) from `main`.
-`netlify.toml` checks that both language pages exist and publishes `public/`
+`netlify.toml` checks that both homepages and catalogs exist and publishes `public/`
 directly. No install or compilation is needed. Check the
 [production deploys](https://app.netlify.com/projects/wigumgaming/deploys)
 to see which commit is live.

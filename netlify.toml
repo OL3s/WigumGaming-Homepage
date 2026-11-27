@@ -1,4 +1,4 @@
 [build]
   base = "."
-  command = "test -s public/index.html && test -s public/no/index.html"
+  command = "test -s public/index.html && test -s public/no/index.html && test -s public/games/index.html && test -s public/no/games/index.html"
   publish = "public"
