@@ -42,14 +42,14 @@
       </div>
       <div class="slides" id="featured-games" tabindex="0" aria-label="Featured games" role="group">
         <article id="conquora" aria-labelledby="game">
-          <div class="hand" aria-hidden="true">
+          <div class="game-cover hand">
             <img class="back" src="art/back.webp" width="630" height="880" alt="">
             <img class="meadow" src="art/meadow.webp" width="630" height="880" alt="">
             <img class="flame" src="art/flame.webp" width="630" height="880" alt="">
+            <h2 id="game"><small>Elements:</small> Conquora</h2>
           </div>
           <div class="game-copy">
             <p class="status development">In development</p>
-            <h2 id="game"><small>Elements:</small> Conquora</h2>
             <p>Build the board with terrain cards, summon monsters, and defend your king.</p>
             <div class="links">
               <a class="play" href="https://ol3s.github.io/CardControlProject/play/">Play in browser <span aria-hidden="true">→</span></a>
@@ -84,10 +84,12 @@
           </div>
         </article>
         <article id="dungeon-divers" aria-labelledby="dungeon-divers-title">
-          <img class="game-still" src="art/dungeon-divers.webp" width="1280" height="720" loading="lazy" alt="A diver swings a sword at a nearby enemy while spiked creatures close in.">
+          <div class="game-cover">
+            <img class="game-still" src="art/dungeon-divers.webp" width="1280" height="720" loading="lazy" alt="A diver swings a sword at a nearby enemy while spiked creatures close in.">
+            <h2 id="dungeon-divers-title">Dungeon Divers</h2>
+          </div>
           <div class="game-copy">
             <p class="status pre-alpha">Pre-alpha</p>
-            <h2 id="dungeon-divers-title">Dungeon Divers</h2>
             <p>Dodge enemy attacks and fight your way back to camp with the loot from your contract.</p>
             <div class="links">
               <button class="play" type="button" disabled>Browser play unavailable</button>
@@ -120,10 +122,12 @@
           </div>
         </article>
         <article id="cave-divers" aria-labelledby="cave-divers-title">
-          <img class="game-still" src="art/cave-divers.webp" width="1280" height="720" loading="lazy" alt="Blue crystals and glowing green plants line a cave on Verdant.">
+          <div class="game-cover">
+            <img class="game-still" src="art/cave-divers.webp" width="1280" height="720" loading="lazy" alt="Blue crystals and glowing green plants line a cave on Verdant.">
+            <h2 id="cave-divers-title">Cave Divers</h2>
+          </div>
           <div class="game-copy">
             <p class="status planned">Planned</p>
-            <h2 id="cave-divers-title">Cave Divers</h2>
             <p>Choose a contract, gear up aboard your ship, and head into Verdant’s caves alone or with a crew. Finish the job and bring your gear back aboard.</p>
             <div class="links">
               <button class="play" type="button" disabled>Browser play unavailable</button>
@@ -156,14 +160,16 @@
           </div>
         </article>
       </div>
-      <a class="catalog-link" href="games/">All games <span aria-hidden="true">→</span></a>
     </section>
-    <details class="tools">
+    <div class="showcase-footer">
+      <details class="tools">
       <summary>Tools we use</summary>
       <ul>
         <li><a href="https://ol3s.github.io/art-style-atlas/">The Art Style Atlas</a> — Compare art styles through studies of the same subject.</li>
       </ul>
-    </details>
+      </details>
+      <a class="catalog-link" href="games/">All games <span aria-hidden="true">→</span></a>
+    </div>
   </main>
 </body>
 </html>

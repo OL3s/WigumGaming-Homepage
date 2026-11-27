@@ -42,14 +42,14 @@
       </div>
       <div class="slides" id="featured-games" tabindex="0" aria-label="Utvalgte spill" role="group">
         <article id="conquora" aria-labelledby="game">
-          <div class="hand" aria-hidden="true">
+          <div class="game-cover hand">
             <img class="back" src="../art/back.webp" width="630" height="880" alt="">
             <img class="meadow" src="../art/meadow.webp" width="630" height="880" alt="">
             <img class="flame" src="../art/flame.webp" width="630" height="880" alt="">
+            <h2 id="game"><small>Elements:</small> Conquora</h2>
           </div>
           <div class="game-copy">
             <p class="status development">Under utvikling</p>
-            <h2 id="game"><small>Elements:</small> Conquora</h2>
             <p>Bygg brettet med terrengkort, påkall monstre og forsvar kongen din.</p>
             <div class="links">
               <a class="play" href="https://ol3s.github.io/CardControlProject/play/">Spill i nettleseren <span aria-hidden="true">→</span></a>
@@ -84,10 +84,12 @@
           </div>
         </article>
         <article id="dungeon-divers" aria-labelledby="dungeon-divers-title">
-          <img class="game-still" src="../art/dungeon-divers.webp" width="1280" height="720" loading="lazy" alt="En speider svinger sverdet mot en fiende mens piggete monstre omringer ham.">
+          <div class="game-cover">
+            <img class="game-still" src="../art/dungeon-divers.webp" width="1280" height="720" loading="lazy" alt="En speider svinger sverdet mot en fiende mens piggete monstre omringer ham.">
+            <h2 id="dungeon-divers-title">Dungeon Divers</h2>
+          </div>
           <div class="game-copy">
             <p class="status pre-alpha">Pre-alfa</p>
-            <h2 id="dungeon-divers-title">Dungeon Divers</h2>
             <p>Unnvik fiendens angrep og kjemp deg tilbake til leiren med byttet fra oppdraget.</p>
             <div class="links">
               <button class="play" type="button" disabled>Nettleserspill utilgjengelig</button>
@@ -120,10 +122,12 @@
           </div>
         </article>
         <article id="cave-divers" aria-labelledby="cave-divers-title">
-          <img class="game-still" src="../art/cave-divers.webp" width="1280" height="720" loading="lazy" alt="Blå krystaller og selvlysende grønne planter vokser i en grotte på Verdant.">
+          <div class="game-cover">
+            <img class="game-still" src="../art/cave-divers.webp" width="1280" height="720" loading="lazy" alt="Blå krystaller og selvlysende grønne planter vokser i en grotte på Verdant.">
+            <h2 id="cave-divers-title">Cave Divers</h2>
+          </div>
           <div class="game-copy">
             <p class="status planned">Planlagt</p>
-            <h2 id="cave-divers-title">Cave Divers</h2>
             <p>Velg et oppdrag, gjør klar utstyret om bord på skipet og dra ned i grottene på Verdant alene eller sammen med andre. Fullfør oppdraget og få med deg utstyret tilbake til skipet.</p>
             <div class="links">
               <button class="play" type="button" disabled>Nettleserspill utilgjengelig</button>
@@ -156,14 +160,16 @@
           </div>
         </article>
       </div>
-      <a class="catalog-link" href="games/">Alle spill <span aria-hidden="true">→</span></a>
     </section>
-    <details class="tools">
+    <div class="showcase-footer">
+      <details class="tools">
       <summary>Verktøy vi bruker</summary>
       <ul>
         <li><a href="https://ol3s.github.io/art-style-atlas/" lang="en" hreflang="en">The Art Style Atlas</a> – Se hvordan det samme motivet ser ut i ulike kunststiler.</li>
       </ul>
-    </details>
+      </details>
+      <a class="catalog-link" href="games/">Alle spill <span aria-hidden="true">→</span></a>
+    </div>
   </main>
 </body>
 </html>
