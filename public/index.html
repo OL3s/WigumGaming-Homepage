@@ -33,12 +33,13 @@
     <section class="showcase" aria-labelledby="games">
       <div class="games-divider">
         <h2 id="games">Games</h2>
-        <div class="slide-dots" role="group" aria-label="Choose a game"></div>
+        <div class="game-picker" role="group" aria-label="Choose a game" hidden>
+          <button type="button" data-step="-1" aria-controls="featured-games"><span aria-hidden="true">←</span> Previous game</button>
+          <div class="slide-dots" aria-hidden="true"></div>
+          <button type="button" data-step="1" aria-controls="featured-games" aria-label="Next game"><span>Next<span class="game-word"> game</span></span> <span aria-hidden="true">→</span></button>
+          <span class="sr-only" role="status"></span>
+        </div>
         <a href="games/">All games <span aria-hidden="true">→</span></a>
-      </div>
-      <div class="slide-arrows" hidden>
-        <button type="button" data-step="-1" aria-label="Previous game" aria-controls="featured-games"></button>
-        <button type="button" data-step="1" aria-label="Next game" aria-controls="featured-games"></button>
       </div>
       <div class="slides" id="featured-games" tabindex="0" aria-label="Featured games" role="group">
         <article id="conquora" aria-labelledby="game">

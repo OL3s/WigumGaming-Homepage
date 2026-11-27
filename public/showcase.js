@@ -1,8 +1,9 @@
 // The track scrolls and snaps natively, including on touchscreens.
 const track = document.querySelector('.slides');
 const slides = Array.from(track.children);
-const picker = document.querySelector('.slide-dots');
-const arrows = document.querySelector('.slide-arrows');
+const picker = document.querySelector('.game-picker');
+const dotList = picker.querySelector('.slide-dots');
+const position = picker.querySelector('[role="status"]');
 
 function currentIndex() {
   return Math.round(track.scrollLeft / track.clientWidth);
@@ -12,39 +13,29 @@ function selectSlide(index) {
   track.scrollTo({ left: index * track.clientWidth });
 }
 
-const dots = slides.map((slide, index) => {
-  const name = slide.querySelector('h2').textContent.trim();
-  const dot = document.createElement('button');
-  dot.type = 'button';
-  dot.title = name;
-  dot.setAttribute('aria-label', `${name} (${index + 1}/${slides.length})`);
-  dot.setAttribute('aria-controls', slide.id);
-  dot.addEventListener('click', () => selectSlide(index));
-  picker.append(dot);
+const dots = slides.map(() => {
+  const dot = document.createElement('span');
+  dotList.append(dot);
   return dot;
 });
 
+let active = -1;
 function syncDots() {
   const current = currentIndex();
+  if (!slides[current] || current === active) return;
+  active = current;
+  const name = slides[current].querySelector('h2').textContent.trim();
+  position.textContent = `${name} (${current + 1}/${slides.length})`;
   dots.forEach((dot, i) => {
-    dot.setAttribute('aria-current', String(i === current));
+    dot.classList.toggle('current', i === current);
     slides[i].inert = i !== current;
     if (slides[i].inert) slides[i].querySelector('details[open]')?.removeAttribute('open');
   });
 }
 
-picker.addEventListener('keydown', event => {
-  const index = dots.indexOf(event.target);
-  if (index < 0 || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
-  event.preventDefault();
-  const next = (index + (event.key === 'ArrowRight' ? 1 : -1) + dots.length) % dots.length;
-  dots[next].focus();
-  selectSlide(next);
-});
-
 if (slides.length > 1) {
-  arrows.hidden = false;
-  for (const button of arrows.children) {
+  picker.hidden = false;
+  for (const button of picker.querySelectorAll('[data-step]')) {
     button.addEventListener('click', () => {
       selectSlide((currentIndex() + Number(button.dataset.step) + slides.length) % slides.length);
     });
